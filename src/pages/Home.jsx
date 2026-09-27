@@ -31,6 +31,8 @@ import { products } from '../data/products';
 import BrandLogo from '../components/BrandLogo';
 import ProductCard from '../components/ProductCard';
 import ProductImage from '../components/ProductImage';
+import heroDesktopImg from '../assets/hero-desktop.png';
+import heroMobileImg from '../assets/hero-mobile.png';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -57,17 +59,17 @@ export default function Home() {
         <div className="absolute top-1/2 left-0 w-80 h-80 bg-sky-200/20 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             
             {/* Left Content */}
-            <div className="lg:col-span-6 space-y-5 text-center lg:text-left">
+            <div className="lg:col-span-5 space-y-5 text-center lg:text-left">
               {/* Pill Badge */}
               <div className="inline-flex items-center gap-2 bg-[#16a34a] text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-xs">
                 <span>Reliable Power Solutions</span>
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-black text-[#0f2b48] tracking-tight leading-[1.12]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] font-black text-[#0f2b48] tracking-tight leading-[1.12]">
                 Uninterrupted Power <br />
                 for a <span className="text-[#16a34a]">Better Tomorrow</span>
               </h1>
@@ -94,79 +96,38 @@ export default function Home() {
                   <span>Explore Products</span>
                 </Link>
               </div>
+
+              {/* Mobile Hero Visual (portrait view from image copy 3.png) */}
+              <div className="block lg:hidden pt-4 max-w-sm mx-auto">
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white">
+                  <img 
+                    src={heroMobileImg} 
+                    alt="Livkam Power Equipment - UPS, Batteries & Inverters" 
+                    className="w-full h-auto object-contain"
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* Right Visual Power Collage Montage */}
-            <div className="lg:col-span-6 relative">
+            {/* Right Visual Power Showcase (Desktop view from image copy 2.png) */}
+            <div className="hidden lg:block lg:col-span-7 relative">
               {/* Script Slogan Tag */}
-              <div className="absolute -top-6 right-4 sm:right-10 z-10 text-right hidden sm:block">
-                <span className="font-serif italic text-lg sm:text-2xl font-bold text-sky-800/80 drop-shadow-xs">
+              <div className="absolute -top-7 right-6 z-10 text-right">
+                <span className="font-serif italic text-xl font-bold text-sky-900 drop-shadow-xs">
                   Reliable Brands. <br />
                   <span className="text-[#16a34a]">Lasting Performance.</span>
                 </span>
               </div>
 
-              {/* Realistic Montage Presentation Frame */}
-              <div className="relative rounded-3xl bg-gradient-to-tr from-sky-100/60 via-emerald-50/40 to-slate-100 p-4 sm:p-6 border border-slate-200/60 shadow-xl overflow-hidden">
-                {/* Background Solar & Energy Graphic */}
-                <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#16a34a_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                
-                {/* Product Montage Lineup */}
-                <div className="relative z-10 grid grid-cols-3 gap-2 sm:gap-3 items-end">
-                  {/* Item 1: APC / Vertiv UPS Rack Tower */}
-                  <div className="bg-slate-900 text-white rounded-xl p-3 shadow-lg border border-slate-700 flex flex-col justify-between h-44 sm:h-52 transform hover:-translate-y-1 transition-transform">
-                    <div className="flex justify-between items-center text-[8px] text-emerald-400 font-mono">
-                      <span>APC 3kVA</span>
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    </div>
-                    <div className="space-y-1.5 my-auto">
-                      <div className="h-1 bg-slate-800 rounded"></div>
-                      <div className="h-1 bg-slate-800 rounded"></div>
-                      <div className="h-1 bg-slate-800 rounded"></div>
-                      <div className="h-1 bg-slate-800 rounded"></div>
-                    </div>
-                    <div className="text-center font-bold text-[9px] text-slate-300">
-                      ONLINE UPS
-                    </div>
-                  </div>
-
-                  {/* Item 2: Batteries Stack (Exide + Amaron) */}
-                  <div className="space-y-2">
-                    {/* Exide Tubular */}
-                    <div className="bg-white rounded-xl p-2.5 shadow-md border-2 border-red-600 text-center transform hover:-translate-y-1 transition-transform">
-                      <div className="text-[8px] font-black text-red-600 uppercase font-mono">EXIDE</div>
-                      <div className="text-[7px] font-bold text-slate-700">INVA TUBULAR</div>
-                    </div>
-                    {/* Amaron Battery */}
-                    <div className="bg-emerald-800 text-white rounded-xl p-2.5 shadow-md border border-emerald-600 text-center transform hover:-translate-y-1 transition-transform">
-                      <div className="text-[8px] font-black uppercase">AMARON</div>
-                      <div className="text-[7px] font-semibold text-emerald-200">200Ah SMF</div>
-                    </div>
-                  </div>
-
-                  {/* Item 3: Vertiv Tower & Luminous Inverter */}
-                  <div className="space-y-2">
-                    <div className="bg-slate-950 text-white rounded-xl p-3 shadow-lg border border-slate-800 flex flex-col justify-between h-28 transform hover:-translate-y-1 transition-transform">
-                      <span className="text-[8px] font-bold tracking-widest text-slate-400">VERTIV</span>
-                      <span className="text-[7px] text-emerald-400 font-mono">LIEBERT GXT5</span>
-                    </div>
-                    <div className="bg-blue-800 text-white rounded-xl p-2.5 shadow-md border border-blue-600 text-center transform hover:-translate-y-1 transition-transform">
-                      <div className="text-[8px] font-black uppercase tracking-wider">LUMINOUS</div>
-                      <div className="text-[7px] text-blue-200">Pure Sine Wave</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bottom Trust Tag on Montage */}
-                <div className="mt-4 pt-3 border-t border-slate-200/60 flex items-center justify-between text-[11px] font-semibold text-[#0f2b48]">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#16a34a]" /> 100% Genuine Authorized
-                  </span>
-                  <span className="text-slate-500">Karnataka & Pan-India</span>
-                </div>
+              {/* Desktop Hero Image Container */}
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white transition-transform duration-500 hover:scale-[1.01]">
+                <img 
+                  src={heroDesktopImg} 
+                  alt="Livkam Power Solutions - APC, Vertiv, Exide, Amaron, Luminous, Microtek" 
+                  className="w-full h-auto object-cover"
+                />
               </div>
             </div>
-
           </div>
 
           {/* ============================================================ */}

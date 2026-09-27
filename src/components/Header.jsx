@@ -96,9 +96,9 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
 
       {/* 2. MAIN HEADER (DESKTOP & MOBILE) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 sm:h-24">
           {/* Brand Logo */}
-          <div className="flex-shrink-0 flex items-center">
+          <div className="flex-shrink-0 flex items-center py-2">
             <LivkamLogo />
           </div>
 
