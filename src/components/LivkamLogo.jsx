@@ -8,18 +8,18 @@ export default function LivkamLogo({ variant = 'default', className = '', showTa
   return (
     <Link to="/" className={`inline-flex items-center group select-none ${className}`}>
       {isDark ? (
-        <div className="bg-white/95 backdrop-blur-xs px-4 py-2 rounded-2xl shadow-md inline-flex items-center transition-transform duration-300 group-hover:scale-[1.03]">
+        <div className="bg-white/95 backdrop-blur-xs px-3.5 py-1.5 rounded-xl shadow-xs inline-flex items-center transition-transform duration-300 group-hover:scale-[1.02]">
           <img 
             src={logoImg} 
             alt="Livkam Power Technologies" 
-            className="h-12 sm:h-14 md:h-16 w-auto object-contain"
+            className="h-10 md:h-12 w-auto object-contain mix-blend-multiply"
           />
         </div>
       ) : (
         <img 
           src={logoImg} 
           alt="Livkam Power Technologies - Smart Power. Sustainable Future." 
-          className="h-12 sm:h-14 md:h-16 lg:h-18 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] drop-shadow-xs"
+          className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02] mix-blend-multiply"
         />
       )}
     </Link>
