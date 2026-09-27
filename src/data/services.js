@@ -8,7 +8,7 @@ export const services = [
     priceStartsAt: "₹ 1,499",
     turnaround: "Same Day / 24 Hours",
     icon: "Wrench",
-    banner: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80",
+    banner: "/images/services/ups-technician.jpg",
     features: [
       "Precision load calculation & input/output wire sizing",
       "Earth fault testing & neutral grounding verification",
@@ -27,7 +27,7 @@ export const services = [
     priceStartsAt: "₹ 999",
     turnaround: "Scheduled Visit",
     icon: "ShieldCheck",
-    banner: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1200&q=80",
+    banner: "/images/services/ups-technician.jpg",
     features: [
       "DC bus capacitor ripple voltage analysis",
       "Internal thermal scanning for hotspot detection",
@@ -46,7 +46,7 @@ export const services = [
     priceStartsAt: "₹ 1,299",
     turnaround: "2 - 4 Hours Emergency SLA",
     icon: "AlertTriangle",
-    banner: "https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=1200&q=80",
+    banner: "/images/services/ups-technician.jpg",
     features: [
       "Genuine OEM spare replacement (APC, Delta, Vertiv, etc.)",
       "Faulty IGBT & power module component level repair",
@@ -65,7 +65,7 @@ export const services = [
     priceStartsAt: "Exchange Discounts Available",
     turnaround: "Instant Doorstep Delivery",
     icon: "BatteryCharging",
-    banner: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1200&q=80",
+    banner: "/images/services/battery-replacement.jpg",
     features: [
       "100% genuine fresh manufacturing date batteries",
       "Safe eco-friendly recycling with highest scrap rebate",
@@ -84,7 +84,7 @@ export const services = [
     priceStartsAt: "Custom Corporate Quote",
     turnaround: "Contractual SLA Guarantee",
     icon: "FileCheck",
-    banner: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+    banner: "/images/services/ups-technician.jpg",
     features: [
       "Guaranteed 4-hour breakdown turnaround time",
       "4 mandatory quarterly preventive maintenance visits",
@@ -103,7 +103,7 @@ export const services = [
     priceStartsAt: "FREE",
     turnaround: "Same Day Call / Video",
     icon: "Headphones",
-    banner: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
+    banner: "/images/services/ups-technician.jpg",
     features: [
       "Total connected load (VA/Watts) & inrush current audit",
       "Runtime duration calculation based on discharge curves",
@@ -122,7 +122,7 @@ export const services = [
     priceStartsAt: "₹ 499 (Waived upon order)",
     turnaround: "Within 24 Hours",
     icon: "Search",
-    banner: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80",
+    banner: "/images/services/ups-technician.jpg",
     features: [
       "Physical room ventilation & ambient heat inspection",
       "Neutral-to-Earth voltage spike measurement",
@@ -141,7 +141,7 @@ export const services = [
     priceStartsAt: "FREE for Livkam Customers",
     turnaround: "Immediate Phone / WhatsApp",
     icon: "HelpCircle",
-    banner: "https://images.unsplash.com/photo-1534536281715-e28d76689b4d?auto=format&fit=crop&w=1200&q=80",
+    banner: "/images/services/ups-technician.jpg",
     features: [
       "Immediate troubleshooting of fault codes (F01, Overload, E04, etc.)",
       "Guidance on manual maintenance bypass operation",

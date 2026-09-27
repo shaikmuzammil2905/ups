@@ -26,7 +26,15 @@ import {
   Leaf,
   Shield,
   BatteryCharging,
-  FileCheck
+  FileCheck,
+  Server,
+  Activity,
+  Factory,
+  Home as HomeIcon,
+  CheckCircle,
+  HelpCircle,
+  Flame,
+  BadgePercent
 } from 'lucide-react';
 import { categories } from '../data/categories';
 import { brands } from '../data/brands';
@@ -52,7 +60,7 @@ function useCounter(endValue, duration = 2000) {
           setHasStarted(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
 
     if (elementRef.current) {
@@ -93,12 +101,12 @@ function CounterCard({ value, label, sublabel, suffix = '+' }) {
   const { count, elementRef } = useCounter(numValue, 1800);
 
   return (
-    <div ref={elementRef} className="bg-white rounded-2xl p-5 border border-slate-200/80 text-center shadow-xs hover:shadow-md transition-shadow">
-      <div className="text-3xl sm:text-4xl font-black text-[#0f2b48]">
+    <div ref={elementRef} className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 text-center shadow-sm hover:shadow-md transition-shadow">
+      <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0f2b48] tracking-tight">
         {count}{suffix}
       </div>
-      <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">{label}</div>
-      <div className="text-[10px] sm:text-xs text-slate-400 mt-0.5">{sublabel}</div>
+      <div className="text-xs sm:text-sm font-bold text-slate-800 mt-2">{label}</div>
+      <div className="text-[10px] sm:text-xs text-slate-500 mt-0.5">{sublabel}</div>
     </div>
   );
 }
@@ -120,7 +128,7 @@ export default function Home() {
   return (
     <div className="w-full bg-[#f8fafc] overflow-hidden">
       {/* ============================================================ */}
-      {/* 1. HERO SECTION (FULL-BLEED NATURE & POWER BACKGROUND) */}
+      {/* 1. HERO SECTION (FROZEN — DO NOT TOUCH UNDER ANY CIRCUMSTANCE) */}
       {/* ============================================================ */}
       {/* DESKTOP HERO (Hidden on mobile) */}
       <section 
@@ -294,7 +302,7 @@ export default function Home() {
       </section>
 
       {/* ============================================================ */}
-      {/* 2. SHOP BY CATEGORY */}
+      {/* 2. IMAGE COPY 7: SHOP BY CATEGORY (STUDIO IMAGES) */}
       {/* ============================================================ */}
       <section className="py-12 md:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
@@ -306,7 +314,7 @@ export default function Home() {
               Power Solutions for Every Need
             </h2>
             <p className="text-sm text-slate-500 mt-1 max-w-2xl font-medium">
-              Explore our wide range of products designed for homes, businesses and industries.
+              Explore our comprehensive range of high-efficiency products tailored for residential, commercial, and heavy-duty industrial backup.
             </p>
           </div>
 
@@ -319,21 +327,21 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* 8 Category Cards Grid */}
+        {/* 8 Category Cards Grid with Studio Product Photos */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {categories.map((cat) => (
             <Link
               key={cat.id}
               to={`/category/${cat.slug}`}
-              className="group bg-gradient-to-b from-sky-50/60 to-white rounded-2xl border border-sky-100/80 hover:border-emerald-300 p-4 sm:p-5 flex flex-col justify-between shadow-xs hover:shadow-xl transition-all duration-300 text-center"
+              className="group bg-gradient-to-b from-sky-50/60 to-white rounded-2xl border border-sky-100/80 hover:border-emerald-400 p-4 sm:p-5 flex flex-col justify-between shadow-xs hover:shadow-xl transition-all duration-300 text-center"
             >
-              {/* Product Category Illustration */}
-              <div className="w-full aspect-4/3 flex items-center justify-center p-2 mb-3 group-hover:scale-105 transition-transform duration-300">
+              {/* Product Category Studio Photo */}
+              <div className="w-full aspect-4/3 flex items-center justify-center p-2 mb-3 bg-white rounded-xl shadow-2xs group-hover:scale-105 transition-transform duration-300">
                 <ProductImage categorySlug={cat.slug} className="w-full h-full" />
               </div>
 
               <div>
-                <h3 className="text-sm sm:text-base font-bold text-[#0f2b48] group-hover:text-[#16a34a] transition-colors">
+                <h3 className="text-sm sm:text-base font-bold text-[#0f2b48] group-hover:text-[#16a34a] transition-colors line-clamp-1">
                   {cat.name}
                 </h3>
                 
@@ -361,7 +369,7 @@ export default function Home() {
                 Authorized Dealer of Leading Brands
               </h2>
               <p className="text-sm text-slate-500 mt-1 max-w-2xl font-medium">
-                We deal with trusted and reputed brands to ensure the best quality and performance.
+                We deal directly with globally recognized manufacturers to ensure 100% genuine products with manufacturer warranty.
               </p>
             </div>
 
@@ -391,7 +399,7 @@ export default function Home() {
       </section>
 
       {/* ============================================================ */}
-      {/* 4. FEATURED PRODUCTS (BEST SELLERS WITH MULTI-SCROLL) */}
+      {/* 4. IMAGE COPY 8: FEATURED PRODUCTS / BEST SELLERS */}
       {/* ============================================================ */}
       <section className="py-12 md:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
@@ -400,10 +408,10 @@ export default function Home() {
               FEATURED PRODUCTS
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0f2b48] tracking-tight">
-              Best Sellers
+              Best Sellers & Top Performers
             </h2>
             <p className="text-sm text-slate-500 mt-1 max-w-2xl font-medium">
-              Top quality products trusted by thousands of customers.
+              High-reliability backup systems trusted by hospitals, IT server rooms, factories, and residences across South India.
             </p>
           </div>
 
@@ -436,7 +444,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scrollable Products Carousel (4-5 scrolls) */}
+        {/* Scrollable Products Carousel */}
         <div 
           ref={bestSellersContainerRef}
           className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 scrollbar-none snap-x"
@@ -450,101 +458,272 @@ export default function Home() {
       </section>
 
       {/* ============================================================ */}
-      {/* 5. WHY CHOOSE LIVKAM */}
+      {/* 5. IMAGE COPY 11: EXPANDED CONTENT DEPTH (4-5 SCROLL EXPERIENCES) */}
       {/* ============================================================ */}
-      <section className="py-12 md:py-16 bg-gradient-to-b from-sky-50/50 to-emerald-50/30 border-y border-slate-200/60">
+      
+      {/* SCROLL SUB-SECTION A: POWER ECOSYSTEM & SOLUTIONS SPECTRUM */}
+      <section className="py-12 md:py-16 bg-gradient-to-b from-sky-50/70 via-white to-slate-50 border-t border-slate-200/70">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            {/* Left Header */}
-            <div className="lg:col-span-4 space-y-2">
-              <h2 className="text-2xl sm:text-3xl font-black text-[#0f2b48] tracking-tight">
-                Why Choose Livkam?
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="text-xs font-bold text-[#16a34a] uppercase tracking-wider block mb-1">
+              ENGINEERED POWER ARCHITECTURE
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0f2b48] tracking-tight">
+              Comprehensive Power Solutions for Every Scale
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 mt-2 font-medium">
+              From zero-millisecond enterprise server switchovers to ultra-long runtime solar inverter storage, Livkam delivers engineered continuity.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Box 1: Mission-Critical Online UPS */}
+            <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 font-bold">
+                <Server className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-[#0f2b48] mb-2">Double-Conversion Online UPS</h3>
+              <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                0ms transfer time, pure sine wave output, and unity power factor for data centers, medical ICU machinery, and high-frequency CNC setups.
+              </p>
+              <ul className="space-y-1.5 text-xs text-slate-700">
+                <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-[#16a34a]" /> 1kVA to 500kVA 3-Phase Systems</li>
+                <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-[#16a34a]" /> APC, Vertiv & Delta Authorized</li>
+                <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-[#16a34a]" /> Hot-Swappable Battery Modules</li>
+              </ul>
+            </div>
+
+            {/* Box 2: High-Density Battery Storage */}
+            <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-[#16a34a] flex items-center justify-center mb-4 font-bold">
+                <BatteryCharging className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-[#0f2b48] mb-2">Industrial & Lithium Storage</h3>
+              <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                Factory-fresh SMF VRLA, deep-cycle tall tubular, and next-gen LiFePO4 rack batteries engineered for thousands of recharge cycles.
+              </p>
+              <ul className="space-y-1.5 text-xs text-slate-700">
+                <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-[#16a34a]" /> Exide, Amaron & Quanta Authorized</li>
+                <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-[#16a34a]" /> Smart BMS & Fast 2-Hour Charging</li>
+                <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-[#16a34a]" /> 36 to 60 Months On-Site Warranty</li>
+              </ul>
+            </div>
+
+            {/* Box 3: Smart Hybrid & Voltage Regulation */}
+            <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4 font-bold">
+                <Zap className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-[#0f2b48] mb-2">Smart Inverters & Stabilizers</h3>
+              <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                Microcontroller-driven voltage regulators and pure sine wave hybrid inverters protecting against brownouts and heavy voltage surges.
+              </p>
+              <ul className="space-y-1.5 text-xs text-slate-700">
+                <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-[#16a34a]" /> Luminous & Microtek Official Hub</li>
+                <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-[#16a34a]" /> High Inrush Handling for Motors</li>
+                <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-[#16a34a]" /> Digital Real-time Voltage Displays</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SCROLL SUB-SECTION B: WHY CUSTOMERS CHOOSE LIVKAM (6 PILLARS) */}
+      <section className="py-12 md:py-16 bg-white border-y border-slate-200/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#16a34a] uppercase tracking-wider block mb-1">
+                THE LIVKAM ADVANTAGE
+              </span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0f2b48] tracking-tight">
+                Why Thousands Choose Livkam Power
               </h2>
-              <p className="text-sm text-slate-600 font-medium leading-relaxed">
-                We are committed to providing reliable power solutions with unmatched service and support across Bengaluru & Pan-India.
+              <p className="text-sm text-slate-500 mt-1 max-w-2xl font-medium">
+                Backed by 15+ years of engineering rigor, authorized dealer relationships, and an unwavering commitment to zero downtime.
+              </p>
+            </div>
+          </div>
+
+          {/* 6 Value Pillars Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:border-[#16a34a] transition-all">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100/80 text-[#16a34a] flex items-center justify-center mb-3">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-bold text-[#0f2b48]">100% Genuine Direct Supply</h3>
+              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                Direct brand sourcing with genuine holograms, sealed packaging, and full manufacturer warranty registration across India.
               </p>
             </div>
 
-            {/* 5 Features */}
-            <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-              <div className="bg-white rounded-2xl p-4 text-center shadow-xs border border-slate-100 flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center mb-2">
-                  <ShieldCheck className="w-6 h-6" />
-                </div>
-                <h3 className="text-xs font-bold text-[#0f2b48]">100% Genuine Products</h3>
+            <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:border-[#16a34a] transition-all">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100/80 text-[#16a34a] flex items-center justify-center mb-3">
+                <Headphones className="w-5 h-5" />
               </div>
-
-              <div className="bg-white rounded-2xl p-4 text-center shadow-xs border border-slate-100 flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center mb-2">
-                  <Headphones className="w-6 h-6" />
-                </div>
-                <h3 className="text-xs font-bold text-[#0f2b48]">Expert Technical Support</h3>
-              </div>
-
-              <div className="bg-white rounded-2xl p-4 text-center shadow-xs border border-slate-100 flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center mb-2">
-                  <Percent className="w-6 h-6" />
-                </div>
-                <h3 className="text-xs font-bold text-[#0f2b48]">Competitive Pricing</h3>
-              </div>
-
-              <div className="bg-white rounded-2xl p-4 text-center shadow-xs border border-slate-100 flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center mb-2">
-                  <Truck className="w-6 h-6" />
-                </div>
-                <h3 className="text-xs font-bold text-[#0f2b48]">Pan India Delivery</h3>
-              </div>
-
-              <div className="bg-white rounded-2xl p-4 text-center shadow-xs border border-slate-100 flex flex-col items-center justify-center col-span-2 sm:col-span-1">
-                <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center mb-2">
-                  <Wrench className="w-6 h-6" />
-                </div>
-                <h3 className="text-xs font-bold text-[#0f2b48]">Installation & Maintenance</h3>
-              </div>
+              <h3 className="text-base font-bold text-[#0f2b48]">Expert Certified Engineering</h3>
+              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                Dedicated power engineers conduct proper electrical load auditing, harmonic distortion checks, and cable sizing before installation.
+              </p>
             </div>
 
+            <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:border-[#16a34a] transition-all">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100/80 text-[#16a34a] flex items-center justify-center mb-3">
+                <Clock className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-bold text-[#0f2b48]">4-Hour Rapid Bangalore Response</h3>
+              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                Emergency mobile breakdown squads on standby across Bengaluru for prompt troubleshooting, battery swaps, and repair.
+              </p>
+            </div>
+
+            <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:border-[#16a34a] transition-all">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100/80 text-[#16a34a] flex items-center justify-center mb-3">
+                <Truck className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-bold text-[#0f2b48]">Pan-India Logistics & Delivery</h3>
+              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                Secure palletized freight dispatch for heavy industrial UPS and battery banks across Karnataka, South India, and nationwide.
+              </p>
+            </div>
+
+            <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:border-[#16a34a] transition-all">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100/80 text-[#16a34a] flex items-center justify-center mb-3">
+                <Percent className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-bold text-[#0f2b48]">Transparent Wholesale & Retail Rates</h3>
+              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                Direct authorized distributor pricing with GST tax invoices, institutional volume discounts, and attractive old battery scrap rebates.
+              </p>
+            </div>
+
+            <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:border-[#16a34a] transition-all">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100/80 text-[#16a34a] flex items-center justify-center mb-3">
+                <Wrench className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-bold text-[#0f2b48]">Multi-Brand AMC & Maintenance</h3>
+              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                Single-window annual maintenance agreements protecting your entire fleet of UPS, inverters, and battery banks with uptime SLA.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SCROLL SUB-SECTION C: INDUSTRIES & APPLICATIONS WE POWER */}
+      <section className="py-12 md:py-16 bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block mb-1">
+              MISSION-CRITICAL RELIABILITY
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight">
+              Industries & Sectors Powered by Livkam
+            </h2>
+            <p className="text-sm sm:text-base text-slate-300 mt-2 font-medium">
+              We engineer dependable continuous power backups where a single second of outage is not an option.
+            </p>
           </div>
 
-          {/* Slogan Banner */}
-          <div className="mt-8 bg-white rounded-2xl border border-emerald-200/80 p-4 sm:p-5 flex items-center justify-between shadow-xs">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center flex-shrink-0">
-                <Leaf className="w-5 h-5" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            <div className="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex flex-col items-center text-center hover:border-emerald-500 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3">
+                <Activity className="w-6 h-6" />
               </div>
-              <span className="text-sm sm:text-base font-bold text-[#0f2b48]">
-                Powering Homes, Businesses & Industries across Karnataka and India
-              </span>
+              <h3 className="text-sm sm:text-base font-bold text-white">Healthcare & Hospitals</h3>
+              <p className="text-[11px] sm:text-xs text-slate-400 mt-1">
+                Zero-tolerance continuous power for ICU ventilators, dialysis units, MRI machines, and OT lighting.
+              </p>
             </div>
+
+            <div className="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex flex-col items-center text-center hover:border-emerald-500 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3">
+                <Server className="w-6 h-6" />
+              </div>
+              <h3 className="text-sm sm:text-base font-bold text-white">IT & Data Centers</h3>
+              <p className="text-[11px] sm:text-xs text-slate-400 mt-1">
+                N+1 parallel redundant 3-phase UPS setups safeguarding cloud server racks and networking hubs.
+              </p>
+            </div>
+
+            <div className="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex flex-col items-center text-center hover:border-emerald-500 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3">
+                <Factory className="w-6 h-6" />
+              </div>
+              <h3 className="text-sm sm:text-base font-bold text-white">Manufacturing & CNC</h3>
+              <p className="text-[11px] sm:text-xs text-slate-400 mt-1">
+                Heavy surge protection for CNC cutters, robotic lines, textile machinery, and automation PLCs.
+              </p>
+            </div>
+
+            <div className="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex flex-col items-center text-center hover:border-emerald-500 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3">
+                <HomeIcon className="w-6 h-6" />
+              </div>
+              <h3 className="text-sm sm:text-base font-bold text-white">Commercial & Residential</h3>
+              <p className="text-[11px] sm:text-xs text-slate-400 mt-1">
+                Silent pure sine wave home inverters, solar backups, and elevator auxiliary power units for apartments.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SCROLL SUB-SECTION D: QUALITY COMMITMENT & SLA */}
+      <section className="py-12 md:py-16 bg-gradient-to-r from-emerald-900 to-[#0f2b48] text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-3 text-center md:text-left max-w-2xl">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-300 px-3.5 py-1 rounded-full text-xs font-bold border border-emerald-500/30">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Livkam Quality Guarantee</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
+              Our 100% Zero-Downtime Commitment
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+              Every unit dispatched undergoes strict quality benchmarking, load bank testing, and comes bundled with official manufacturer warranty and Livkam certified engineer support.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/contact"
-              className="hidden sm:inline-flex items-center gap-1 bg-[#16a34a] text-white px-4 py-2 rounded-full text-xs font-bold hover:bg-[#15803d] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white px-7 py-3.5 rounded-full text-xs font-bold transition-all shadow-lg hover:shadow-xl active:scale-95"
             >
-              <span>Get Free Quote</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Consult Our Engineers</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
+
+            <a
+              href="tel:+918884988990"
+              className="inline-flex items-center gap-2 bg-white text-[#0f2b48] hover:bg-slate-100 px-7 py-3.5 rounded-full text-xs font-bold transition-all shadow-lg active:scale-95"
+            >
+              <Phone className="w-4 h-4 text-[#16a34a]" />
+              <span>+91 8884988990</span>
+            </a>
           </div>
         </div>
       </section>
 
       {/* ============================================================ */}
-      {/* 6. ABOUT US SECTION WITH SHOWCASE GRAPHIC & ANIMATED COUNTERS */}
+      {/* 6. IMAGE COPY 12: ABOUT US (STORYTELLING + ANIMATED COUNTERS) */}
       {/* ============================================================ */}
       <section className="py-12 md:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
-          {/* Left Storefront / Showcase Graphic (from image copy 10.png) */}
+          {/* Left Storefront Showcase Graphic (from image copy 10.png) */}
           <div className="lg:col-span-6 relative">
             <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-950 transition-transform duration-300 hover:scale-[1.01]">
               <img 
                 src={aboutShowcaseImg} 
-                alt="Livkam Power Technologies - Banashankari Showroom, APC UPS, Exide Hub, Lithium BMS" 
+                alt="Livkam Power Technologies - Banashankari Bengaluru Storefront & Power Hub" 
                 className="w-full h-auto object-cover"
+                loading="lazy"
               />
             </div>
           </div>
 
-          {/* Right Text Content & Animated Counting Numbers */}
+          {/* Right Text Content */}
           <div className="lg:col-span-6 space-y-5">
             <div>
               <span className="text-xs font-bold text-[#16a34a] uppercase tracking-wider block mb-1">
@@ -556,21 +735,25 @@ export default function Home() {
             </div>
 
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
-              Founded under the visionary leadership of <strong>Venu B N</strong>, Livkam Power Technologies is a trusted provider of high-quality power solutions, including UPS, batteries, inverters and more. We are proud to be authorized dealers of leading brands like APC, Delta, Luminous, Microtek, Vertiv, Numeric, Elnova, Exide, Amaron and Quanta. With a strong focus on customer satisfaction, we deliver reliable products and expert service for homes, businesses and industries.
+              Founded under the visionary leadership of <strong>Venu B N</strong>, Livkam Power Technologies stands as South India's premier multi-brand power backup destination. Operating both a prominent physical retail showroom and a wholesale logistics depot in Banashankari 2nd Stage, Bengaluru, we cater to over 10,000 satisfied residential, corporate, and industrial clients.
+            </p>
+
+            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium">
+              We are official authorized distributors and service partners for world-leading brands including <strong>APC by Schneider Electric, Vertiv Liebert, Delta, Luminous, Microtek, Numeric, Elnova, Exide, Amaron, and Quanta</strong>. Beyond product supply, our in-house certified engineering cadre handles end-to-end electrical sizing, site audits, turnkey installations, and emergency 24/7 AMC support.
             </p>
 
             <div className="flex flex-wrap gap-2 text-xs font-semibold pt-1">
               <span className="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg">Retail + Wholesale</span>
-              <span className="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg">Banashankari 2nd Stage</span>
+              <span className="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg">Banashankari 2nd Stage, Bengaluru</span>
               <span className="bg-emerald-50 text-[#16a34a] font-bold px-3 py-1 rounded-lg">GST: 29CYMPN3694M1ZC</span>
             </div>
 
-            <div>
+            <div className="pt-2">
               <Link
                 to="/about"
                 className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white px-7 py-3 rounded-full text-xs font-bold transition-all shadow-sm hover:shadow-md"
               >
-                <span>Know More</span>
+                <span>Discover Our Story & Values</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -583,45 +766,47 @@ export default function Home() {
           <CounterCard 
             value="500" 
             label="Active Products" 
-            sublabel="Ready in Bangalore Depot" 
+            sublabel="Ready in Bengaluru Depot" 
             suffix="+" 
           />
           <CounterCard 
             value="10" 
-            label="Trusted Brands" 
-            sublabel="Multiple Leading Brands" 
+            label="Leading Brands" 
+            sublabel="Authorized Direct Hub" 
             suffix="+" 
           />
           <CounterCard 
             value="15" 
-            label="Years Experience" 
-            sublabel="Expert Support Team" 
+            label="Years Engineering" 
+            sublabel="Field Service Mastery" 
             suffix="+ Yrs" 
           />
           <CounterCard 
             value="100" 
-            label="Satisfaction" 
-            sublabel="Our Highest Priority" 
+            label="Genuine Products" 
+            sublabel="Official Manufacturer Warranty" 
             suffix="%" 
           />
         </div>
       </section>
 
       {/* ============================================================ */}
-      {/* 7. GRAND SERVICES & ENGINEERING SECTION */}
+      {/* 7. IMAGE COPY 13: GRAND SERVICES SECTION (PICTORIAL & EXPANDED) */}
       {/* ============================================================ */}
-      <section className="py-12 md:py-20 bg-gradient-to-b from-white via-sky-50/40 to-slate-50 border-t border-slate-200/80">
+      <section className="py-12 md:py-20 bg-gradient-to-b from-white via-sky-50/40 to-slate-100 border-t border-slate-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          
+          {/* Services Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
               <span className="text-xs font-bold text-[#16a34a] uppercase tracking-wider block mb-1">
-                ENGINEERING & MAINTENANCE
+                ENGINEERING & FIELD SERVICES
               </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0f2b48] tracking-tight">
-                Complete Field Services & AMC
+                Certified On-Site Services & AMC Solutions
               </h2>
               <p className="text-sm text-slate-500 mt-1 max-w-2xl font-medium">
-                Certified on-site engineering, 4-hour emergency breakdown response, and annual maintenance agreements across Karnataka.
+                Complete engineering support from certified technicians: UPS commissioning, emergency breakdown repair, battery bank replacement, and annual maintenance agreements across Karnataka.
               </p>
             </div>
 
@@ -629,27 +814,39 @@ export default function Home() {
               to="/services"
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#0f2b48] hover:text-[#16a34a] border border-slate-300 hover:border-[#16a34a] px-4 py-2 rounded-full transition-colors self-start md:self-auto"
             >
-              <span>View All 8 Services</span>
+              <span>Explore All Services</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          {/* Grand Services Grid */}
+          {/* Grand Pictorial Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.slice(0, 4).map((srv) => (
               <div 
                 key={srv.id} 
-                className="group bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-[#16a34a] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                className="group bg-white rounded-3xl overflow-hidden border border-slate-200/90 hover:border-[#16a34a] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
               >
-                <div className="space-y-4">
-                  <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-[#16a34a] flex items-center justify-center group-hover:bg-[#16a34a] group-hover:text-white transition-colors shadow-2xs">
-                    <Wrench className="w-7 h-7" />
+                {/* Pictorial Service Photo */}
+                <div className="relative w-full h-44 bg-slate-100 overflow-hidden">
+                  <img
+                    src={srv.banner || '/images/services/ups-technician.jpg'}
+                    alt={srv.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <span className="absolute top-3 left-3 bg-[#16a34a] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
+                    {srv.badge}
+                  </span>
+                  <div className="absolute bottom-3 left-3 text-white text-xs font-semibold flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-emerald-300" />
+                    <span>{srv.turnaround}</span>
                   </div>
+                </div>
 
+                {/* Service Details */}
+                <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full inline-block mb-1.5">
-                      {srv.badge}
-                    </span>
                     <h3 className="text-base font-bold text-[#0f2b48] group-hover:text-[#16a34a] transition-colors leading-snug">
                       {srv.title}
                     </h3>
@@ -658,27 +855,71 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <div className="space-y-1 pt-2 border-t border-slate-100 text-xs text-slate-600 font-medium">
-                    <div className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-[#16a34a]" />
-                      <span>{srv.turnaround}</span>
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block font-medium">Pricing</span>
+                      <span className="text-xs font-black text-[#0f2b48]">{srv.priceStartsAt}</span>
                     </div>
-                  </div>
-                </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs font-black text-[#0f2b48]">{srv.priceStartsAt}</span>
-                  <Link
-                    to={`/services/${srv.slug}`}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-[#16a34a] group-hover:underline"
-                  >
-                    <span>Book Visit</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                    <Link
+                      to={`/services/${srv.slug}`}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-[#16a34a] group-hover:translate-x-0.5 transition-transform"
+                    >
+                      <span>Book Service</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* 4-Step Engineering Service Workflow */}
+          <div className="mt-16 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm">
+            <div className="text-center max-w-2xl mx-auto mb-8">
+              <span className="text-xs font-bold text-[#16a34a] uppercase tracking-wider block mb-1">
+                OUR PROVEN METHODOLOGY
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black text-[#0f2b48]">
+                How We Deliver Seamless Field Services
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="relative p-4 rounded-2xl bg-slate-50 border border-slate-200/60">
+                <span className="text-2xl font-black text-emerald-500">01</span>
+                <h4 className="text-sm font-bold text-[#0f2b48] mt-2">Load & Site Audit</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Engineers analyze connected wattage, harmonic levels, and wiring infrastructure.
+                </p>
+              </div>
+
+              <div className="relative p-4 rounded-2xl bg-slate-50 border border-slate-200/60">
+                <span className="text-2xl font-black text-emerald-500">02</span>
+                <h4 className="text-sm font-bold text-[#0f2b48] mt-2">Certified Dispatch</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Trained technicians arrive with diagnostic gear and authentic OEM components.
+                </p>
+              </div>
+
+              <div className="relative p-4 rounded-2xl bg-slate-50 border border-slate-200/60">
+                <span className="text-2xl font-black text-emerald-500">03</span>
+                <h4 className="text-sm font-bold text-[#0f2b48] mt-2">Precision Commissioning</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Rigorous load bank testing, bypass calibration, and safety compliance handoff.
+                </p>
+              </div>
+
+              <div className="relative p-4 rounded-2xl bg-slate-50 border border-slate-200/60">
+                <span className="text-2xl font-black text-emerald-500">04</span>
+                <h4 className="text-sm font-bold text-[#0f2b48] mt-2">Continuous AMC Care</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Regular quarterly health checks, thermal scanning, and guaranteed 4-hour SLA.
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
