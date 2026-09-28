@@ -388,10 +388,10 @@ export default function Home() {
               <Link
                 key={brand.id}
                 to={`/brands/${brand.slug}`}
-                className="group bg-white rounded-xl border border-slate-200/90 hover:border-[#16a34a] hover:shadow-md p-4 flex items-center justify-center min-h-[85px] transition-all duration-200"
+                className="group bg-white rounded-xl border border-slate-200/90 hover:border-[#16a34a] hover:shadow-lg p-5 flex items-center justify-center min-h-[110px] transition-all duration-200"
                 title={`View ${brand.name} Products`}
               >
-                <BrandLogo brandId={brand.id} className="h-8 md:h-10 group-hover:scale-105 transition-transform" />
+                <BrandLogo brandId={brand.id} className="h-12 md:h-16 w-full group-hover:scale-105 transition-transform" />
               </Link>
             ))}
           </div>
