@@ -42,7 +42,7 @@ export default function About() {
           </h1>
 
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
-            Founded under the visionary leadership of <strong>Venu B N</strong>, Livkam Power Technologies has grown into one of Bengaluru’s foremost retail and wholesale power infrastructure suppliers. We specialize in high-uptime Online UPS systems, industrial SMF battery banks, deep-cycle tubular batteries, and intelligent solar inverters.
+            Founded under the visionary leadership of <strong>Venu B N</strong>, Livkam Power Technologies has grown into one of Bengaluru’s foremost retail and wholesale power infrastructure suppliers. Over the years, we have built a sterling reputation by consistently delivering reliable, high-performance power solutions tailored to the diverse needs of our growing clientele. We specialize in high-uptime Online UPS systems, robust industrial SMF battery banks, long-lasting deep-cycle tubular batteries, and intelligent solar inverters. By combining cutting-edge technology with unparalleled industry expertise, we empower businesses and homeowners alike to maintain seamless operations, protect critical equipment from power fluctuations, and confidently embrace a sustainable energy future. Our continuous commitment to quality and innovation makes us a trusted partner in your journey toward complete energy independence and security.
           </p>
 
           <div className="pt-2 flex flex-wrap gap-3 text-xs font-semibold">
@@ -68,7 +68,7 @@ export default function About() {
             </div>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed">
-            Visit our state-of-the-art facility to inspect live running UPS loads, test battery health impedance, and consult with our senior electrical engineers.
+            Visit our state-of-the-art facility to inspect live running UPS loads, test battery health impedance, and consult with our senior electrical engineers. We offer hands-on demonstrations of our latest power infrastructure products, allowing you to experience their unmatched efficiency and reliability firsthand. Our expert team is always ready to provide personalized assessments and custom design the perfect setup for your specific power demands, ensuring you make an informed and future-proof investment.
           </p>
           <div className="p-3 bg-white/10 rounded-xl text-xs space-y-1">
             <p className="font-bold text-emerald-300">Address:</p>
@@ -114,7 +114,7 @@ export default function About() {
           </div>
           <h3 className="text-base font-bold text-[#0f2b48]">100% Genuine Authenticity</h3>
           <p className="text-xs text-slate-500 leading-relaxed">
-            Zero counterfeit or refurbished components. Every battery and UPS is delivered factory-sealed with authentic OEM serial barcodes and valid warranty certificates.
+            We strictly enforce a policy of zero counterfeit or refurbished components. Every battery, inverter, and UPS unit is delivered factory-sealed with authentic OEM serial barcodes, comprehensive manuals, and fully valid warranty certificates. By sourcing directly from globally recognized manufacturers, we eliminate middleman tampering and ensure that you receive pristine, top-tier products that perform optimally right out of the box and stand the test of time.
           </p>
         </div>
 
@@ -124,7 +124,7 @@ export default function About() {
           </div>
           <h3 className="text-base font-bold text-[#0f2b48]">Engineering Expertise</h3>
           <p className="text-xs text-slate-500 leading-relaxed">
-            We aren't mere box-pushers. Our in-house certified power specialists calculate true harmonic crest factors and load curves to guarantee your setup never fails.
+            We aren't mere box-pushers; we are end-to-end energy consultants. Our in-house certified power specialists meticulously calculate true harmonic crest factors, peak load curves, and thermal dissipation metrics to guarantee your setup never fails. We conduct thorough site audits to identify potential electrical vulnerabilities before installation, designing bespoke architectures that maximize efficiency, lower operational costs, and seamlessly scale with your future technological growth.
           </p>
         </div>
 
@@ -134,7 +134,7 @@ export default function About() {
           </div>
           <h3 className="text-base font-bold text-[#0f2b48]">Rapid Onsite SLA</h3>
           <p className="text-xs text-slate-500 leading-relaxed">
-            Same-day doorstep delivery and emergency field technicians across Bengaluru, ensuring minimal downtime for mission-critical applications.
+            We understand that power interruptions can be costly and disruptive. That’s why we offer same-day doorstep delivery, rapid deployment, and a dedicated fleet of emergency field technicians across Bengaluru. Our comprehensive Annual Maintenance Contracts (AMCs) and 24/7 support lines ensure that expert help is always a phone call away, guaranteeing minimal downtime for your mission-critical applications and providing you with complete peace of mind around the clock.
           </p>
         </div>
       </div>

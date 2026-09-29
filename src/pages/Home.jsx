@@ -356,7 +356,7 @@ export default function Home() {
       </section>
 
       {/* ============================================================ */}
-      {/* 3. AUTHORIZED DEALER OF LEADING BRANDS */}
+      {/* 3. BUSINESS PARTNER OF LEADING BRANDS */}
       {/* ============================================================ */}
       <section className="py-12 md:py-16 bg-white border-y border-slate-200/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -366,7 +366,7 @@ export default function Home() {
                 OUR BRANDS
               </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0f2b48] tracking-tight">
-                Authorized Dealer of Leading Brands
+                Business Partner of Leading Brands
               </h2>
               <p className="text-sm text-slate-500 mt-1 max-w-2xl font-medium">
                 We deal directly with globally recognized manufacturers to ensure 100% genuine products with manufacturer warranty.
@@ -540,7 +540,7 @@ export default function Home() {
                 Why Thousands Choose Livkam Power
               </h2>
               <p className="text-sm text-slate-500 mt-1 max-w-2xl font-medium">
-                Backed by 15+ years of engineering rigor, authorized dealer relationships, and an unwavering commitment to zero downtime.
+                Backed by 15+ years of engineering rigor, business partner relationships, and an unwavering commitment to zero downtime.
               </p>
             </div>
           </div>

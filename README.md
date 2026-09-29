@@ -1,7 +1,7 @@
 # Livkam Power Technologies — E-Commerce Platform
 
 > **Smart Power. Sustainable Future.**
-> Official Authorized Dealer of APC, Delta, Luminous, Microtek, Vertiv, Numeric, Elnova, Exide, Amaron & Quanta.
+> Official Business Partner of APC, Delta, Luminous, Microtek, Vertiv, Numeric, Elnova, Exide, Amaron & Quanta.
 
 ---
 

@@ -215,7 +215,7 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
                       <span className="text-[10px] font-bold uppercase tracking-wider bg-[#16a34a] px-2 py-0.5 rounded text-white inline-block mb-2">
                         500+ Products
                       </span>
-                      <h4 className="font-bold text-base leading-snug">Authorized Dealer</h4>
+                      <h4 className="font-bold text-base leading-snug">Business Partner</h4>
                       <p className="text-xs text-slate-300 mt-1">
                         APC, Vertiv, Exide, Amaron & Luminous genuine power products with factory warranty.
                       </p>

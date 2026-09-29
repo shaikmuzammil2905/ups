@@ -49,7 +49,7 @@ export default function Brands() {
 
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-[#16a34a] px-2 py-0.5 rounded flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3" /> Authorized Dealer
+                  <ShieldCheck className="w-3 h-3" /> Business Partner
                 </span>
                 <span className="text-[10px] text-slate-400 font-mono">Est. {brand.established}</span>
               </div>
