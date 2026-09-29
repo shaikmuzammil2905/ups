@@ -10,6 +10,7 @@ import SearchModal from './components/SearchModal';
 import MobileDrawer from './components/MobileDrawer';
 import MobileBottomNav from './components/MobileBottomNav';
 import Toast from './components/Toast';
+import WhatsAppPopup from './components/WhatsAppPopup';
 
 import Home from './pages/Home';
 import Products from './pages/Products';
@@ -83,6 +84,7 @@ function MainLayout() {
       <MobileDrawer isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
       <MobileBottomNav onOpenSearch={() => setIsSearchOpen(true)} />
       <Toast />
+      <WhatsAppPopup />
     </div>
   );
 }
