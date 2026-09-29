@@ -22,8 +22,8 @@ export default function Brands() {
         <h1 className="text-2xl sm:text-4xl font-black text-[#0f2b48]">
           Authorized Brands & Manufacturers
         </h1>
-        <p className="text-sm text-slate-500 max-w-2xl mt-2 font-medium">
-          We deal exclusively in 100% genuine OEM products with official warranty support directly from the world's most reputable power engineering pioneers.
+        <p className="text-sm text-slate-500 max-w-4xl mt-3 font-medium leading-relaxed">
+          We proudly partner with the world's most trusted and innovative power infrastructure manufacturers to bring you an unparalleled selection of energy solutions. As an official business partner, we deal exclusively in 100% genuine OEM products, ensuring every unit you purchase is factory-sealed and backed by comprehensive official warranty support. Our direct relationships with these industry pioneers eliminate intermediaries, guaranteeing you receive the latest, most reliable technologies at the best value. Browse our curated selection of premium brands designed to keep your critical systems running without interruption.
         </p>
       </div>
 
