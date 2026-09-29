@@ -141,7 +141,7 @@ export default function About() {
 
       {/* Authorized Brands Strip */}
       <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-xs text-center space-y-6">
-        <h3 className="text-lg font-bold text-[#0f2b48]">Authorized Dealer of Leading Global Brands</h3>
+        <h3 className="text-lg font-bold text-[#0f2b48]">Business Partner of Leading Global Brands</h3>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
           {brands.map((b) => (
             <div key={b.id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center">
