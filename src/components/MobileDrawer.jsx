@@ -22,6 +22,7 @@ import LivkamLogo from './LivkamLogo';
 import { categories } from '../data/categories';
 import { brands } from '../data/brands';
 import { services } from '../data/services';
+import { products } from '../data/products';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
@@ -30,6 +31,7 @@ export default function MobileDrawer({ isOpen, onClose }) {
   const { totalItems } = useCart();
 
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [onlineUpsOpen, setOnlineUpsOpen] = useState(false);
   const [brandsOpen, setBrandsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
@@ -126,6 +128,40 @@ export default function MobileDrawer({ isOpen, onClose }) {
                     className="block py-2 text-center text-xs font-bold text-[#16a34a] hover:underline"
                   >
                     View All Categories →
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Online UPS Accordion */}
+            <div>
+              <button
+                onClick={() => setOnlineUpsOpen(!onlineUpsOpen)}
+                className="w-full flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
+              >
+                <span>Online UPS Products</span>
+                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${onlineUpsOpen ? 'rotate-180 text-[#16a34a]' : ''}`} />
+              </button>
+
+              {onlineUpsOpen && (
+                <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1 max-h-60 overflow-y-auto">
+                  {products.filter(p => p.categoryId === 'online-ups' || p.categoryId === 'small-backups').map((prod) => (
+                    <Link
+                      key={prod.id}
+                      to={`/products/${prod.slug}`}
+                      onClick={onClose}
+                      className="flex items-center justify-between py-2 px-2 text-xs font-medium text-slate-600 hover:text-[#16a34a]"
+                    >
+                      <span className="truncate pr-2">{prod.name}</span>
+                      <ChevronRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
+                    </Link>
+                  ))}
+                  <Link
+                    to="/category/online-ups"
+                    onClick={onClose}
+                    className="block py-2 text-center text-xs font-bold text-[#16a34a] hover:underline"
+                  >
+                    View All UPS →
                   </Link>
                 </div>
               )}

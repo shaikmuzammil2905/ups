@@ -249,7 +249,7 @@ export default function ServiceDetail() {
         <h2 className="text-2xl font-black text-[#0f2b48]">FIND US</h2>
         <div className="w-full h-[400px] rounded-3xl overflow-hidden border border-slate-200 shadow-sm relative">
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1m2!1s0x3bae150aa82902b9%3A0x6b093121085141e9!2sBanashankari%20Stage%20II%2C%20Banashankari%2C%20Bengaluru%2C%20Karnataka%20560070!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+            src="https://maps.google.com/maps?q=Livkam%20Power%20Technologies,%20Banashankari%202nd%20Stage,%20Bengaluru&t=&z=14&ie=UTF8&iwloc=&output=embed" 
             className="w-full h-full border-0" 
             allowFullScreen="" 
             loading="lazy" 
