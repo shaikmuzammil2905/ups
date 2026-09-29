@@ -850,17 +850,12 @@ export default function Home() {
                     <h3 className="text-base font-bold text-[#0f2b48] group-hover:text-[#16a34a] transition-colors leading-snug">
                       {srv.title}
                     </h3>
-                    <p className="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-2">
+                    <p className="text-sm text-slate-500 mt-2 leading-relaxed">
                       {srv.shortDesc}
                     </p>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] text-slate-400 block font-medium">Pricing</span>
-                      <span className="text-xs font-black text-[#0f2b48]">{srv.priceStartsAt}</span>
-                    </div>
-
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-end">
                     <Link
                       to={`/services/${srv.slug}`}
                       className="inline-flex items-center gap-1 text-xs font-bold text-[#16a34a] group-hover:translate-x-0.5 transition-transform"
