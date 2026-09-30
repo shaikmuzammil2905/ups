@@ -47,6 +47,8 @@ import heroDesktopImg from '../assets/hero-desktop.png';
 import heroMobileImg from '../assets/hero-mobile.png';
 import heroSlide2Img from '../assets/hero-slide-2.png';
 import heroSlide3Img from '../assets/hero-slide-3.png';
+import heroMobileSlide2Img from '../assets/hero-mobile-slide-2.png';
+import heroMobileSlide3Img from '../assets/hero-mobile-slide-3.png';
 import aboutShowcaseImg from '../assets/about-showcase.png';
 
 // Custom Animated Counter Hook
@@ -393,54 +395,26 @@ export default function Home() {
             </div>
           </div>
 
-          {/* MOBILE SLIDE 2: IMAGE COPY 27 (FULL PIC VISIBLE) */}
-          <div className="w-full min-w-full max-w-full flex-shrink-0 relative bg-white flex flex-col justify-center items-center py-6 px-3">
-            <Link to="/services/ups-installation" className="block w-full">
+          {/* MOBILE SLIDE 2: IMAGE COPY 34 (EMERGENCY UPS REPAIR & COMPONENT SERVICE - MOBILE VIEW ONLY) */}
+          <div className="w-full min-w-full max-w-full flex-shrink-0 relative bg-white flex flex-col justify-center items-center pb-2">
+            <Link to="/services/ups-repair" className="block w-full">
               <img 
-                src={heroSlide2Img} 
-                alt="Powering Your Business with Confidence" 
-                className="w-full h-auto object-contain rounded-xl shadow-xs"
+                src={heroMobileSlide2Img} 
+                alt="Emergency UPS Repair & Component Service" 
+                className="w-full h-auto object-contain"
               />
             </Link>
-            <div className="flex items-center justify-center gap-2.5 pt-4 w-full">
-              <Link
-                to="/services/ups-installation"
-                className="flex-1 max-w-[190px] text-center bg-[#16a34a] hover:bg-[#15803d] text-white py-2.5 px-3 rounded-full text-xs font-bold shadow-md active:scale-95"
-              >
-                Installation Support
-              </Link>
-              <Link
-                to="/contact"
-                className="flex-1 max-w-[150px] text-center bg-white text-[#0f2b48] border border-slate-300 py-2.5 px-3 rounded-full text-xs font-bold shadow-sm active:scale-95"
-              >
-                Contact Experts
-              </Link>
-            </div>
           </div>
 
-          {/* MOBILE SLIDE 3: IMAGE COPY 28 (FULL PIC VISIBLE) */}
-          <div className="w-full min-w-full max-w-full flex-shrink-0 relative bg-white flex flex-col justify-center items-center py-6 px-3">
-            <Link to="/services" className="block w-full">
+          {/* MOBILE SLIDE 3: IMAGE COPY 35 (BATTERY REPLACEMENT & BUYBACK - MOBILE VIEW ONLY) */}
+          <div className="w-full min-w-full max-w-full flex-shrink-0 relative bg-white flex flex-col justify-center items-center pb-2">
+            <Link to="/services/battery-replacement" className="block w-full">
               <img 
-                src={heroSlide3Img} 
-                alt="Reliable UPS Services for Uninterrupted Operations" 
-                className="w-full h-auto object-contain rounded-xl shadow-xs"
+                src={heroMobileSlide3Img} 
+                alt="Battery Replacement & Buyback" 
+                className="w-full h-auto object-contain"
               />
             </Link>
-            <div className="flex items-center justify-center gap-2.5 pt-4 w-full">
-              <Link
-                to="/services"
-                className="flex-1 max-w-[190px] text-center bg-[#16a34a] hover:bg-[#15803d] text-white py-2.5 px-3 rounded-full text-xs font-bold shadow-md active:scale-95"
-              >
-                Service Support
-              </Link>
-              <Link
-                to="/about"
-                className="flex-1 max-w-[150px] text-center bg-white text-[#0f2b48] border border-slate-300 py-2.5 px-3 rounded-full text-xs font-bold shadow-sm active:scale-95"
-              >
-                Learn More
-              </Link>
-            </div>
           </div>
         </div>
 
