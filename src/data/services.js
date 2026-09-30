@@ -9,8 +9,8 @@ export const services = [
     priceStartsAt: '₹ 1,499',
     turnaround: 'Same Day / 24 Hours',
     icon: 'Wrench',
-    banner: '/images/services/ups-technician.jpg',
-    image: 'https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?auto=format&fit=crop&q=80&w=1200',
+    banner: '/images/services/ups-installation.png',
+    image: '/images/services/ups-installation.png',
     features: [
       'Precision load calculation & input/output wire sizing',
       'Earth fault testing & neutral grounding verification',
@@ -46,8 +46,8 @@ export const services = [
     priceStartsAt: "₹ 999",
     turnaround: "Scheduled Visit",
     icon: "ShieldCheck",
-    banner: "/images/services/ups-technician.jpg",
-    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=1200",
+    banner: "/images/services/ups-maintenance.png",
+    image: "/images/services/ups-maintenance.png",
     features: [
       "DC bus capacitor ripple voltage analysis",
       "Internal thermal scanning for hotspot detection",
@@ -80,8 +80,8 @@ export const services = [
     priceStartsAt: "₹ 1,299",
     turnaround: "2 - 4 Hours Emergency SLA",
     icon: "AlertTriangle",
-    banner: "/images/services/ups-technician.jpg",
-    image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&q=80&w=1200",
+    banner: "/images/services/ups-repair.png",
+    image: "/images/services/ups-repair.png",
     features: [
       "Genuine OEM spare replacement (APC, Delta, Vertiv, etc.)",
       "Faulty IGBT & power module component level repair",
@@ -114,8 +114,8 @@ export const services = [
     priceStartsAt: 'Exchange Discounts Available',
     turnaround: 'Instant Doorstep Delivery',
     icon: 'BatteryCharging',
-    banner: '/images/services/battery-replacement.jpg',
-    image: 'https://images.unsplash.com/photo-1590489958742-8c105ab8bda3?auto=format&fit=crop&q=80&w=1200',
+    banner: '/images/services/battery-replacement.png',
+    image: '/images/services/battery-replacement.png',
     features: [
       '100% genuine fresh manufacturing date batteries',
       'Safe eco-friendly recycling with highest scrap rebate',

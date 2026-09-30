@@ -45,6 +45,8 @@ import ProductCard from '../components/ProductCard';
 import ProductImage from '../components/ProductImage';
 import heroDesktopImg from '../assets/hero-desktop.png';
 import heroMobileImg from '../assets/hero-mobile.png';
+import heroSlide2Img from '../assets/hero-slide-2.png';
+import heroSlide3Img from '../assets/hero-slide-3.png';
 import aboutShowcaseImg from '../assets/about-showcase.png';
 
 // Custom Animated Counter Hook
@@ -115,6 +117,26 @@ export default function Home() {
   const navigate = useNavigate();
   const bestSellersContainerRef = useRef(null);
 
+  // Hero Section Carousel State
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHeroHovered, setIsHeroHovered] = useState(false);
+
+  useEffect(() => {
+    if (isHeroHovered) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % 3);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [isHeroHovered]);
+
+  const nextHeroSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % 3);
+  };
+
+  const prevHeroSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + 3) % 3);
+  };
+
   // Best seller products from products data
   const bestSellers = products.slice(0, 10);
 
@@ -128,174 +150,201 @@ export default function Home() {
   return (
     <div className="w-full bg-[#f8fafc] overflow-hidden">
       {/* ============================================================ */}
-      {/* 1. HERO SECTION (FROZEN — DO NOT TOUCH UNDER ANY CIRCUMSTANCE) */}
+      {/* 1. HERO SECTION: ANIMATED AUTO-SCROLLING CAROUSEL (3 SLIDES) */}
       {/* ============================================================ */}
-      {/* DESKTOP HERO (Hidden on mobile) */}
       <section 
-        className="hidden lg:block relative w-full min-h-[580px] xl:min-h-[640px] bg-no-repeat bg-cover bg-right xl:bg-center border-b border-slate-200/60 overflow-hidden"
-        style={{ backgroundImage: `url(${heroDesktopImg})` }}
+        className="relative w-full overflow-hidden bg-slate-900 border-b border-slate-200/60"
+        onMouseEnter={() => setIsHeroHovered(true)}
+        onMouseLeave={() => setIsHeroHovered(false)}
       >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 h-full min-h-[580px] xl:min-h-[640px] flex flex-col justify-between py-12">
-          {/* Main Hero Content (Left Text Area) */}
-          <div className="max-w-xl space-y-6 pt-4">
-            {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 bg-[#16a34a] text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-sm">
-              <span>Reliable Power Solutions</span>
-            </div>
-
-            {/* Main Headline */}
-            <h1 className="text-4xl xl:text-[54px] font-black text-[#0f2b48] tracking-tight leading-[1.12] drop-shadow-xs">
-              Uninterrupted Power <br />
-              for a <span className="text-[#16a34a]">Better Tomorrow</span>
-            </h1>
-
-            {/* Supporting Text */}
-            <p className="text-lg text-slate-700 font-semibold max-w-lg leading-relaxed drop-shadow-xs">
-              Premium UPS, Batteries, Inverters & Power Solutions from World's Leading Brands.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex items-center gap-4 pt-2">
-              <Link
-                to="/products"
-                className="inline-flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white px-8 py-3.5 rounded-full text-sm font-bold transition-all shadow-lg hover:shadow-xl active:scale-95"
-              >
-                <span>Shop Now</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-
-              <Link
-                to="/products"
-                className="inline-flex items-center justify-center gap-2 bg-white/95 hover:bg-white text-[#16a34a] border-2 border-[#16a34a] px-8 py-3.5 rounded-full text-sm font-bold transition-all shadow-md hover:shadow-lg active:scale-95"
-              >
-                <span>Explore Products</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Floating Trust Bar Across Bottom */}
-          <div className="mt-auto pt-8">
-            <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-white/80 p-5 grid grid-cols-4 gap-6 divide-x divide-slate-200/80">
-              {/* 1. Trusted Brands */}
-              <div className="flex items-center gap-3.5 pl-2">
-                <div className="w-11 h-11 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center flex-shrink-0 shadow-2xs">
-                  <ShieldCheck className="w-6 h-6" />
+        {/* Slides Track */}
+        <div 
+          className="flex w-full transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          {/* SLIDE 1: CURRENT HERO SECTION (Original Picture & Layout) */}
+          <div className="w-full flex-shrink-0 relative min-h-[440px] sm:min-h-[500px] lg:min-h-[560px] xl:min-h-[600px] flex items-center">
+            {/* Desktop Background */}
+            <div 
+              className="hidden lg:block absolute inset-0 bg-no-repeat bg-cover bg-right xl:bg-center"
+              style={{ backgroundImage: `url(${heroDesktopImg})` }}
+            />
+            {/* Mobile Background */}
+            <div 
+              className="block lg:hidden absolute inset-0 bg-no-repeat bg-cover bg-top"
+              style={{ backgroundImage: `url(${heroMobileImg})` }}
+            />
+            
+            {/* Slide 1 Content Container */}
+            <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full py-12 lg:py-16">
+              <div className="max-w-xl space-y-5 lg:space-y-6 pt-2 text-center lg:text-left mx-auto lg:mx-0">
+                {/* Pill Badge */}
+                <div className="inline-flex items-center gap-2 bg-[#16a34a] text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-sm">
+                  <span>Reliable Power Solutions</span>
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-[#0f2b48]">Trusted Brands</h4>
-                  <p className="text-xs text-slate-500 font-medium">APC, Vertiv, Exide & more</p>
-                </div>
-              </div>
 
-              {/* 2. Genuine Products */}
-              <div className="flex items-center gap-3.5 pl-6">
-                <div className="w-11 h-11 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center flex-shrink-0 shadow-2xs">
-                  <CheckCircle2 className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-[#0f2b48]">Genuine Products</h4>
-                  <p className="text-xs text-slate-500 font-medium">100% Official Warranty</p>
-                </div>
-              </div>
+                {/* Main Headline */}
+                <h1 className="text-3xl sm:text-4xl xl:text-[54px] font-black text-[#0f2b48] tracking-tight leading-[1.12] drop-shadow-xs">
+                  Uninterrupted Power <br />
+                  for a <span className="text-[#16a34a]">Better Tomorrow</span>
+                </h1>
 
-              {/* 3. Fast Delivery */}
-              <div className="flex items-center gap-3.5 pl-6">
-                <div className="w-11 h-11 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center flex-shrink-0 shadow-2xs">
-                  <Truck className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-[#0f2b48]">Fast Delivery</h4>
-                  <p className="text-xs text-slate-500 font-medium">Same Day / Pan-India</p>
-                </div>
-              </div>
+                {/* Supporting Text */}
+                <p className="text-sm sm:text-base lg:text-lg text-slate-700 font-semibold max-w-lg leading-relaxed drop-shadow-xs">
+                  Premium UPS, Batteries, Inverters & Power Solutions from World's Leading Brands.
+                </p>
 
-              {/* 4. Expert Support */}
-              <div className="flex items-center gap-3.5 pl-6">
-                <div className="w-11 h-11 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center flex-shrink-0 shadow-2xs">
-                  <Headphones className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-[#0f2b48]">Expert Support</h4>
-                  <p className="text-xs text-slate-500 font-medium">Dedicated Engineering</p>
+                {/* CTA Buttons */}
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
+                  <Link
+                    to="/products"
+                    className="inline-flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white px-7 sm:px-8 py-3 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold transition-all shadow-lg hover:shadow-xl active:scale-95"
+                  >
+                    <span>Shop Now</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+
+                  <Link
+                    to="/products"
+                    className="inline-flex items-center justify-center gap-2 bg-white/95 hover:bg-white text-[#16a34a] border-2 border-[#16a34a] px-7 sm:px-8 py-3 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold transition-all shadow-md hover:shadow-lg active:scale-95"
+                  >
+                    <span>Explore Products</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* SLIDE 2: IMAGE COPY 27 (Powering Your Business with Confidence) */}
+          <div className="w-full flex-shrink-0 relative min-h-[440px] sm:min-h-[500px] lg:min-h-[560px] xl:min-h-[600px] bg-white flex items-center justify-center overflow-hidden">
+            <Link to="/services/ups-installation" className="block w-full h-full relative cursor-pointer">
+              <img 
+                src={heroSlide2Img} 
+                alt="Powering Your Business with Confidence - Professional UPS and Battery Installation" 
+                className="w-full h-full object-cover object-[10%_center] lg:object-center"
+              />
+            </Link>
+            
+            {/* Clickable Hotspot Zones matching the baked-in buttons */}
+            <Link
+              to="/services/ups-installation"
+              title="Get Installation Support"
+              className="hidden lg:block absolute z-20 cursor-pointer rounded-full"
+              style={{ left: '4.5%', bottom: '18%', width: '17%', height: '9%' }}
+            />
+            <Link
+              to="/contact"
+              title="Contact Our Experts"
+              className="hidden lg:block absolute z-20 cursor-pointer rounded-full"
+              style={{ left: '22.5%', bottom: '18%', width: '13%', height: '9%' }}
+            />
+          </div>
+
+          {/* SLIDE 3: IMAGE COPY 28 (Reliable UPS Services for Uninterrupted Operations) */}
+          <div className="w-full flex-shrink-0 relative min-h-[440px] sm:min-h-[500px] lg:min-h-[560px] xl:min-h-[600px] bg-white flex items-center justify-center overflow-hidden">
+            <Link to="/services" className="block w-full h-full relative cursor-pointer">
+              <img 
+                src={heroSlide3Img} 
+                alt="Reliable UPS Services for Uninterrupted Operations" 
+                className="w-full h-full object-cover object-[10%_center] lg:object-center"
+              />
+            </Link>
+
+            {/* Clickable Hotspot Zones matching the baked-in buttons */}
+            <Link
+              to="/services"
+              title="Get Service Support"
+              className="hidden lg:block absolute z-20 cursor-pointer rounded-full"
+              style={{ left: '4.5%', bottom: '18%', width: '16%', height: '9%' }}
+            />
+            <Link
+              to="/about"
+              title="Learn More"
+              className="hidden lg:block absolute z-20 cursor-pointer rounded-full"
+              style={{ left: '21.5%', bottom: '18%', width: '10.5%', height: '9%' }}
+            />
+          </div>
+        </div>
+
+        {/* Carousel Navigation Arrows */}
+        <button
+          onClick={prevHeroSlide}
+          className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-white/90 hover:bg-white text-[#0f2b48] hover:text-[#16a34a] shadow-lg backdrop-blur-md flex items-center justify-center transition-all duration-200 active:scale-90 border border-slate-200/80 cursor-pointer"
+          aria-label="Previous slide"
+        >
+          <ChevronLeft className="w-5 sm:w-6 h-5 sm:h-6" />
+        </button>
+
+        <button
+          onClick={nextHeroSlide}
+          className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-white/90 hover:bg-white text-[#0f2b48] hover:text-[#16a34a] shadow-lg backdrop-blur-md flex items-center justify-center transition-all duration-200 active:scale-90 border border-slate-200/80 cursor-pointer"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="w-5 sm:w-6 h-5 sm:h-6" />
+        </button>
+
+        {/* Carousel Indicators / Dots */}
+        <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-slate-900/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20">
+          {[0, 1, 2].map((idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentSlide(idx)}
+              className={`transition-all duration-300 rounded-full cursor-pointer ${
+                currentSlide === idx 
+                  ? 'w-7 sm:w-8 h-2.5 bg-[#16a34a]' 
+                  : 'w-2.5 h-2.5 bg-white/70 hover:bg-white'
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
         </div>
       </section>
 
-      {/* MOBILE HERO (Visible only on mobile/tablet screens < 1024px) */}
-      <section 
-        className="block lg:hidden relative w-full bg-no-repeat bg-cover bg-top pt-8 pb-8 px-4"
-        style={{ backgroundImage: `url(${heroMobileImg})` }}
-      >
-        <div className="max-w-md mx-auto space-y-5 text-center">
-          {/* Main Headline */}
-          <h1 className="text-3xl sm:text-4xl font-black text-[#0f2b48] tracking-tight leading-tight drop-shadow-xs">
-            Uninterrupted Power <br />
-            for a <span className="text-[#16a34a]">Better Tomorrow</span>
-          </h1>
-
-          {/* Supporting Text */}
-          <p className="text-sm sm:text-base text-slate-700 font-semibold leading-relaxed">
-            Premium UPS, Batteries, Inverters & Power Solutions from World's Leading Brands.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
-            <Link
-              to="/products"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white px-7 py-3 rounded-full text-xs font-bold shadow-md active:scale-95"
-            >
-              <span>Shop Now</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-
-            <Link
-              to="/products"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-[#16a34a] border-2 border-[#16a34a] px-7 py-3 rounded-full text-xs font-bold shadow-md active:scale-95"
-            >
-              <span>Explore Products</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+      {/* Floating Trust Bar Across Bottom */}
+      <section className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 mb-4">
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-200/80 p-4 sm:p-5 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:divide-x lg:divide-slate-200/80">
+          {/* 1. Trusted Brands */}
+          <div className="flex items-center gap-3.5 pl-1 sm:pl-2">
+            <div className="w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center flex-shrink-0 shadow-2xs">
+              <ShieldCheck className="w-5 sm:w-6 h-5 sm:h-6" />
+            </div>
+            <div>
+              <h4 className="text-xs sm:text-sm font-bold text-[#0f2b48]">Trusted Brands</h4>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-medium">APC, Vertiv, Exide & more</p>
+            </div>
           </div>
 
-          {/* Spacing for background products to shine through */}
-          <div className="h-64 sm:h-80 w-full pointer-events-none"></div>
-
-          {/* Mobile Trust Bar Card */}
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-white p-4 grid grid-cols-2 gap-3 text-left">
-            <div className="flex items-center gap-2.5">
-              <ShieldCheck className="w-5 h-5 text-[#16a34a] flex-shrink-0" />
-              <div>
-                <h4 className="text-xs font-bold text-[#0f2b48]">Trusted Brands</h4>
-                <p className="text-[10px] text-slate-500 font-medium">APC, Vertiv, Exide</p>
-              </div>
+          {/* 2. Genuine Products */}
+          <div className="flex items-center gap-3.5 pl-1 sm:pl-6">
+            <div className="w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center flex-shrink-0 shadow-2xs">
+              <CheckCircle2 className="w-5 sm:w-6 h-5 sm:h-6" />
             </div>
-
-            <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-5 h-5 text-[#16a34a] flex-shrink-0" />
-              <div>
-                <h4 className="text-xs font-bold text-[#0f2b48]">Genuine Products</h4>
-                <p className="text-[10px] text-slate-500 font-medium">Official Warranty</p>
-              </div>
+            <div>
+              <h4 className="text-xs sm:text-sm font-bold text-[#0f2b48]">Genuine Products</h4>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-medium">100% Official Warranty</p>
             </div>
+          </div>
 
-            <div className="flex items-center gap-2.5">
-              <Truck className="w-5 h-5 text-[#16a34a] flex-shrink-0" />
-              <div>
-                <h4 className="text-xs font-bold text-[#0f2b48]">Fast Delivery</h4>
-                <p className="text-[10px] text-slate-500 font-medium">Pan-India Support</p>
-              </div>
+          {/* 3. Fast Delivery */}
+          <div className="flex items-center gap-3.5 pl-1 sm:pl-6">
+            <div className="w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center flex-shrink-0 shadow-2xs">
+              <Truck className="w-5 sm:w-6 h-5 sm:h-6" />
             </div>
+            <div>
+              <h4 className="text-xs sm:text-sm font-bold text-[#0f2b48]">Fast Delivery</h4>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-medium">Same Day / Pan-India</p>
+            </div>
+          </div>
 
-            <div className="flex items-center gap-2.5">
-              <Headphones className="w-5 h-5 text-[#16a34a] flex-shrink-0" />
-              <div>
-                <h4 className="text-xs font-bold text-[#0f2b48]">Expert Support</h4>
-                <p className="text-[10px] text-slate-500 font-medium">Certified Engineers</p>
-              </div>
+          {/* 4. Expert Support */}
+          <div className="flex items-center gap-3.5 pl-1 sm:pl-6">
+            <div className="w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-emerald-50 text-[#16a34a] flex items-center justify-center flex-shrink-0 shadow-2xs">
+              <Headphones className="w-5 sm:w-6 h-5 sm:h-6" />
+            </div>
+            <div>
+              <h4 className="text-xs sm:text-sm font-bold text-[#0f2b48]">Expert Support</h4>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-medium">Dedicated Engineering</p>
             </div>
           </div>
         </div>
@@ -827,9 +876,9 @@ export default function Home() {
                 className="group bg-white rounded-3xl overflow-hidden border border-slate-200/90 hover:border-[#16a34a] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
               >
                 {/* Pictorial Service Photo */}
-                <div className="relative w-full h-44 bg-slate-100 overflow-hidden">
+                <Link to={`/services/${srv.slug}`} className="block relative w-full h-48 sm:h-52 bg-slate-100 overflow-hidden cursor-pointer">
                   <img
-                    src={srv.banner || '/images/services/ups-technician.jpg'}
+                    src={srv.banner || srv.image}
                     alt={srv.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
@@ -842,14 +891,16 @@ export default function Home() {
                     <Clock className="w-3.5 h-3.5 text-emerald-300" />
                     <span>{srv.turnaround}</span>
                   </div>
-                </div>
+                </Link>
 
                 {/* Service Details */}
                 <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                   <div>
-                    <h3 className="text-base font-bold text-[#0f2b48] group-hover:text-[#16a34a] transition-colors leading-snug">
-                      {srv.title}
-                    </h3>
+                    <Link to={`/services/${srv.slug}`}>
+                      <h3 className="text-base font-bold text-[#0f2b48] group-hover:text-[#16a34a] transition-colors leading-snug">
+                        {srv.title}
+                      </h3>
+                    </Link>
                     <p className="text-sm text-slate-500 mt-2 leading-relaxed">
                       {srv.shortDesc}
                     </p>

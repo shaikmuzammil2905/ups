@@ -43,50 +43,63 @@ export default function Services() {
         {services.map((srv) => (
           <div
             key={srv.id}
-            className="group bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-300 p-6 flex flex-col justify-between shadow-xs hover:shadow-xl transition-all duration-300"
+            className="group bg-white rounded-3xl overflow-hidden border border-slate-200/90 hover:border-[#16a34a] flex flex-col justify-between shadow-xs hover:shadow-xl transition-all duration-300"
           >
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 text-[#16a34a] flex items-center justify-center group-hover:bg-[#16a34a] group-hover:text-white transition-colors">
-                  <Wrench className="w-6 h-6" />
+            {/* Pictorial Header */}
+            <Link to={`/services/${srv.slug}`} className="block relative w-full h-48 sm:h-52 bg-slate-100 overflow-hidden cursor-pointer">
+              <img
+                src={srv.banner || srv.image}
+                alt={srv.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <span className="absolute top-3 left-3 bg-[#16a34a] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
+                {srv.badge}
+              </span>
+              <div className="absolute bottom-3 left-3 text-white text-xs font-semibold flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-emerald-300" />
+                <span>{srv.turnaround}</span>
+              </div>
+            </Link>
+
+            <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div>
+                  <Link to={`/services/${srv.slug}`}>
+                    <h2 className="text-lg font-bold text-[#0f2b48] group-hover:text-[#16a34a] transition-colors">
+                      {srv.title}
+                    </h2>
+                  </Link>
+                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    {srv.shortDesc}
+                  </p>
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full">
-                  {srv.badge}
-                </span>
+
+                <div className="space-y-1.5 pt-2 border-t border-slate-100">
+                  {srv.features.slice(0, 3).map((feat, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs text-slate-600">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#16a34a] flex-shrink-0 mt-0.5" />
+                      <span className="line-clamp-1">{feat}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div>
-                <h2 className="text-lg font-bold text-[#0f2b48] group-hover:text-[#16a34a] transition-colors">
-                  {srv.title}
-                </h2>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  {srv.shortDesc}
-                </p>
-              </div>
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] text-slate-400 block font-medium">Turnaround</span>
+                  <span className="text-xs font-bold text-slate-800">{srv.turnaround}</span>
+                </div>
 
-              <div className="space-y-1.5 pt-2 border-t border-slate-100">
-                {srv.features.slice(0, 3).map((feat, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs text-slate-600">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#16a34a] flex-shrink-0 mt-0.5" />
-                    <span className="line-clamp-1">{feat}</span>
-                  </div>
-                ))}
+                <Link
+                  to={`/services/${srv.slug}`}
+                  className="inline-flex items-center gap-1.5 bg-[#16a34a] hover:bg-[#15803d] text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors"
+                >
+                  <span>Book Service</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-              <div>
-                <span className="text-[10px] text-slate-400 block font-medium">Turnaround</span>
-                <span className="text-xs font-bold text-slate-800">{srv.turnaround}</span>
-              </div>
-
-              <Link
-                to={`/services/${srv.slug}`}
-                className="inline-flex items-center gap-1.5 bg-[#16a34a] hover:bg-[#15803d] text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors"
-              >
-                <span>Book Service</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
             </div>
           </div>
         ))}
