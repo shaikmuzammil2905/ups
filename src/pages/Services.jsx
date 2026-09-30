@@ -46,18 +46,18 @@ export default function Services() {
             className="group bg-white rounded-3xl overflow-hidden border border-slate-200/90 hover:border-[#16a34a] flex flex-col justify-between shadow-xs hover:shadow-xl transition-all duration-300"
           >
             {/* Pictorial Header */}
-            <Link to={`/services/${srv.slug}`} className="block relative w-full h-48 sm:h-52 bg-slate-100 overflow-hidden cursor-pointer">
+            <Link to={`/services/${srv.slug}`} className="block relative w-full aspect-[2/1] sm:aspect-auto sm:h-52 bg-slate-50 overflow-hidden cursor-pointer">
               <img
                 src={srv.banner || srv.image}
                 alt={srv.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-contain sm:object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <span className="absolute top-3 left-3 bg-[#16a34a] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
+              <div className="hidden sm:block absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <span className="hidden sm:inline-block absolute top-3 left-3 bg-[#16a34a] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
                 {srv.badge}
               </span>
-              <div className="absolute bottom-3 left-3 text-white text-xs font-semibold flex items-center gap-1.5">
+              <div className="hidden sm:flex absolute bottom-3 left-3 text-white text-xs font-semibold items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-emerald-300" />
                 <span>{srv.turnaround}</span>
               </div>
@@ -66,6 +66,15 @@ export default function Services() {
             <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
                 <div>
+                  <div className="flex items-center justify-between gap-2 mb-1.5 sm:hidden">
+                    <span className="bg-[#16a34a]/10 text-[#16a34a] text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">
+                      {srv.badge}
+                    </span>
+                    <span className="text-[11px] text-slate-500 font-medium flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-[#16a34a]" />
+                      {srv.turnaround}
+                    </span>
+                  </div>
                   <Link to={`/services/${srv.slug}`}>
                     <h2 className="text-lg font-bold text-[#0f2b48] group-hover:text-[#16a34a] transition-colors">
                       {srv.title}
