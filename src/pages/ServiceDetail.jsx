@@ -61,12 +61,12 @@ export default function ServiceDetail() {
       </div>
 
       {/* 4. Service-Related Image */}
-      {service.image && (
-        <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-200">
+      {(service.banner || service.image) && (
+        <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-white">
           <img 
-            src={service.image} 
+            src={service.banner || service.image} 
             alt={service.title} 
-            className="w-full h-[400px] md:h-[500px] object-cover"
+            className="w-full h-auto object-contain sm:object-cover sm:max-h-[500px]"
             loading="lazy"
           />
         </div>
