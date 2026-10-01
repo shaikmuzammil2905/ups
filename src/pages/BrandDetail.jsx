@@ -1,20 +1,28 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, ShieldCheck, Filter, ArrowUpDown } from 'lucide-react';
-import { brands } from '../data/brands';
-import { products } from '../data/products';
+import { useBrands, useProducts } from '../context/DataContext';
 import BrandLogo from '../components/BrandLogo';
 import ProductCard from '../components/ProductCard';
 
 export default function BrandDetail() {
   const { slug } = useParams();
+  const brands = useBrands();
+  const products = useProducts();
+
   const brand = brands.find((b) => b.slug === slug || b.id === slug) || brands[0];
 
   const [sortOption, setSortOption] = useState('popular');
 
   // Filter products by brand
   const brandProducts = products
-    .filter((p) => p.brandId === brand.id)
+    .filter((p) => {
+      const pBrand = String(p.brand_name || p.brand_id || p.brandId || p.brand || '').toLowerCase();
+      const bId = String(brand.id || '').toLowerCase();
+      const bSlug = String(brand.slug || '').toLowerCase();
+      const bName = String(brand.name || '').toLowerCase();
+      return pBrand === bId || pBrand === bSlug || pBrand === bName || pBrand.includes(bSlug);
+    })
     .sort((a, b) => {
       if (sortOption === 'price-low') return a.price - b.price;
       if (sortOption === 'price-high') return b.price - a.price;

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, Filter, SlidersHorizontal, ArrowUpDown, Check, ShieldCheck, Zap } from 'lucide-react';
-import { categories } from '../data/categories';
-import { products } from '../data/products';
-import { brands } from '../data/brands';
+import { useCategories, useProducts, useBrands } from '../context/DataContext';
 import ProductCard from '../components/ProductCard';
 
 export default function CategoryDetail() {
   const { slug } = useParams();
+  const categories = useCategories();
+  const products = useProducts();
+  const brands = useBrands();
+
   const category = categories.find((c) => c.slug === slug || c.id === slug) || categories[0];
 
   const [selectedBrand, setSelectedBrand] = useState('all');
@@ -16,10 +18,15 @@ export default function CategoryDetail() {
 
   // Filter products for this category
   const categoryProducts = products.filter((p) => {
-    if (p.categoryId !== category.id && p.categoryId !== category.slug) {
+    const pCat = String(p.category_id || p.categoryId || p.category || '').toLowerCase();
+    const cId = String(category.id || '').toLowerCase();
+    const cSlug = String(category.slug || '').toLowerCase();
+    const cName = String(category.name || '').toLowerCase();
+    if (pCat !== cId && pCat !== cSlug && pCat !== cName && !pCat.includes(cSlug)) {
       return false;
     }
-    if (selectedBrand !== 'all' && p.brandId !== selectedBrand) {
+    const pBrand = String(p.brand_id || p.brandId || p.brand || '').toLowerCase();
+    if (selectedBrand !== 'all' && pBrand !== selectedBrand.toLowerCase()) {
       return false;
     }
     if (p.price > priceRange) {

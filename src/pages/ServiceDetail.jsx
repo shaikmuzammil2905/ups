@@ -10,11 +10,12 @@ import {
   CheckCircle2,
   ArrowRight
 } from 'lucide-react';
-import { services } from '../data/services';
+import { useServices } from '../context/DataContext';
 import { supabase } from '../lib/supabase';
 
 export default function ServiceDetail() {
   const { slug } = useParams();
+  const services = useServices();
   const service = services.find((s) => s.slug === slug || s.id === slug) || services[0];
 
   const [formData, setFormData] = useState({

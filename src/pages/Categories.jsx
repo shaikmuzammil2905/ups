@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight, Zap } from 'lucide-react';
-import { categories } from '../data/categories';
+import { useCategories } from '../context/DataContext';
 import ProductImage from '../components/ProductImage';
 
 export default function Categories() {
+  const categories = useCategories();
   return (
     <div className="min-h-screen bg-[#f8fafc] py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Breadcrumb */}

@@ -36,10 +36,7 @@ import {
   Flame,
   BadgePercent
 } from 'lucide-react';
-import { categories } from '../data/categories';
-import { brands } from '../data/brands';
-import { products } from '../data/products';
-import { services } from '../data/services';
+import { useCategories, useBrands, useProducts, useServices } from '../context/DataContext';
 import BrandLogo from '../components/BrandLogo';
 import ProductCard from '../components/ProductCard';
 import ProductImage from '../components/ProductImage';
@@ -116,6 +113,11 @@ function CounterCard({ value, label, sublabel, suffix = '+' }) {
 }
 
 export default function Home() {
+  const categories = useCategories();
+  const brands = useBrands();
+  const products = useProducts();
+  const services = useServices();
+
   const navigate = useNavigate();
   const bestSellersContainerRef = useRef(null);
 

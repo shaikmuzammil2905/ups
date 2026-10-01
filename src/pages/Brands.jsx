@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight, ShieldCheck } from 'lucide-react';
-import { brands } from '../data/brands';
+import { useBrands } from '../context/DataContext';
 import BrandLogo from '../components/BrandLogo';
 
 export default function Brands() {
+  const brands = useBrands();
   return (
     <div className="min-h-screen bg-[#f8fafc] py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Breadcrumb */}

@@ -13,12 +13,14 @@ import {
   Grid3X3,
   LayoutList
 } from 'lucide-react';
-import { products } from '../data/products';
-import { brands } from '../data/brands';
-import { categories } from '../data/categories';
+import { useProducts, useBrands, useCategories } from '../context/DataContext';
 import ProductCard from '../components/ProductCard';
 
 export default function Products() {
+  const products = useProducts();
+  const brands = useBrands();
+  const categories = useCategories();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URL state

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Wrench, ShieldCheck, Clock, CheckCircle2, ArrowRight, ChevronRight, Phone, MessageCircle } from 'lucide-react';
-import { services } from '../data/services';
+import { useServices } from '../context/DataContext';
 
 export default function Services() {
+  const services = useServices();
   return (
     <div className="min-h-screen bg-[#f8fafc] py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Breadcrumb */}

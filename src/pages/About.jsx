@@ -16,10 +16,11 @@ import {
   MessageCircle
 } from 'lucide-react';
 import LivkamLogo from '../components/LivkamLogo';
-import { brands } from '../data/brands';
+import { useBrands } from '../context/DataContext';
 import BrandLogo from '../components/BrandLogo';
 
 export default function About() {
+  const brands = useBrands();
   return (
     <div className="min-h-screen bg-[#f8fafc] py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
       {/* Breadcrumb */}

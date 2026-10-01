@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Search, ChevronRight, Filter, ArrowRight } from 'lucide-react';
-import { products } from '../data/products';
+import { useProducts } from '../context/DataContext';
 import ProductCard from '../components/ProductCard';
 
 export default function SearchPage() {
+  const products = useProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const [sortOption, setSortOption] = useState('popular');
@@ -13,17 +14,26 @@ export default function SearchPage() {
 
   const matchingProducts = cleanQ
     ? products.filter(
-        (p) =>
-          p.name.toLowerCase().includes(cleanQ) ||
-          p.brandName.toLowerCase().includes(cleanQ) ||
-          p.categoryName.toLowerCase().includes(cleanQ) ||
-          p.sku.toLowerCase().includes(cleanQ) ||
-          (p.capacity && p.capacity.toLowerCase().includes(cleanQ))
+        (p) => {
+          const pName = (p.name || '').toLowerCase();
+          const pBrand = (p.brand_name || p.brandName || p.brand || '').toLowerCase();
+          const pCat = (p.category_name || p.categoryName || p.category || '').toLowerCase();
+          const pSku = (p.sku || '').toLowerCase();
+          const pCap = (p.capacity || '').toLowerCase();
+
+          return (
+            pName.includes(cleanQ) ||
+            pBrand.includes(cleanQ) ||
+            pCat.includes(cleanQ) ||
+            pSku.includes(cleanQ) ||
+            pCap.includes(cleanQ)
+          );
+        }
       ).sort((a, b) => {
         if (sortOption === 'price-low') return a.price - b.price;
         if (sortOption === 'price-high') return b.price - a.price;
-        if (sortOption === 'rating') return (b.rating || 0) - (a.rating || 0);
-        return (b.bestseller ? 1 : 0) - (a.bestseller ? 1 : 0);
+        if (sortOption === 'rating') return (b.reviewCount || b.rating || 0) - (a.reviewCount || a.rating || 0);
+        return ((b.is_bestseller || b.bestseller) ? 1 : 0) - ((a.is_bestseller || a.bestseller) ? 1 : 0);
       })
     : [];
 

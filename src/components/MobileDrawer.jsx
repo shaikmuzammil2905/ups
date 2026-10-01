@@ -19,14 +19,16 @@ import {
   MessageCircle 
 } from 'lucide-react';
 import LivkamLogo from './LivkamLogo';
-import { categories } from '../data/categories';
-import { brands } from '../data/brands';
-import { services } from '../data/services';
-import { products } from '../data/products';
+import { useCategories, useBrands, useServices, useProducts } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
 export default function MobileDrawer({ isOpen, onClose }) {
+  const categories = useCategories();
+  const brands = useBrands();
+  const services = useServices();
+  const products = useProducts();
+
   const { user, isLoggedIn } = useAuth();
   const { totalItems } = useCart();
 

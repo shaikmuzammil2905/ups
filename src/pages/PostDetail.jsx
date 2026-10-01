@@ -1,12 +1,13 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, Calendar, Clock, User, ArrowLeft, ArrowRight, Share2, Tag } from 'lucide-react';
-import { posts } from '../data/posts';
-import { products } from '../data/products';
+import { usePosts, useProducts } from '../context/DataContext';
 import ProductCard from '../components/ProductCard';
 
 export default function PostDetail() {
   const { slug } = useParams();
+  const posts = usePosts();
+  const products = useProducts();
   const post = posts.find((p) => p.slug === slug || p.id === slug) || posts[0];
 
   const relatedProducts = products.slice(0, 3);

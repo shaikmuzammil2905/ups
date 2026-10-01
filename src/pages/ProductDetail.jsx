@@ -17,13 +17,14 @@ import {
   FileText,
   HelpCircle
 } from 'lucide-react';
-import { products } from '../data/products';
+import { useProducts } from '../context/DataContext';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import ProductCard from '../components/ProductCard';
 import ProductImage from '../components/ProductImage';
 
 export default function ProductDetail() {
+  const products = useProducts();
   const { slug } = useParams();
   const navigate = useNavigate();
   const { addToCart, openCart } = useCart();

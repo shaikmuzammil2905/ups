@@ -25,11 +25,13 @@ import {
 import LivkamLogo from './LivkamLogo';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { brands } from '../data/brands';
-import { services } from '../data/services';
-import { categories } from '../data/categories';
+import { useBrands, useServices, useCategories } from '../context/DataContext';
 
 export default function Header({ onOpenSearch, onOpenMobileMenu }) {
+  const brands = useBrands();
+  const services = useServices();
+  const categories = useCategories();
+
   const { totalItems, openCart } = useCart();
   const { user, isLoggedIn } = useAuth();
   const location = useLocation();

@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, ArrowRight, Zap, BatteryCharging, ChevronRight, Tag } from 'lucide-react';
-import { products } from '../data/products';
-import { brands } from '../data/brands';
-import { categories } from '../data/categories';
+import { useProducts, useBrands, useCategories } from '../context/DataContext';
 import ProductImage from './ProductImage';
 
 export default function SearchModal({ isOpen, onClose }) {
+  const products = useProducts();
+  const brands = useBrands();
+  const categories = useCategories();
+
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const inputRef = useRef(null);

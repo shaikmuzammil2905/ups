@@ -46,7 +46,6 @@ export function DataProvider({ children }) {
         .order('display_order', { ascending: true });
 
       if (!pErr && dbProducts && dbProducts.length > 0) {
-        // Map database products to match frontend component properties
         const formatted = dbProducts.map(p => ({
           ...p,
           brand: p.brand_name || p.brand_id,
@@ -55,13 +54,13 @@ export function DataProvider({ children }) {
             ? p.product_images.sort((a,b) => (a.display_order||0)-(b.display_order||0)).map(img => img.url)
             : (p.images || [p.image || '/images/products/online-ups.jpg']),
           image: p.product_images?.[0]?.url || p.image || '/images/products/online-ups.jpg',
-          originalPrice: p.original_price,
-          inStock: p.in_stock,
-          isFeatured: p.is_featured,
-          isBestseller: p.is_bestseller,
-          reviewCount: p.review_count,
-          shortSpecs: p.short_specs || [],
-          specs: p.specifications || {},
+          originalPrice: p.original_price || p.originalPrice,
+          inStock: p.in_stock ?? p.inStock,
+          isFeatured: p.is_featured ?? p.isFeatured,
+          isBestseller: p.is_bestseller ?? p.isBestseller,
+          reviewCount: p.review_count || p.reviewCount,
+          shortSpecs: p.short_specs || p.shortSpecs || [],
+          specs: p.specifications || p.specs || {},
         }));
         setProducts(formatted);
       }
@@ -76,11 +75,12 @@ export function DataProvider({ children }) {
       if (!cErr && dbCategories && dbCategories.length > 0) {
         const formatted = dbCategories.map(c => ({
           ...c,
-          shortDesc: c.short_desc,
-          itemCount: c.item_count,
-          imageUrl: c.image_url,
-          bannerUrl: c.banner_url,
-          fallbackIcon: c.fallback_icon,
+          shortDesc: c.short_desc || c.shortDesc,
+          itemCount: c.item_count || c.itemCount,
+          imageUrl: c.image_url || c.imageUrl || c.image,
+          image: c.image_url || c.image || c.imageUrl,
+          bannerUrl: c.banner_url || c.bannerUrl,
+          fallbackIcon: c.fallback_icon || c.fallbackIcon || 'Zap',
         }));
         setCategories(formatted);
       }
@@ -95,12 +95,14 @@ export function DataProvider({ children }) {
       if (!bErr && dbBrands && dbBrands.length > 0) {
         const formatted = dbBrands.map(b => ({
           ...b,
-          fullName: b.full_name,
-          logoText: b.logo_text,
-          subText: b.sub_text,
-          authorizedPartner: b.authorized_partner,
-          popularCategories: b.popular_categories || [],
-          bannerUrl: b.banner_url,
+          fullName: b.full_name || b.fullName,
+          logoText: b.logo_text || b.logoText,
+          subText: b.sub_text || b.subText,
+          authorizedPartner: b.authorized_partner ?? b.authorizedPartner,
+          popularCategories: b.popular_categories || b.popularCategories || [],
+          bannerUrl: b.banner_url || b.bannerUrl,
+          image: b.logo_url || b.image_url || b.image || b.banner_url,
+          logo: b.logo_url || b.image_url || b.image,
         }));
         setBrands(formatted);
       }
@@ -115,13 +117,15 @@ export function DataProvider({ children }) {
       if (!sErr && dbServices && dbServices.length > 0) {
         const formatted = dbServices.map(s => ({
           ...s,
-          shortDesc: s.short_desc,
-          priceStartsAt: s.price_starts_at,
-          aboutContent: s.about_content,
-          fourColumns: s.four_columns,
-          technicalInfo: s.technical_info,
-          relatedProducts: s.related_products,
-          imageUrl: s.image_url,
+          shortDesc: s.short_desc || s.shortDesc,
+          priceStartsAt: s.price_starts_at || s.priceStartsAt,
+          aboutContent: s.about_content || s.aboutContent,
+          fourColumns: s.four_columns || s.fourColumns,
+          technicalInfo: s.technical_info || s.technicalInfo,
+          relatedProducts: s.related_products || s.relatedProducts,
+          imageUrl: s.image_url || s.imageUrl || s.image || s.banner,
+          image: s.image_url || s.image || s.banner || s.imageUrl,
+          banner: s.image_url || s.banner || s.image || s.imageUrl,
         }));
         setServices(formatted);
       }
@@ -136,9 +140,9 @@ export function DataProvider({ children }) {
       if (!postErr && dbPosts && dbPosts.length > 0) {
         const formatted = dbPosts.map(p => ({
           ...p,
-          coverImage: p.cover_image,
-          readTime: p.read_time,
-          createdAt: p.created_at,
+          coverImage: p.cover_image || p.coverImage,
+          readTime: p.read_time || p.readTime,
+          createdAt: p.created_at || p.createdAt,
         }));
         setPosts(formatted);
       }
@@ -214,7 +218,6 @@ export function DataProvider({ children }) {
 export function useData() {
   const ctx = useContext(DataContext);
   if (!ctx) {
-    // Fallback if accessed outside provider
     return {
       products: staticProducts,
       categories: staticCategories,

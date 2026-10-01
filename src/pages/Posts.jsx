@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, Calendar, Clock, User, ArrowRight, BookOpen } from 'lucide-react';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/DataContext';
 
 export default function Posts() {
+  const posts = usePosts();
   return (
     <div className="min-h-screen bg-[#f8fafc] py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Breadcrumb */}

@@ -16,10 +16,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { products } from '../data/products';
+import { useProducts } from '../context/DataContext';
 import ProductCard from '../components/ProductCard';
 
 export default function Account() {
+  const products = useProducts();
   const { user, isLoggedIn, login, register, logout, wishlist, orders } = useAuth();
   const { addToCart } = useCart();
 
