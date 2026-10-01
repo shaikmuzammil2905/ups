@@ -100,6 +100,16 @@ function AdminApp() {
         }
       />
       <Route
+        path="/admin/products/:id/edit"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <ProductForm />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
         path="/admin/products/edit/:id"
         element={
           <AdminProtectedRoute>

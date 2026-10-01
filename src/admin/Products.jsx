@@ -295,6 +295,8 @@ export function ProductForm() {
   const navigate = useNavigate();
   const isEditing = !!id;
 
+  const [actualProductId, setActualProductId] = useState(null);
+  const [notFound, setNotFound] = useState(false);
   const [formData, setFormData] = useState({
     name: '', slug: '', sku: '', brand_id: '', brand_name: '',
     category_id: '', category_name: '', price: '', original_price: '',
@@ -329,12 +331,17 @@ export function ProductForm() {
 
     if (isEditing) {
       setFetchLoading(true);
+      setNotFound(false);
       supabase.from('products')
         .select('*, product_images(id, url, public_id, display_order)')
-        .eq('id', id)
+        .or(`id.eq.${id},slug.eq.${id}`)
         .single()
         .then(({ data, error }) => {
-          if (data && !error) {
+          if (error || !data) {
+            console.error('Fetch product error:', error);
+            setNotFound(true);
+          } else {
+            setActualProductId(data.id);
             setFormData({
               name: data.name || '',
               slug: data.slug || '',
@@ -360,7 +367,7 @@ export function ProductForm() {
               tags: data.tags || [],
               display_order: data.display_order || 0,
             });
-            const imgs = (data.product_images || []).sort((a, b) => a.display_order - b.display_order);
+            const imgs = (data.product_images || []).sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
             setImages(imgs);
           }
           setFetchLoading(false);
@@ -379,11 +386,11 @@ export function ProductForm() {
         updated.slug = generateSlug(value);
       }
       if (field === 'category_id') {
-        const cat = categories.find(c => c.id === value);
+        const cat = categories.find(c => String(c.id) === String(value));
         updated.category_name = cat?.name || '';
       }
       if (field === 'brand_id') {
-        const bra = brands.find(b => b.id === value);
+        const bra = brands.find(b => String(b.id) === String(value));
         updated.brand_name = bra?.name || '';
       }
       return updated;
@@ -452,23 +459,23 @@ export function ProductForm() {
         updated_at: new Date().toISOString(),
       };
 
-      let productId = id;
+      let targetId = actualProductId || id;
 
       if (isEditing) {
-        const { error } = await supabase.from('products').update(productData).eq('id', id);
+        const { error } = await supabase.from('products').update(productData).eq('id', targetId);
         if (error) throw error;
       } else {
-        productData.id = formData.slug;
+        productData.id = formData.slug || `prod-${Date.now()}`;
         const { data, error } = await supabase.from('products').insert(productData).select().single();
         if (error) throw error;
-        productId = data.id;
+        targetId = data.id;
       }
 
       // Save new images
       const newImages = images.filter(img => img.isNew);
       if (newImages.length > 0) {
         const imageInserts = newImages.map((img, i) => ({
-          product_id: productId,
+          product_id: targetId,
           url: img.url,
           public_id: img.public_id,
           display_order: images.findIndex(im => im.id === img.id),
@@ -479,11 +486,10 @@ export function ProductForm() {
       // Remove deleted images (ones not in current images array)
       if (isEditing) {
         const currentIds = images.filter(img => !img.isNew).map(img => img.id);
-        // Delete images that were removed from the list
         const { data: existingImgs } = await supabase
           .from('product_images')
           .select('id')
-          .eq('product_id', productId);
+          .eq('product_id', targetId);
         
         const toDelete = (existingImgs || []).filter(img => !currentIds.includes(img.id));
         if (toDelete.length > 0) {
@@ -510,6 +516,20 @@ export function ProductForm() {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader className="w-8 h-8 text-[#16a34a] animate-spin" />
+      </div>
+    );
+  }
+
+  if (notFound) {
+    return (
+      <div className="max-w-md mx-auto my-12 p-8 bg-white rounded-3xl shadow-sm text-center border border-slate-100">
+        <AlertCircle className="w-12 h-12 text-amber-500 mx-auto mb-3" />
+        <h2 className="text-xl font-black text-slate-800 mb-2">Product Not Found</h2>
+        <p className="text-sm text-slate-500 mb-6">The requested product could not be found in the database.</p>
+        <Link to="/admin/products" className="inline-flex items-center gap-2 bg-[#16a34a] text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-[#15803d] shadow-sm">
+          <ChevronLeft className="w-4 h-4" />
+          Back to Products
+        </Link>
       </div>
     );
   }
