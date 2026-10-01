@@ -137,6 +137,12 @@ export default function AdminLayout({ children }) {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+
+  // Automatically close mobile sidebar whenever route changes
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
   const [expandedGroups, setExpandedGroups] = useState(() => {
     const expanded = new Set(['Catalog Management', 'Services', 'Customers & Sales']);
     NAV_ITEMS.forEach(item => {
