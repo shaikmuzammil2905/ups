@@ -11,6 +11,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { services } from '../data/services';
+import { supabase } from '../lib/supabase';
 
 export default function ServiceDetail() {
   const { slug } = useParams();
@@ -26,13 +27,29 @@ export default function ServiceDetail() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Mocking Supabase submit
-    setTimeout(() => {
+    setLoading(true);
+    try {
+      await supabase.from('enquiries').insert({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        subject: `Service Request: ${service.title}`,
+        service_name: service.title,
+        message: `${formData.company ? `[Company: ${formData.company}] ` : ''}${formData.message}`,
+        source: 'service_detail_page',
+        status: 'new',
+        created_at: new Date().toISOString()
+      });
+    } catch (err) {
+      console.warn('Service inquiry fallback:', err);
+    } finally {
+      setLoading(false);
       setSubmitted(true);
-    }, 1000);
+    }
   };
 
   const whatsappMessage = encodeURIComponent(

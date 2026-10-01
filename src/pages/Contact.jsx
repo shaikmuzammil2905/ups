@@ -13,6 +13,8 @@ import {
   ShieldCheck 
 } from 'lucide-react';
 
+import { supabase } from '../lib/supabase';
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -23,10 +25,28 @@ export default function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      await supabase.from('enquiries').insert({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        source: 'contact_page',
+        status: 'new',
+        created_at: new Date().toISOString()
+      });
+    } catch (err) {
+      console.warn('Enquiry fallback:', err);
+    } finally {
+      setLoading(false);
+      setSubmitted(true);
+    }
   };
 
   return (

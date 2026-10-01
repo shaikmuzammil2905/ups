@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
+import { AdminAuthProvider } from './admin/AdminAuthContext';
+import { DataProvider } from './context/DataContext';
 
+// Customer Layout Components
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
@@ -12,6 +15,7 @@ import MobileBottomNav from './components/MobileBottomNav';
 import Toast from './components/Toast';
 import WhatsAppPopup from './components/WhatsAppPopup';
 
+// Customer Pages
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
@@ -30,12 +34,234 @@ import SearchPage from './pages/SearchPage';
 import Account from './pages/Account';
 import NotFound from './pages/NotFound';
 
+// Admin CMS Components & Modules
+import AdminProtectedRoute from './admin/AdminProtectedRoute';
+import AdminLayout from './admin/AdminLayout';
+import AdminLogin from './admin/AdminLogin';
+import AdminDashboard from './admin/Dashboard';
+import { ProductsList, ProductForm } from './admin/Products';
+import CategoriesAdmin from './admin/Categories';
+import BrandsAdmin from './admin/Brands';
+import ServicesAdmin from './admin/Services';
+import EnquiriesAdmin from './admin/Enquiries';
+import AdvertisementsAdmin from './admin/Advertisements';
+import PostsAdmin from './admin/Posts';
+import ReviewsAdmin from './admin/Reviews';
+import OrdersAdmin from './admin/Orders';
+import CustomersAdmin from './admin/Customers';
+import CatalogsAdmin from './admin/Catalogs';
+import ContactStoreAdmin from './admin/ContactStore';
+import WebsiteContentAdmin from './admin/WebsiteContent';
+import MediaLibraryAdmin from './admin/MediaLibrary';
+import AdminUsers from './admin/AdminUsers';
+import AdminSettings from './admin/AdminSettings';
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
   return null;
+}
+
+function AdminApp() {
+  return (
+    <Routes>
+      <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route
+        path="/admin/dashboard"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/products"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <ProductsList />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/products/new"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <ProductForm />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/products/edit/:id"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <ProductForm />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/categories"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <CategoriesAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/brands"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <BrandsAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/services"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <ServicesAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/enquiries"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <EnquiriesAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/advertisements"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <AdvertisementsAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/posts"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <PostsAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/reviews"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <ReviewsAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/orders"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <OrdersAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/customers"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <CustomersAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/catalogs"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <CatalogsAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/contact-store"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <ContactStoreAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/website-content"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <WebsiteContentAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/media"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <MediaLibraryAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <AdminUsers />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/settings"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <AdminSettings />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+    </Routes>
+  );
 }
 
 function MainLayout() {
@@ -89,14 +315,29 @@ function MainLayout() {
   );
 }
 
+function RootApp() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+
+  if (isAdmin) {
+    return <AdminApp />;
+  }
+
+  return <MainLayout />;
+}
+
 export default function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <Router>
-          <MainLayout />
-        </Router>
-      </CartProvider>
-    </AuthProvider>
+    <DataProvider>
+      <AuthProvider>
+        <AdminAuthProvider>
+          <CartProvider>
+            <Router>
+              <RootApp />
+            </Router>
+          </CartProvider>
+        </AdminAuthProvider>
+      </AuthProvider>
+    </DataProvider>
   );
 }

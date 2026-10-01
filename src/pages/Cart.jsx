@@ -21,6 +21,7 @@ import confetti from 'canvas-confetti';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import ProductImage from '../components/ProductImage';
+import { supabase } from '../lib/supabase';
 
 export default function Cart() {
   const [searchParams] = useSearchParams();
@@ -79,19 +80,60 @@ export default function Cart() {
 
   const grandTotal = Math.max(0, finalTotal - promoDiscount);
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
+    const orderNumber = `LVK-${Date.now().toString().slice(-6)}`;
+    const shippingAddress = `${shippingData.address}, ${shippingData.city}, ${shippingData.state} - ${shippingData.pincode}`;
+
     const newOrder = addOrder({
+      orderNumber,
       items: [...cartItems],
       subtotal,
       discount: discount + promoDiscount,
       total: grandTotal,
-      shippingAddress: `${shippingData.address}, ${shippingData.city}, ${shippingData.state} - ${shippingData.pincode}`,
+      shippingAddress,
       recipientName: shippingData.name,
       recipientPhone: shippingData.phone,
       gstin: shippingData.gstin,
       paymentMethod: shippingData.paymentMethod
     });
+
+    // Sync to Supabase Orders
+    try {
+      const { data: dbOrder } = await supabase
+        .from('orders')
+        .insert({
+          order_number: orderNumber,
+          customer_name: shippingData.name,
+          customer_phone: shippingData.phone,
+          customer_email: shippingData.email,
+          total_amount: grandTotal,
+          subtotal: subtotal,
+          discount_amount: discount + promoDiscount,
+          tax_amount: gstAmount,
+          shipping_address: shippingAddress,
+          payment_method: shippingData.paymentMethod,
+          status: 'pending',
+          created_at: new Date().toISOString()
+        })
+        .select()
+        .single();
+
+      if (dbOrder?.id) {
+        const orderItemsPayload = cartItems.map(item => ({
+          order_id: dbOrder.id,
+          product_id: String(item.id),
+          product_name: item.name,
+          quantity: item.quantity,
+          unit_price: item.price,
+          total_price: item.price * item.quantity,
+          image_url: item.image || item.images?.[0] || ''
+        }));
+        await supabase.from('order_items').insert(orderItemsPayload);
+      }
+    } catch (err) {
+      console.warn('Supabase order sync fallback:', err);
+    }
 
     try {
       confetti({
