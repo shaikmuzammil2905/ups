@@ -297,7 +297,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
             { label: 'Supabase', status: 'Connected', icon: CheckCircle },
-            { label: 'Cloudinary', status: 'Ready', icon: CheckCircle },
+            { label: 'Media Storage', status: 'Ready', icon: CheckCircle },
             { label: 'Website', status: 'Live', icon: Globe },
             { label: 'Admin Panel', status: 'Active', icon: BarChart3 },
           ].map(item => (

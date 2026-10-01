@@ -74,10 +74,11 @@ export default function MediaLibraryAdmin() {
     if (!file) return;
 
     setUploading(true);
-    setUploadProgress('Uploading to Cloudinary...');
+    setUploadProgress('Uploading Image...');
     try {
       const folderName = filterFolder || 'uploads';
-      const uploadedUrl = await uploadToCloudinary(file, folderName);
+      const uploadedResult = await uploadToCloudinary(file, folderName);
+      const uploadedUrl = uploadedResult.url || uploadedResult;
       setImages(prev => [
         {
           url: uploadedUrl,
@@ -89,7 +90,7 @@ export default function MediaLibraryAdmin() {
       ]);
       setUploadProgress(null);
     } catch (err) {
-      alert(`Upload failed: ${err.message}`);
+      alert('Upload failed. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -114,10 +115,10 @@ export default function MediaLibraryAdmin() {
         <div>
           <h1 className="text-2xl font-black text-slate-800 flex items-center gap-2.5">
             <ImageIcon className="w-7 h-7 text-[#16a34a]" />
-            Media & Cloudinary Asset Hub
+            Media & Asset Library
           </h1>
           <p className="text-sm text-slate-500 mt-1">
-            Cloudinary cloud: <span className="font-mono text-slate-700 font-bold">fgognhhy</span> | Upload preset: <span className="font-mono text-slate-700 font-bold">ml_default</span>
+            Media Storage: <span className="font-mono text-slate-700 font-bold">Active Sync</span> | Formats: JPG, PNG, WebP
           </p>
         </div>
         <div className="flex items-center gap-3">

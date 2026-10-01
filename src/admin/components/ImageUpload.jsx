@@ -111,7 +111,7 @@ export default function ImageUpload({ value, onChange, folder = 'livkam', label 
           {uploading ? (
             <>
               <Loader className="w-8 h-8 text-[#16a34a] animate-spin" />
-              <p className="text-sm text-gray-500 font-medium">Uploading to Cloudinary...</p>
+              <p className="text-sm text-gray-500 font-medium">Uploading Image...</p>
             </>
           ) : (
             <>

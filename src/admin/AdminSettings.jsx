@@ -137,7 +137,7 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        {/* Cloudinary Status */}
+        {/* Media Storage Status */}
         <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -145,16 +145,16 @@ export default function AdminSettings() {
                 <Cloud className="w-5 h-5" />
               </div>
               <div>
-                <div className="font-bold text-slate-800 text-sm">Cloudinary Media</div>
-                <div className="text-xs text-slate-400 font-mono">Cloud: fgognhhy</div>
+                <div className="font-bold text-slate-800 text-sm">Media Storage</div>
+                <div className="text-xs text-slate-400 font-mono">Status: Active & Synced</div>
               </div>
             </div>
           </div>
 
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-            <span className="text-slate-500">Upload Preset:</span>
+            <span className="text-slate-500">Storage Engine:</span>
             <span className="font-mono font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">
-              ml_default (Unsigned)
+              Hybrid Cloud Storage
             </span>
           </div>
         </div>
