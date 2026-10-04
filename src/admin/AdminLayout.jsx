@@ -6,7 +6,7 @@ import {
   FileText, Star, ShoppingCart, Users, Layers, BookOpen,
   MapPin, Globe, Image, MessageSquare, UserCog, Settings,
   LogOut, Menu, X, Zap, ChevronDown, ChevronRight, Bell, Home,
-  ExternalLink
+  ExternalLink, BatteryCharging
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -20,6 +20,8 @@ const NAV_ITEMS = [
     icon: Package,
     children: [
       { label: 'Products', icon: Package, path: '/admin/products' },
+      { label: 'Online UPS', icon: Zap, path: '/admin/online-ups' },
+      { label: 'Batteries', icon: BatteryCharging, path: '/admin/batteries' },
       { label: 'Categories', icon: Tags, path: '/admin/categories' },
       { label: 'Brands', icon: Building2, path: '/admin/brands' },
       { label: 'Catalogs', icon: Layers, path: '/admin/catalogs' },

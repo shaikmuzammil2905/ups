@@ -34,6 +34,7 @@ export default function MobileDrawer({ isOpen, onClose }) {
 
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [onlineUpsOpen, setOnlineUpsOpen] = useState(false);
+  const [batteriesOpen, setBatteriesOpen] = useState(false);
   const [brandsOpen, setBrandsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
@@ -141,18 +142,44 @@ export default function MobileDrawer({ isOpen, onClose }) {
                 onClick={() => setOnlineUpsOpen(!onlineUpsOpen)}
                 className="w-full flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
               >
-                <span>Online UPS Products</span>
+                <span className="flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-[#16a34a]" />
+                  <span>Online UPS</span>
+                </span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${onlineUpsOpen ? 'rotate-180 text-[#16a34a]' : ''}`} />
               </button>
 
               {onlineUpsOpen && (
-                <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1 max-h-60 overflow-y-auto">
-                  {products.filter(p => p.categoryId === 'online-ups' || p.categoryId === 'small-backups').map((prod) => (
+                <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1 max-h-72 overflow-y-auto">
+                  <div className="px-2 pt-1 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                    Categories
+                  </div>
+                  <Link
+                    to="/category/online-ups"
+                    onClick={onClose}
+                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-[#16a34a]"
+                  >
+                    <span>⚡ Online UPS (1kVA - 200kVA)</span>
+                    <ChevronRight className="w-3 h-3 text-slate-400" />
+                  </Link>
+                  <Link
+                    to="/category/small-backups"
+                    onClick={onClose}
+                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-[#16a34a]"
+                  >
+                    <span>🖥️ Small Backups (600VA - 2kVA)</span>
+                    <ChevronRight className="w-3 h-3 text-slate-400" />
+                  </Link>
+
+                  <div className="px-2 pt-2 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-t border-slate-200/60 mt-1">
+                    Featured UPS Models
+                  </div>
+                  {products.filter(p => p.categoryId === 'online-ups' || p.categoryId === 'small-backups').slice(0, 6).map((prod) => (
                     <Link
                       key={prod.id}
                       to={`/products/${prod.slug}`}
                       onClick={onClose}
-                      className="flex items-center justify-between py-2 px-2 text-xs font-medium text-slate-600 hover:text-[#16a34a]"
+                      className="flex items-center justify-between py-1.5 px-2 text-xs font-medium text-slate-600 hover:text-[#16a34a]"
                     >
                       <span className="truncate pr-2">{prod.name}</span>
                       <ChevronRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
@@ -161,9 +188,77 @@ export default function MobileDrawer({ isOpen, onClose }) {
                   <Link
                     to="/category/online-ups"
                     onClick={onClose}
-                    className="block py-2 text-center text-xs font-bold text-[#16a34a] hover:underline"
+                    className="block py-2 text-center text-xs font-bold text-[#16a34a] hover:underline border-t border-slate-200/60 mt-1"
                   >
-                    View All UPS →
+                    View All Online UPS →
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Batteries Accordion */}
+            <div>
+              <button
+                onClick={() => setBatteriesOpen(!batteriesOpen)}
+                className="w-full flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
+              >
+                <span className="flex items-center gap-2">
+                  <BatteryCharging className="w-4 h-4 text-blue-600" />
+                  <span>Batteries</span>
+                </span>
+                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${batteriesOpen ? 'rotate-180 text-blue-600' : ''}`} />
+              </button>
+
+              {batteriesOpen && (
+                <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1 max-h-72 overflow-y-auto">
+                  <div className="px-2 pt-1 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                    Battery Categories
+                  </div>
+                  <Link
+                    to="/category/smf-batteries"
+                    onClick={onClose}
+                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-blue-600"
+                  >
+                    <span>🔋 SMF VRLA Batteries</span>
+                    <ChevronRight className="w-3 h-3 text-slate-400" />
+                  </Link>
+                  <Link
+                    to="/category/tubular-batteries"
+                    onClick={onClose}
+                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-blue-600"
+                  >
+                    <span>⚡ Tubular Deep Cycle Batteries</span>
+                    <ChevronRight className="w-3 h-3 text-slate-400" />
+                  </Link>
+                  <Link
+                    to="/category/lithium-ups-batteries"
+                    onClick={onClose}
+                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-blue-600"
+                  >
+                    <span>💡 Lithium UPS & Storage</span>
+                    <ChevronRight className="w-3 h-3 text-slate-400" />
+                  </Link>
+
+                  <div className="px-2 pt-2 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-t border-slate-200/60 mt-1">
+                    Featured Battery Packs
+                  </div>
+                  {products.filter(p => ['smf-batteries', 'tubular-batteries', 'lithium-ups-batteries'].includes(p.categoryId)).slice(0, 6).map((prod) => (
+                    <Link
+                      key={prod.id}
+                      to={`/products/${prod.slug}`}
+                      onClick={onClose}
+                      className="flex items-center justify-between py-1.5 px-2 text-xs font-medium text-slate-600 hover:text-blue-600"
+                    >
+                      <span className="truncate pr-2">{prod.name}</span>
+                      <ChevronRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
+                    </Link>
+                  ))}
+                  <Link
+                    to="/category/smf-batteries"
+                    onClick={onClose}
+                    className="block py-2 text-center text-xs font-bold text-blue-600 hover:underline border-t border-slate-200/60 mt-1"
+                  >
+                    View All Batteries →
                   </Link>
                 </div>
               )}

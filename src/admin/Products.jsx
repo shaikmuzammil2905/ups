@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { uploadToCloudinary } from '../lib/cloudinary';
 import ImageUpload from './components/ImageUpload';
@@ -75,6 +75,7 @@ export function ProductsList() {
       .eq('id', product.id);
     if (!error) {
       setProducts(prev => prev.map(p => p.id === product.id ? { ...p, is_published: !p.is_published } : p));
+      notifyDataUpdated();
     }
     setActionLoading(null);
   };
@@ -89,6 +90,7 @@ export function ProductsList() {
     
     if (!error) {
       setProducts(prev => prev.filter(p => p.id !== deleteConfirm.id));
+      notifyDataUpdated();
     }
     setDeleteConfirm(null);
     setActionLoading(null);
@@ -293,6 +295,8 @@ export function ProductsList() {
 // ─── Product Form ─────────────────────────────────────────────────────────────
 export function ProductForm() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const preselectCat = searchParams.get('category');
   const navigate = useNavigate();
   const isEditing = !!id;
 
@@ -327,8 +331,20 @@ export function ProductForm() {
       supabase.from('categories').select('id, name').order('name'),
       supabase.from('brands').select('id, name').order('name'),
     ]).then(([cat, bra]) => {
-      setCategories(cat.data || []);
+      const catList = cat.data || [];
+      setCategories(catList);
       setBrands(bra.data || []);
+
+      if (!isEditing && preselectCat) {
+        const found = catList.find(c => c.id === preselectCat || c.slug === preselectCat);
+        if (found) {
+          setFormData(prev => ({
+            ...prev,
+            category_id: found.id,
+            category_name: found.name,
+          }));
+        }
+      }
     });
 
     if (isEditing) {

@@ -40,6 +40,8 @@ import AdminLayout from './admin/AdminLayout';
 import AdminLogin from './admin/AdminLogin';
 import AdminDashboard from './admin/Dashboard';
 import { ProductsList, ProductForm } from './admin/Products';
+import OnlineUpsManager from './admin/OnlineUpsManager';
+import BatteriesManager from './admin/BatteriesManager';
 import CategoriesAdmin from './admin/Categories';
 import BrandsAdmin from './admin/Brands';
 import ServicesAdmin from './admin/Services';
@@ -115,6 +117,26 @@ function AdminApp() {
           <AdminProtectedRoute>
             <AdminLayout>
               <ProductForm />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/online-ups"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <OnlineUpsManager />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/batteries"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <BatteriesManager />
             </AdminLayout>
           </AdminProtectedRoute>
         }
