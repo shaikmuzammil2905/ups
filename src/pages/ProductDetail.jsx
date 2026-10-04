@@ -37,6 +37,23 @@ export default function ProductDetail() {
   // Find product by slug or id
   const product = products.find((p) => p.slug === slug || p.id === slug) || products[0];
 
+  // Extract all images in exact order (Primary is index 0, followed by related images)
+  const productImages = React.useMemo(() => {
+    if (!product) return [];
+    if (Array.isArray(product.images) && product.images.length > 0) {
+      return product.images.filter(Boolean);
+    }
+    const single = product.image || product.imageUrl;
+    return single ? [single] : [];
+  }, [product]);
+
+  // Reset active image index when product changes
+  React.useEffect(() => {
+    setActiveImageIndex(0);
+  }, [product?.id, product?.slug]);
+
+  const currentImage = productImages[activeImageIndex] || productImages[0] || product?.image || product?.imageUrl;
+
   const wishlisted = isWishlisted(product?.id);
 
   // Related products from same category or brand
@@ -90,12 +107,18 @@ export default function ProductDetail() {
         {/* ============================================================ */}
         <div className="lg:col-span-6 space-y-4">
           <div className="relative aspect-4/3 w-full bg-slate-50/80 rounded-2xl border border-slate-100 p-6 flex items-center justify-center overflow-hidden">
-            <ProductImage product={product} categorySlug={product.categoryId} className="w-full h-full max-h-80" />
+            <ProductImage 
+              src={currentImage} 
+              product={product} 
+              categorySlug={product.categoryId} 
+              className="w-full h-full max-h-80" 
+              alt={product.name}
+            />
             
             {/* Wishlist button */}
             <button
               onClick={() => toggleWishlist(product.id)}
-              className="absolute top-4 right-4 p-2.5 rounded-full bg-white shadow-md text-slate-400 hover:text-red-500 transition-colors"
+              className="absolute top-4 right-4 p-2.5 rounded-full bg-white shadow-md text-slate-400 hover:text-red-500 transition-colors z-10"
               aria-label="Save to Wishlist"
             >
               <Heart className={`w-5 h-5 ${wishlisted ? 'fill-red-500 text-red-500' : ''}`} />
@@ -103,19 +126,34 @@ export default function ProductDetail() {
           </div>
 
           {/* Thumbnail row */}
-          <div className="flex items-center gap-3 overflow-x-auto pb-2">
-            {[0, 1, 2].map((idx) => (
-              <button
-                key={idx}
-                onClick={() => setActiveImageIndex(idx)}
-                className={`w-20 h-20 rounded-xl border-2 p-1 bg-white flex items-center justify-center transition-all ${
-                  activeImageIndex === idx ? 'border-[#16a34a] shadow-xs' : 'border-slate-200 opacity-70 hover:opacity-100'
-                }`}
-              >
-                <ProductImage product={product} className="w-full h-full" />
-              </button>
-            ))}
-          </div>
+          {productImages.length > 1 && (
+            <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
+              {productImages.map((imgUrl, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setActiveImageIndex(idx)}
+                  className={`relative w-20 h-20 rounded-xl border-2 p-1 bg-white flex items-center justify-center transition-all flex-shrink-0 overflow-hidden ${
+                    activeImageIndex === idx 
+                      ? 'border-[#16a34a] ring-2 ring-[#16a34a]/20 shadow-xs' 
+                      : 'border-slate-200 opacity-70 hover:opacity-100'
+                  }`}
+                  title={idx === 0 ? 'Primary Image' : `Gallery Image ${idx + 1}`}
+                >
+                  <img 
+                    src={imgUrl} 
+                    alt={`${product.name} thumbnail ${idx + 1}`} 
+                    className="w-full h-full object-contain" 
+                  />
+                  {idx === 0 && (
+                    <span className="absolute bottom-1 right-1 text-[8px] bg-[#16a34a] text-white px-1 py-0.2 rounded font-bold uppercase">
+                      Main
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ============================================================ */}

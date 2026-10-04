@@ -525,7 +525,7 @@ export default function Home() {
             >
               {/* Product Category Studio Photo */}
               <div className="w-full aspect-4/3 flex items-center justify-center p-2 mb-3 bg-white rounded-xl shadow-2xs group-hover:scale-105 transition-transform duration-300">
-                <ProductImage categorySlug={cat.slug} className="w-full h-full" />
+                <ProductImage category={cat} categorySlug={cat.slug} className="w-full h-full" alt={cat.name} />
               </div>
 
               <div>

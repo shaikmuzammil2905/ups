@@ -38,7 +38,7 @@ export default function Categories() {
           >
             <div>
               <div className="w-full aspect-4/3 flex items-center justify-center p-3 mb-4 bg-sky-50/40 rounded-xl group-hover:scale-105 transition-transform duration-300">
-                <ProductImage categorySlug={cat.slug} className="w-full h-full" />
+                <ProductImage category={cat} categorySlug={cat.slug} className="w-full h-full" alt={cat.name} />
               </div>
 
               <div className="flex items-center justify-between mb-1">

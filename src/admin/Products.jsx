@@ -5,10 +5,11 @@ import { uploadToCloudinary } from '../lib/cloudinary';
 import ImageUpload from './components/ImageUpload';
 import ConfirmDialog from './components/ConfirmDialog';
 import {
-  Plus, Search, Filter, Edit2, Trash2, Eye, Package, ChevronLeft,
+  Plus, Search, Filter, Edit2, Trash2, Eye, Package, ChevronLeft, ChevronRight,
   Save, X, Check, Upload, Image, Loader, AlertCircle, ArrowUpDown,
   ToggleLeft, ToggleRight, Star
 } from 'lucide-react';
+import { notifyDataUpdated } from '../lib/syncEvents';
 
 // ─── Products List ───────────────────────────────────────────────────────────
 export function ProductsList() {
@@ -95,8 +96,8 @@ export function ProductsList() {
 
   const getProductImage = (product) => {
     const imgs = product.product_images || [];
-    const sorted = [...imgs].sort((a, b) => a.display_order - b.display_order);
-    return sorted[0]?.url || 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=80&q=60';
+    const sorted = [...imgs].sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0));
+    return sorted[0]?.url || product.image || product.imageUrl || 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=80&q=60';
   };
 
   return (
@@ -307,6 +308,7 @@ export function ProductForm() {
   });
   const [images, setImages] = useState([]); // [{id, url, public_id, display_order}]
   const [newImageUrl, setNewImageUrl] = useState('');
+  const [urlInput, setUrlInput] = useState('');
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -410,16 +412,37 @@ export function ProductForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleImageUpload = async (url, publicId) => {
+  const handleImageUpload = (url, publicId) => {
     if (!url) return;
     const newImg = {
-      id: `temp-${Date.now()}`,
+      id: `temp-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
       url,
-      public_id: publicId,
+      public_id: publicId || `img-${Date.now()}`,
       display_order: images.length,
       isNew: true,
     };
     setImages(prev => [...prev, newImg]);
+  };
+
+  const handleSetPrimary = (index) => {
+    if (index === 0 || index >= images.length) return;
+    setImages(prev => {
+      const selected = prev[index];
+      const rest = prev.filter((_, i) => i !== index);
+      return [selected, ...rest];
+    });
+  };
+
+  const handleMoveImage = (index, direction) => {
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= images.length) return;
+    setImages(prev => {
+      const copy = [...prev];
+      const temp = copy[index];
+      copy[index] = copy[targetIndex];
+      copy[targetIndex] = temp;
+      return copy;
+    });
   };
 
   const handleRemoveImage = (imgId) => {
@@ -471,31 +494,61 @@ export function ProductForm() {
         targetId = data.id;
       }
 
-      // Save new images
-      const newImages = images.filter(img => img.isNew);
-      if (newImages.length > 0) {
-        const imageInserts = newImages.map((img, i) => ({
-          product_id: targetId,
-          url: img.url,
-          public_id: img.public_id,
-          display_order: images.findIndex(im => im.id === img.id),
-        }));
-        await supabase.from('product_images').insert(imageInserts);
+      // ==============================================================
+      // 2. Persist Product Images with 100% Integrity
+      // (Primary at display_order: 0, Related at 1..N, Order updates & Deletions)
+      // ==============================================================
+      const { data: dbExistingImgs } = await supabase
+        .from('product_images')
+        .select('id, url')
+        .eq('product_id', targetId);
+
+      const currentNonTempIds = images
+        .filter(img => !img.isNew && !String(img.id).startsWith('temp-'))
+        .map(img => img.id);
+
+      // A. Delete removed images from DB
+      const toDelete = (dbExistingImgs || []).filter(img => !currentNonTempIds.includes(img.id));
+      if (toDelete.length > 0) {
+        const { error: delErr } = await supabase
+          .from('product_images')
+          .delete()
+          .in('id', toDelete.map(i => i.id));
+        if (delErr) console.warn('Error deleting removed images:', delErr);
       }
 
-      // Remove deleted images (ones not in current images array)
-      if (isEditing) {
-        const currentIds = images.filter(img => !img.isNew).map(img => img.id);
-        const { data: existingImgs } = await supabase
-          .from('product_images')
-          .select('id')
-          .eq('product_id', targetId);
-        
-        const toDelete = (existingImgs || []).filter(img => !currentIds.includes(img.id));
-        if (toDelete.length > 0) {
-          await supabase.from('product_images').delete().in('id', toDelete.map(i => i.id));
+      // B. Update display_order for retained existing images
+      for (let i = 0; i < images.length; i++) {
+        const img = images[i];
+        if (!img.isNew && !String(img.id).startsWith('temp-')) {
+          const { error: upErr } = await supabase
+            .from('product_images')
+            .update({ display_order: i })
+            .eq('id', img.id);
+          if (upErr) console.warn(`Error updating image order for ${img.id}:`, upErr);
         }
       }
+
+      // C. Insert new images with their exact display_order
+      const newImagesToInsert = images
+        .map((img, i) => ({ img, order: i }))
+        .filter(({ img }) => img.isNew || String(img.id).startsWith('temp-'));
+
+      if (newImagesToInsert.length > 0) {
+        const imageInserts = newImagesToInsert.map(({ img, order }) => ({
+          product_id: targetId,
+          url: img.url,
+          public_id: img.public_id || null,
+          display_order: order,
+        }));
+        const { error: insErr } = await supabase
+          .from('product_images')
+          .insert(imageInserts);
+        if (insErr) throw insErr;
+      }
+
+      // 3. Notify real-time / cross-tab synchronization
+      notifyDataUpdated({ type: 'PRODUCT_SAVED', productId: targetId });
 
       setSaveSuccess(true);
       setTimeout(() => {
@@ -827,37 +880,136 @@ export function ProductForm() {
 
             {/* Product Images */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-              <h2 className="text-base font-bold text-slate-800 mb-4">Product Images</h2>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-base font-bold text-slate-800">Product Images</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Image 1 is the <strong>Primary Image</strong> (used across all catalog cards, search & category pages).
+                  </p>
+                </div>
+                <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-full">
+                  {images.length} {images.length === 1 ? 'image' : 'images'}
+                </span>
+              </div>
               
               {images.length > 0 && (
-                <div className="grid grid-cols-2 gap-2 mb-4">
-                  {images.map((img, i) => (
-                    <div key={img.id} className="relative group rounded-xl overflow-hidden border border-slate-100" style={{ aspectRatio: '4/3' }}>
-                      <img src={img.url} alt={`Product ${i + 1}`} className="w-full h-full object-cover" />
-                      {i === 0 && (
-                        <span className="absolute top-1.5 left-1.5 text-[10px] bg-[#16a34a] text-white px-1.5 py-0.5 rounded font-bold">Primary</span>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveImage(img.id)}
-                        className="absolute top-1.5 right-1.5 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow"
+                <div className="space-y-3 mb-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {images.map((img, i) => (
+                      <div 
+                        key={img.id} 
+                        className={`relative rounded-xl overflow-hidden border-2 transition-all p-2 flex flex-col justify-between bg-white ${
+                          i === 0 ? 'border-[#16a34a] shadow-sm' : 'border-slate-200 hover:border-slate-300'
+                        }`}
                       >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
+                        {/* Image Preview */}
+                        <div className="relative aspect-4/3 w-full rounded-lg overflow-hidden bg-slate-50 flex items-center justify-center">
+                          <img 
+                            src={img.url} 
+                            alt={`Product view ${i + 1}`} 
+                            className="w-full h-full object-contain" 
+                          />
+                          {i === 0 ? (
+                            <span className="absolute top-2 left-2 flex items-center gap-1 text-[11px] bg-[#16a34a] text-white px-2 py-0.5 rounded-full font-bold shadow">
+                              <Star className="w-3 h-3 fill-current" /> Primary
+                            </span>
+                          ) : (
+                            <span className="absolute top-2 left-2 text-[10px] bg-slate-800/80 text-white px-2 py-0.5 rounded-full font-medium">
+                              Gallery #{i + 1}
+                            </span>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(img.id)}
+                            className="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity shadow"
+                            title="Delete this image"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        {/* Controls Bar */}
+                        <div className="flex items-center justify-between gap-1 mt-2 pt-2 border-t border-slate-100">
+                          {i !== 0 ? (
+                            <button
+                              type="button"
+                              onClick={() => handleSetPrimary(i)}
+                              className="text-[11px] font-bold text-[#16a34a] hover:bg-green-50 px-2 py-1 rounded transition-colors flex items-center gap-1"
+                              title="Make this the main product image"
+                            >
+                              <Star className="w-3 h-3" /> Set Primary
+                            </button>
+                          ) : (
+                            <span className="text-[11px] font-bold text-[#16a34a] px-2 py-1 flex items-center gap-1">
+                              <Check className="w-3.5 h-3.5" /> Main Image
+                            </span>
+                          )}
+
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              disabled={i === 0}
+                              onClick={() => handleMoveImage(i, -1)}
+                              className="p-1 rounded text-slate-500 hover:text-slate-800 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent"
+                              title="Move left / up in gallery"
+                            >
+                              <ChevronLeft className="w-4 h-4" />
+                            </button>
+                            <button
+                              type="button"
+                              disabled={i === images.length - 1}
+                              onClick={() => handleMoveImage(i, 1)}
+                              className="p-1 rounded text-slate-500 hover:text-slate-800 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent"
+                              title="Move right / down in gallery"
+                            >
+                              <ChevronRight className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              <ImageUpload
-                value=""
-                onChange={handleImageUpload}
-                folder="livkam/products"
-                label={images.length === 0 ? "Upload Product Image" : "Add Another Image"}
-                aspectRatio="4/3"
-              />
+              {/* Upload New Image */}
+              <div className="space-y-3">
+                <ImageUpload
+                  value=""
+                  onChange={handleImageUpload}
+                  folder="livkam/products"
+                  label={images.length === 0 ? "Upload Primary Image" : "Add Another Image"}
+                  aspectRatio="4/3"
+                />
+
+                {/* Paste URL option */}
+                <div className="flex gap-2 pt-1">
+                  <input
+                    type="url"
+                    value={urlInput}
+                    onChange={e => setUrlInput(e.target.value)}
+                    placeholder="Or paste an image URL (https://...)"
+                    className="flex-1 px-3.5 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-[#16a34a]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (urlInput.trim()) {
+                        handleImageUpload(urlInput.trim(), `url-${Date.now()}`);
+                        setUrlInput('');
+                      }
+                    }}
+                    className="px-3.5 py-2 bg-slate-800 text-white rounded-xl text-xs font-semibold hover:bg-slate-700 transition-colors flex-shrink-0"
+                  >
+                    Add URL
+                  </button>
+                </div>
+              </div>
               
-              <p className="text-xs text-slate-400 mt-2">First image is used as primary. Up to 5 images supported.</p>
+              <p className="text-xs text-slate-400 mt-3">
+                Tip: Click <strong>Set Primary</strong> to change which image appears on website cards. Use arrows to reorder gallery pictures.
+              </p>
             </div>
           </div>
         </div>

@@ -41,28 +41,61 @@ export function DataProvider({ children }) {
       // 1. Fetch Products
       const { data: dbProducts, error: pErr } = await supabase
         .from('products')
-        .select(`*, product_images(url, display_order)`)
+        .select(`*, product_images(id, url, display_order)`)
         .eq('is_published', true)
         .order('display_order', { ascending: true });
 
       if (!pErr && dbProducts && dbProducts.length > 0) {
-        const formatted = dbProducts.map(p => ({
-          ...p,
-          brand: p.brand_name || p.brand_id,
-          category: p.category_id || p.category_name,
-          images: p.product_images?.length > 0
-            ? p.product_images.sort((a,b) => (a.display_order||0)-(b.display_order||0)).map(img => img.url)
-            : (p.images || [p.image || '/images/products/online-ups.jpg']),
-          image: p.product_images?.[0]?.url || p.image || '/images/products/online-ups.jpg',
-          originalPrice: p.original_price || p.originalPrice,
-          inStock: p.in_stock ?? p.inStock,
-          isFeatured: p.is_featured ?? p.isFeatured,
-          isBestseller: p.is_bestseller ?? p.isBestseller,
-          reviewCount: p.review_count || p.reviewCount,
-          shortSpecs: p.short_specs || p.shortSpecs || [],
-          specs: p.specifications || p.specs || {},
-        }));
-        setProducts(formatted);
+        const formatted = dbProducts.map(p => {
+          // Sort product_images by display_order ascending (order 0 is Primary)
+          const sortedImgs = (p.product_images || [])
+            .slice()
+            .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+            .map(img => img.url)
+            .filter(Boolean);
+
+          const primaryImg = sortedImgs[0] || p.image || '/images/products/online-ups.jpg';
+          const allImages = sortedImgs.length > 0 ? sortedImgs : (p.images || [primaryImg]);
+
+          return {
+            ...p,
+            brand: p.brand_name || p.brand_id,
+            brandId: p.brand_id,
+            brandName: p.brand_name,
+            category: p.category_id || p.category_name,
+            categoryId: p.category_id,
+            categoryName: p.category_name,
+            images: allImages,
+            image: primaryImg,
+            imageUrl: primaryImg,
+            primaryImage: primaryImg,
+            originalPrice: p.original_price || p.originalPrice,
+            inStock: p.in_stock ?? p.inStock,
+            isFeatured: p.is_featured ?? p.isFeatured,
+            featured: p.is_featured ?? p.featured,
+            isBestseller: p.is_bestseller ?? p.isBestseller,
+            bestseller: p.is_bestseller ?? p.bestseller,
+            reviewCount: p.review_count || p.reviewCount,
+            shortSpecs: p.short_specs || p.shortSpecs || [],
+            specs: p.specifications || p.specs || {},
+          };
+        });
+
+        // Merge: DB products are the primary source of truth, preserve remaining static items
+        const dbProductMap = new Map();
+        formatted.forEach(p => {
+          if (p.id) dbProductMap.set(p.id, p);
+          if (p.slug) dbProductMap.set(p.slug, p);
+        });
+
+        const mergedProducts = [...formatted];
+        staticProducts.forEach(sp => {
+          if (!dbProductMap.has(sp.id) && !dbProductMap.has(sp.slug)) {
+            mergedProducts.push(sp);
+          }
+        });
+
+        setProducts(mergedProducts);
       }
 
       // 2. Fetch Categories
@@ -73,16 +106,34 @@ export function DataProvider({ children }) {
         .order('display_order', { ascending: true });
 
       if (!cErr && dbCategories && dbCategories.length > 0) {
-        const formatted = dbCategories.map(c => ({
-          ...c,
-          shortDesc: c.short_desc || c.shortDesc,
-          itemCount: c.item_count || c.itemCount,
-          imageUrl: c.image_url || c.imageUrl || c.image,
-          image: c.image_url || c.image || c.imageUrl,
-          bannerUrl: c.banner_url || c.bannerUrl,
-          fallbackIcon: c.fallback_icon || c.fallbackIcon || 'Zap',
-        }));
-        setCategories(formatted);
+        const formatted = dbCategories.map(c => {
+          const catImg = c.image_url || c.imageUrl || c.image || '';
+          return {
+            ...c,
+            shortDesc: c.short_desc || c.shortDesc,
+            itemCount: c.item_count || c.itemCount,
+            imageUrl: catImg,
+            image: catImg,
+            image_url: catImg,
+            bannerUrl: c.banner_url || c.bannerUrl,
+            fallbackIcon: c.fallback_icon || c.fallbackIcon || 'Zap',
+          };
+        });
+
+        const dbCatMap = new Map();
+        formatted.forEach(c => {
+          if (c.id) dbCatMap.set(c.id, c);
+          if (c.slug) dbCatMap.set(c.slug, c);
+        });
+
+        const mergedCategories = [...formatted];
+        staticCategories.forEach(sc => {
+          if (!dbCatMap.has(sc.id) && !dbCatMap.has(sc.slug)) {
+            mergedCategories.push(sc);
+          }
+        });
+
+        setCategories(mergedCategories);
       }
 
       // 3. Fetch Brands
@@ -182,7 +233,28 @@ export function DataProvider({ children }) {
     // Initial fetch
     refreshAllData();
 
-    // Setup Supabase Realtime broadcast listener
+    // 1. Local event listener for immediate same-window updates
+    const handleLocalSync = () => {
+      refreshAllData();
+    };
+    window.addEventListener('livkam_data_updated', handleLocalSync);
+
+    // 2. Cross-tab synchronization via BroadcastChannel
+    let broadcastChannel = null;
+    if (typeof BroadcastChannel !== 'undefined') {
+      try {
+        broadcastChannel = new BroadcastChannel('livkam_sync_channel');
+        broadcastChannel.onmessage = (event) => {
+          if (event.data?.type === 'DATA_UPDATED') {
+            refreshAllData();
+          }
+        };
+      } catch (e) {
+        console.warn('BroadcastChannel setup error:', e);
+      }
+    }
+
+    // 3. Setup Supabase Realtime broadcast listener
     const channel = supabase
       .channel('public:realtime_website_sync')
       .on('postgres_changes', { event: '*', schema: 'public' }, () => {
@@ -191,6 +263,10 @@ export function DataProvider({ children }) {
       .subscribe();
 
     return () => {
+      window.removeEventListener('livkam_data_updated', handleLocalSync);
+      if (broadcastChannel) {
+        try { broadcastChannel.close(); } catch (_) {}
+      }
       supabase.removeChannel(channel);
     };
   }, [refreshAllData]);

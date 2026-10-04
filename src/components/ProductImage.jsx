@@ -1,74 +1,78 @@
-import React, { useState } from 'react';
-import { Zap, Battery, BatteryCharging, Cpu, Home, Wrench, ShieldAlert, Monitor } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Zap } from 'lucide-react';
+import { useCategories } from '../context/DataContext';
 
-// Pre-defined category and product image map
-const categoryImageMap = {
-  'online-ups': '/images/products/online-ups.jpg',
-  'smf-batteries': '/images/products/smf-battery.jpg',
-  'tubular-batteries': '/images/products/tubular-battery.jpg',
-  'lithium-ups-batteries': '/images/products/lithium-ups.jpg',
-  'home-inverter': '/images/products/home-inverter.jpg',
-  'ups-services': '/images/services/ups-technician.jpg',
-  'stabilizer': '/images/products/stabilizer.jpg',
-  'small-backups': '/images/products/small-backup.jpg',
+// Fallback images used ONLY if database/API genuinely has no image
+const defaultFallbacks = {
+  'online-ups': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80',
+  'smf-batteries': 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80',
+  'tubular-batteries': 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80',
+  'lithium-ups-batteries': 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=600&q=80',
+  'home-inverter': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80',
+  'ups-services': 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80',
+  'stabilizer': 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
+  'small-backups': 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=600&q=80',
 };
 
 export default function ProductImage({ 
+  src,
   product, 
+  category,
   categorySlug, 
   className = "w-full h-full",
   alt = ""
 }) {
   const [imgError, setImgError] = useState(false);
-  
-  const cat = (categorySlug || product?.categoryId || '').toLowerCase();
-  const name = (product?.name || '').toLowerCase();
-  const brand = (product?.brandName || '').toLowerCase();
+  const categories = useCategories();
 
-  // Determine matching image
-  let imageSrc = product?.imageUrl || product?.image;
+  // 1. Direct explicit source string takes top priority
+  let targetSrc = typeof src === 'string' && src.trim() ? src.trim() : '';
 
-  if (!imageSrc || imageSrc.startsWith('data:image/svg')) {
-    if (categoryImageMap[cat]) {
-      imageSrc = categoryImageMap[cat];
-    } else if (name.includes('tubular') || name.includes('tall')) {
-      imageSrc = '/images/products/tubular-battery.jpg';
-    } else if (name.includes('smf') || name.includes('vrla') || name.includes('quanta') || name.includes('12v')) {
-      imageSrc = '/images/products/smf-battery.jpg';
-    } else if (name.includes('lithium') || name.includes('lifepo4') || name.includes('bms')) {
-      imageSrc = '/images/products/lithium-ups.jpg';
-    } else if (name.includes('inverter') || name.includes('sine wave') || name.includes('zelio') || name.includes('cruze')) {
-      imageSrc = '/images/products/home-inverter.jpg';
-    } else if (name.includes('stabilizer') || name.includes('v-guard') || name.includes('voltage')) {
-      imageSrc = '/images/products/stabilizer.jpg';
-    } else if (name.includes('desktop') || name.includes('back-ups') || name.includes('600va') || name.includes('650va')) {
-      imageSrc = '/images/products/small-backup.jpg';
-    } else if (cat === 'ups-services' || name.includes('service') || name.includes('amc') || name.includes('installation')) {
-      imageSrc = '/images/services/ups-technician.jpg';
-    } else {
-      imageSrc = '/images/products/online-ups.jpg';
+  // 2. Category image from passed category object
+  if (!targetSrc && category) {
+    targetSrc = category.image_url || category.imageUrl || category.image || '';
+  }
+
+  // 3. Product image from passed product object
+  if (!targetSrc && product) {
+    targetSrc = product.image || product.imageUrl || (Array.isArray(product.images) && product.images[0]) || '';
+  }
+
+  // 4. If still no direct source, check categories from context by categorySlug
+  const catKey = (categorySlug || category?.slug || category?.id || product?.categoryId || product?.category_id || '').toLowerCase();
+  if (!targetSrc && catKey && Array.isArray(categories) && categories.length > 0) {
+    const matchedCategory = categories.find(c => 
+      c.slug?.toLowerCase() === catKey || 
+      c.id?.toLowerCase() === catKey ||
+      c.name?.toLowerCase() === catKey
+    );
+    if (matchedCategory) {
+      targetSrc = matchedCategory.image_url || matchedCategory.imageUrl || matchedCategory.image || '';
     }
   }
 
-  // If image loaded successfully
-  if (!imgError && imageSrc) {
-    return (
-      <div className={`relative flex items-center justify-center overflow-hidden rounded-xl bg-white p-2 ${className}`}>
-        <img
-          src={imageSrc}
-          alt={alt || product?.name || 'Livkam Power Technologies Product'}
-          onError={() => setImgError(true)}
-          className="w-full h-full object-contain max-h-full transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
-        />
-      </div>
-    );
-  }
+  // 5. Safe fallback only if no valid backend image URL exists
+  const fallbackSrc = defaultFallbacks[catKey] || '/images/products/online-ups.jpg';
+  const finalSrc = (!imgError && targetSrc) ? targetSrc : fallbackSrc;
 
-  // Fallback SVG display if error
+  // Reset imgError whenever the target source changes
+  useEffect(() => {
+    setImgError(false);
+  }, [targetSrc]);
+
   return (
-    <div className={`flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 p-4 text-slate-400 ${className}`}>
-      <Zap className="w-10 h-10 text-emerald-500 animate-pulse" />
+    <div className={`relative flex items-center justify-center overflow-hidden rounded-xl bg-white p-2 ${className}`}>
+      <img
+        src={finalSrc}
+        alt={alt || product?.name || category?.name || 'Livkam Power Technologies'}
+        onError={() => {
+          if (!imgError && targetSrc && targetSrc !== fallbackSrc) {
+            setImgError(true);
+          }
+        }}
+        className="w-full h-full object-contain max-h-full transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
     </div>
   );
 }

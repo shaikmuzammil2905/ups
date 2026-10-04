@@ -52,7 +52,7 @@ export default function CategoryDetail() {
       </div>
 
       {/* Hero Category Banner */}
-      <div className="relative rounded-3xl bg-gradient-to-r from-[#0f2b48] to-[#1e4a75] text-white p-6 sm:p-10 shadow-lg overflow-hidden mb-8">
+      <div className="relative rounded-3xl bg-gradient-to-r from-[#0f2b48] to-[#1e4a75] text-white p-6 sm:p-10 shadow-lg overflow-hidden mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="relative z-10 max-w-2xl space-y-2">
           <span className="text-xs font-bold uppercase tracking-wider bg-[#16a34a] px-3 py-1 rounded-full text-white inline-block">
             {category.badge || 'Livkam Verified'}
@@ -62,6 +62,15 @@ export default function CategoryDetail() {
             {category.shortDesc} Explore genuine units from certified OEM brands with on-site warranty.
           </p>
         </div>
+        {(category.imageUrl || category.image_url || category.image) && (
+          <div className="relative z-10 w-28 h-28 sm:w-36 sm:h-36 rounded-2xl bg-white/10 backdrop-blur-xs p-2 flex items-center justify-center flex-shrink-0 border border-white/20">
+            <img 
+              src={category.imageUrl || category.image_url || category.image} 
+              alt={category.name} 
+              className="w-full h-full object-contain drop-shadow-md rounded-xl"
+            />
+          </div>
+        )}
       </div>
 
       {/* Main Grid: Sidebar Filters + Products */}

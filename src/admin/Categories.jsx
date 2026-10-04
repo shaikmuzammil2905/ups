@@ -6,6 +6,7 @@ import {
   Plus, Search, Edit2, Trash2, Eye, Tags, Save, X, Loader,
   AlertCircle, ArrowUpDown, Check, ToggleLeft, ToggleRight, Layers
 } from 'lucide-react';
+import { notifyDataUpdated } from '../lib/syncEvents';
 
 const DEFAULT_FORM = {
   id: '',
@@ -104,6 +105,7 @@ export default function CategoriesAdmin() {
       if (err) throw err;
       setCategories(prev => prev.map(c => c.id === category.id ? { ...c, is_published: updatedStatus } : c));
       showNotification(`Category "${category.name}" ${updatedStatus ? 'published' : 'unpublished'}.`);
+      notifyDataUpdated({ type: 'CATEGORY_TOGGLED', categoryId: category.id });
     } catch (err) {
       alert(`Error toggling status: ${err.message}`);
     }
@@ -150,6 +152,7 @@ export default function CategoriesAdmin() {
       }
 
       setIsModalOpen(false);
+      notifyDataUpdated({ type: 'CATEGORY_SAVED', categoryId: catId });
       fetchCategories();
     } catch (err) {
       console.error('Save error:', err);
@@ -168,6 +171,7 @@ export default function CategoriesAdmin() {
         .eq('id', deleteConfirm.id);
       if (err) throw err;
       showNotification(`Category "${deleteConfirm.name}" deleted.`);
+      notifyDataUpdated({ type: 'CATEGORY_DELETED', categoryId: deleteConfirm.id });
       setCategories(prev => prev.filter(c => c.id !== deleteConfirm.id));
       setDeleteConfirm(null);
     } catch (err) {
@@ -411,16 +415,36 @@ export default function CategoriesAdmin() {
                 />
               </div>
 
-              {/* Cloudinary Image Upload */}
+              {/* Category Image Upload & URL */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
                   Category Image
                 </label>
-                <ImageUpload
-                  value={formData.image_url}
-                  onChange={(url) => setFormData({ ...formData, image_url: url })}
-                  folder="categories"
-                />
+                <div className="space-y-2">
+                  <ImageUpload
+                    value={formData.image_url}
+                    onChange={(url) => setFormData({ ...formData, image_url: url })}
+                    folder="categories"
+                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      value={formData.image_url}
+                      onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                      placeholder="Or paste an image URL (https://...)"
+                      className="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-[#16a34a]"
+                    />
+                    {formData.image_url && (
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, image_url: '' })}
+                        className="px-2.5 py-1.5 text-xs text-red-500 hover:bg-red-50 rounded-lg"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* Display Order & Item Count */}
