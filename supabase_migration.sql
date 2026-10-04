@@ -449,43 +449,108 @@ ALTER TABLE catalogs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE website_content ENABLE ROW LEVEL SECURITY;
 
 -- 1. Public Read Access
+DROP POLICY IF EXISTS "Public read site_settings" ON site_settings;
 CREATE POLICY "Public read site_settings" ON site_settings FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read categories" ON categories;
 CREATE POLICY "Public read categories" ON categories FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read brands" ON brands;
 CREATE POLICY "Public read brands" ON brands FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read products" ON products;
 CREATE POLICY "Public read products" ON products FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read product_images" ON product_images;
 CREATE POLICY "Public read product_images" ON product_images FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read services" ON services;
 CREATE POLICY "Public read services" ON services FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read hero_slides" ON hero_slides;
 CREATE POLICY "Public read hero_slides" ON hero_slides FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read advertisements" ON advertisements;
 CREATE POLICY "Public read advertisements" ON advertisements FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read posts" ON posts;
 CREATE POLICY "Public read posts" ON posts FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read approved reviews" ON reviews;
 CREATE POLICY "Public read approved reviews" ON reviews FOR SELECT USING (is_approved = true);
+
+DROP POLICY IF EXISTS "Public read catalogs" ON catalogs;
 CREATE POLICY "Public read catalogs" ON catalogs FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public read website_content" ON website_content;
 CREATE POLICY "Public read website_content" ON website_content FOR SELECT USING (true);
 
 -- 2. Public / Customer Submission Policies
+DROP POLICY IF EXISTS "Anyone insert enquiries" ON enquiries;
 CREATE POLICY "Anyone insert enquiries" ON enquiries FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anyone insert orders" ON orders;
 CREATE POLICY "Anyone insert orders" ON orders FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anyone insert order_items" ON order_items;
 CREATE POLICY "Anyone insert order_items" ON order_items FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anyone submit review" ON reviews;
 CREATE POLICY "Anyone submit review" ON reviews FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Users read own profile" ON profiles;
 CREATE POLICY "Users read own profile" ON profiles FOR SELECT USING (auth.uid() = id OR is_admin());
+
+DROP POLICY IF EXISTS "Users update own profile" ON profiles;
 CREATE POLICY "Users update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
 
 -- 3. Full Admin Management Policies
+DROP POLICY IF EXISTS "Admin manage profiles" ON profiles;
 CREATE POLICY "Admin manage profiles" ON profiles FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage site_settings" ON site_settings;
 CREATE POLICY "Admin manage site_settings" ON site_settings FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage categories" ON categories;
 CREATE POLICY "Admin manage categories" ON categories FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage brands" ON brands;
 CREATE POLICY "Admin manage brands" ON brands FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage products" ON products;
 CREATE POLICY "Admin manage products" ON products FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage product_images" ON product_images;
 CREATE POLICY "Admin manage product_images" ON product_images FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage services" ON services;
 CREATE POLICY "Admin manage services" ON services FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage enquiries" ON enquiries;
 CREATE POLICY "Admin manage enquiries" ON enquiries FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage orders" ON orders;
 CREATE POLICY "Admin manage orders" ON orders FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage order_items" ON order_items;
 CREATE POLICY "Admin manage order_items" ON order_items FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage hero_slides" ON hero_slides;
 CREATE POLICY "Admin manage hero_slides" ON hero_slides FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage advertisements" ON advertisements;
 CREATE POLICY "Admin manage advertisements" ON advertisements FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage posts" ON posts;
 CREATE POLICY "Admin manage posts" ON posts FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage reviews" ON reviews;
 CREATE POLICY "Admin manage reviews" ON reviews FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage catalogs" ON catalogs;
 CREATE POLICY "Admin manage catalogs" ON catalogs FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+DROP POLICY IF EXISTS "Admin manage website_content" ON website_content;
 CREATE POLICY "Admin manage website_content" ON website_content FOR ALL USING (is_admin()) WITH CHECK (is_admin());
 
 -- ============================================================
