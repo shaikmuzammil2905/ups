@@ -208,13 +208,21 @@ INSERT INTO products (id, name, slug, sku, brand_id, brand_name, category_id, ca
 ON CONFLICT (id) DO NOTHING;
 
 -- Seed Images
-INSERT INTO product_images (product_id, url, display_order) VALUES
-('apc-smart-ups-1000va', 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80', 0),
-('luminous-inverlast-150ah', 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', 0),
-('exide-tubular-battery-150ah', 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80', 0),
-('microtek-solar-inverter', 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80', 0),
-('vertiv-liebert-gxt5', 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80', 0)
-ON CONFLICT DO NOTHING;
+INSERT INTO product_images (product_id, url, display_order)
+SELECT 'apc-smart-ups-1000va', 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80', 0
+WHERE NOT EXISTS (SELECT 1 FROM product_images WHERE product_id = 'apc-smart-ups-1000va' AND display_order = 0)
+UNION ALL
+SELECT 'luminous-inverlast-150ah', 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80', 0
+WHERE NOT EXISTS (SELECT 1 FROM product_images WHERE product_id = 'luminous-inverlast-150ah' AND display_order = 0)
+UNION ALL
+SELECT 'exide-tubular-battery-150ah', 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80', 0
+WHERE NOT EXISTS (SELECT 1 FROM product_images WHERE product_id = 'exide-tubular-battery-150ah' AND display_order = 0)
+UNION ALL
+SELECT 'microtek-solar-inverter', 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80', 0
+WHERE NOT EXISTS (SELECT 1 FROM product_images WHERE product_id = 'microtek-solar-inverter' AND display_order = 0)
+UNION ALL
+SELECT 'vertiv-liebert-gxt5', 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80', 0
+WHERE NOT EXISTS (SELECT 1 FROM product_images WHERE product_id = 'vertiv-liebert-gxt5' AND display_order = 0);
 
 -- ============================================================
 -- SERVICES
@@ -324,10 +332,12 @@ CREATE TABLE IF NOT EXISTS hero_slides (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-INSERT INTO hero_slides (title, subtitle, badge, cta_primary_text, cta_primary_url, cta_secondary_text, cta_secondary_url, display_order) VALUES
-('Smart Power. Sustainable Future.', 'High-performance Online UPS, Lithium energy storage, and industrial backup engineering in Bengaluru.', 'Bengaluru''s #1 UPS Specialists', 'Explore Online UPS', '/products', 'Book Repair Service', '/services', 1),
-('Certified Multi-Brand UPS Maintenance & AMC', 'Official service engineers for APC, Vertiv, Luminous, Delta and Exide power infrastructure.', 'Same Day Response', 'View AMC Packages', '/services', 'Contact Engineering', '/contact', 2)
-ON CONFLICT DO NOTHING;
+INSERT INTO hero_slides (title, subtitle, badge, cta_primary_text, cta_primary_url, cta_secondary_text, cta_secondary_url, display_order)
+SELECT 'Smart Power. Sustainable Future.', 'High-performance Online UPS, Lithium energy storage, and industrial backup engineering in Bengaluru.', 'Bengaluru''s #1 UPS Specialists', 'Explore Online UPS', '/products', 'Book Repair Service', '/services', 1
+WHERE NOT EXISTS (SELECT 1 FROM hero_slides WHERE title = 'Smart Power. Sustainable Future.')
+UNION ALL
+SELECT 'Certified Multi-Brand UPS Maintenance & AMC', 'Official service engineers for APC, Vertiv, Luminous, Delta and Exide power infrastructure.', 'Same Day Response', 'View AMC Packages', '/services', 'Contact Engineering', '/contact', 2
+WHERE NOT EXISTS (SELECT 1 FROM hero_slides WHERE title = 'Certified Multi-Brand UPS Maintenance & AMC');
 
 CREATE TABLE IF NOT EXISTS advertisements (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -367,7 +377,7 @@ CREATE TABLE IF NOT EXISTS posts (
 INSERT INTO posts (title, slug, excerpt, content, author, category, read_time, is_published) VALUES
 ('How to Choose the Right Online UPS for Critical IT Workloads', 'how-to-choose-online-ups', 'Understand KVA sizing, power factors, and runtime battery calculations for servers.', 'Detailed guide on sizing and selecting double conversion online UPS units...', 'Livkam Engineering Team', 'Buying Guides', '5 min read', true),
 ('SMF vs Tubular Batteries: Longevity and Duty Cycle Comparison', 'smf-vs-tubular-batteries', 'A deep dive into lead-acid battery chemistries, cycle lives, and maintenance needs.', 'Comparing VRLA AGM batteries with deep-cycle tall tubular cells...', 'Livkam Technical Team', 'Battery Care', '4 min read', true)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (slug) DO NOTHING;
 
 -- ============================================================
 -- REVIEWS & TESTIMONIALS
@@ -384,11 +394,15 @@ CREATE TABLE IF NOT EXISTS reviews (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-INSERT INTO reviews (customer_name, product_name, rating, review_text, is_verified, is_approved) VALUES
-('Anand Vardhan (Koramangala IT)', 'APC Smart-UPS 1000VA', 5, 'Exceptional doorstep installation in Bengaluru. Our servers have had zero downtime since setup.', true, true),
-('Dr. Preethi Rao', 'Tubular Battery 150Ah & Inverter', 5, 'Livkam replaced our clinic battery within 3 hours on a weekend. Highly recommended engineers.', true, true),
-('Manjunath Gowda', 'Annual Maintenance Contract', 5, 'Transparent pricing, genuine OEM parts, and courteous technicians. 5 stars.', true, true)
-ON CONFLICT DO NOTHING;
+INSERT INTO reviews (customer_name, product_name, rating, review_text, is_verified, is_approved)
+SELECT 'Anand Vardhan (Koramangala IT)', 'APC Smart-UPS 1000VA', 5, 'Exceptional doorstep installation in Bengaluru. Our servers have had zero downtime since setup.', true, true
+WHERE NOT EXISTS (SELECT 1 FROM reviews WHERE customer_name = 'Anand Vardhan (Koramangala IT)')
+UNION ALL
+SELECT 'Dr. Preethi Rao', 'Tubular Battery 150Ah & Inverter', 5, 'Livkam replaced our clinic battery within 3 hours on a weekend. Highly recommended engineers.', true, true
+WHERE NOT EXISTS (SELECT 1 FROM reviews WHERE customer_name = 'Dr. Preethi Rao')
+UNION ALL
+SELECT 'Manjunath Gowda', 'Annual Maintenance Contract', 5, 'Transparent pricing, genuine OEM parts, and courteous technicians. 5 stars.', true, true
+WHERE NOT EXISTS (SELECT 1 FROM reviews WHERE customer_name = 'Manjunath Gowda');
 
 -- ============================================================
 -- CATALOGS & PDF BROCHURES
