@@ -487,3 +487,39 @@ CREATE POLICY "Admin manage posts" ON posts FOR ALL USING (is_admin()) WITH CHEC
 CREATE POLICY "Admin manage reviews" ON reviews FOR ALL USING (is_admin()) WITH CHECK (is_admin());
 CREATE POLICY "Admin manage catalogs" ON catalogs FOR ALL USING (is_admin()) WITH CHECK (is_admin());
 CREATE POLICY "Admin manage website_content" ON website_content FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+-- ============================================================
+-- PERFORMANCE INDEXES
+-- ============================================================
+CREATE INDEX IF NOT EXISTS idx_products_slug ON products(slug);
+CREATE INDEX IF NOT EXISTS idx_products_category_id ON products(category_id);
+CREATE INDEX IF NOT EXISTS idx_products_brand_id ON products(brand_id);
+CREATE INDEX IF NOT EXISTS idx_products_is_published ON products(is_published);
+CREATE INDEX IF NOT EXISTS idx_product_images_product_id ON product_images(product_id);
+CREATE INDEX IF NOT EXISTS idx_product_images_display_order ON product_images(display_order);
+CREATE INDEX IF NOT EXISTS idx_categories_slug ON categories(slug);
+CREATE INDEX IF NOT EXISTS idx_categories_is_published ON categories(is_published);
+CREATE INDEX IF NOT EXISTS idx_brands_slug ON brands(slug);
+
+-- ============================================================
+-- STORAGE BUCKETS SETUP (For file & image uploads)
+-- ============================================================
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES 
+  ('media', 'media', true, 10485760, ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf']),
+  ('public', 'public', true, 10485760, ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'])
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+-- Storage RLS Policies
+DROP POLICY IF EXISTS "Public read storage media" ON storage.objects;
+CREATE POLICY "Public read storage media" ON storage.objects FOR SELECT USING (bucket_id IN ('media', 'public'));
+
+DROP POLICY IF EXISTS "Anyone upload to media" ON storage.objects;
+CREATE POLICY "Anyone upload to media" ON storage.objects FOR INSERT WITH CHECK (bucket_id IN ('media', 'public'));
+
+DROP POLICY IF EXISTS "Anyone update media" ON storage.objects;
+CREATE POLICY "Anyone update media" ON storage.objects FOR UPDATE USING (bucket_id IN ('media', 'public'));
+
+DROP POLICY IF EXISTS "Anyone delete media" ON storage.objects;
+CREATE POLICY "Anyone delete media" ON storage.objects FOR DELETE USING (bucket_id IN ('media', 'public'));
+
