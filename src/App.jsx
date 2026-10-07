@@ -33,6 +33,7 @@ import Cart from './pages/Cart';
 import SearchPage from './pages/SearchPage';
 import Account from './pages/Account';
 import NotFound from './pages/NotFound';
+import APCPage from './pages/APCPage';
 
 // Admin CMS Components & Modules
 import AdminProtectedRoute from './admin/AdminProtectedRoute';
@@ -57,6 +58,7 @@ import WebsiteContentAdmin from './admin/WebsiteContent';
 import MediaLibraryAdmin from './admin/MediaLibrary';
 import AdminUsers from './admin/AdminUsers';
 import AdminSettings from './admin/AdminSettings';
+import APCPageAdmin from './admin/APCPageAdmin';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -291,6 +293,16 @@ function AdminApp() {
           </AdminProtectedRoute>
         }
       />
+      <Route
+        path="/admin/content/online-ups/apc"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <APCPageAdmin />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        }
+      />
       <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
     </Routes>
   );
@@ -328,6 +340,7 @@ function MainLayout() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/products/online-ups/apc" element={<APCPage />} />
           <Route path="/account" element={<Account />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

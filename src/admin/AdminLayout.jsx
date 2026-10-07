@@ -6,7 +6,7 @@ import {
   FileText, Star, ShoppingCart, Users, Layers, BookOpen,
   MapPin, Globe, Image, MessageSquare, UserCog, Settings,
   LogOut, Menu, X, Zap, ChevronDown, ChevronRight, Bell, Home,
-  ExternalLink, BatteryCharging
+  ExternalLink, BatteryCharging, FileEdit, Layout
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -14,6 +14,17 @@ const NAV_ITEMS = [
     label: 'Dashboard',
     icon: LayoutDashboard,
     path: '/admin/dashboard',
+  },
+  {
+    label: 'Content Management',
+    icon: FileEdit,
+    children: [
+      {
+        label: 'APC Online UPS Page',
+        icon: Zap,
+        path: '/admin/content/online-ups/apc',
+      },
+    ],
   },
   {
     label: 'Catalog Management',
