@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Image, FileText, MessageSquare, Globe, ToggleLeft,
   ToggleRight, RefreshCw, Inbox, Filter, Search, Clock, CheckCircle,
   XCircle, AlertCircle, GripVertical, Copy, Send, Upload, Folder,
-  ChevronLeft, Info, Star, Shield, Award, Tag
+  ChevronLeft, Info, Star, Shield, Award, Tag, Phone
 } from 'lucide-react';
 
 // ─── Tab definitions ─────────────────────────────────────────────────────────

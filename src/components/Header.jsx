@@ -17,6 +17,8 @@ import {
   Home as HomeIcon, 
   Wrench, 
   ShieldAlert, 
+  ShieldCheck,
+  Activity,
   Monitor,
   MessageCircle,
   ExternalLink,

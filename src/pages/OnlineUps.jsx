@@ -40,7 +40,9 @@ export default function OnlineUps() {
 
   // Filter products for Online UPS
   const onlineUpsProducts = useMemo(() => {
+    if (!Array.isArray(products)) return [];
     return products.filter(p => {
+      if (!p) return false;
       const cat = String(p.category_id || p.category || p.categoryName || '').toLowerCase();
       const name = String(p.name || '').toLowerCase();
       const isUps = cat.includes('online') || cat.includes('ups') || name.includes('online ups') || name.includes('smart-ups') || name.includes('amplon') || name.includes('liebert');
@@ -53,7 +55,7 @@ export default function OnlineUps() {
 
       // Phase / Type filter
       if (selectedPhase !== 'all') {
-        const text = `${p.name} ${p.description || ''} ${JSON.stringify(p.specs || {})}`.toLowerCase();
+        const text = `${p.name || ''} ${p.description || ''} ${JSON.stringify(p.specs || {})}`.toLowerCase();
         if (selectedPhase === 'single' && !text.includes('1:1') && !text.includes('single phase') && !text.includes('1 phase')) return false;
         if (selectedPhase === 'three' && !text.includes('3:1') && !text.includes('3:3') && !text.includes('3 phase') && !text.includes('three phase')) return false;
         if (selectedPhase === 'rack' && !text.includes('rack') && !text.includes('rt') && !text.includes('2u')) return false;
@@ -61,7 +63,7 @@ export default function OnlineUps() {
 
       // Capacity filter
       if (selectedCapacity !== 'all') {
-        const cap = parseFloat(String(p.capacity || p.name).replace(/[^0-9.]/g, '')) || 0;
+        const cap = parseFloat(String(p.capacity || p.name || '').replace(/[^0-9.]/g, '')) || 0;
         if (selectedCapacity === '1-3' && (cap < 1 || cap > 3)) return false;
         if (selectedCapacity === '5-10' && (cap < 5 || cap > 10)) return false;
         if (selectedCapacity === '10-20' && (cap < 10 || cap > 20)) return false;
@@ -70,9 +72,9 @@ export default function OnlineUps() {
       }
 
       // Search query
-      if (searchQuery.trim()) {
+      if (searchQuery && searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const fullText = `${p.name} ${p.brand_name || ''} ${p.capacity || ''} ${p.description || ''}`.toLowerCase();
+        const fullText = `${p.name || ''} ${p.brand_name || ''} ${p.capacity || ''} ${p.description || ''}`.toLowerCase();
         if (!fullText.includes(q)) return false;
       }
 

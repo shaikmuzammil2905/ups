@@ -33,6 +33,12 @@ export default class ErrorBoundary extends React.Component {
             <p className="text-xs text-slate-300 leading-relaxed">
               An unexpected error occurred while loading this view. You can reload the page or return to the homepage.
             </p>
+            {this.state.error && (
+              <div className="p-3 bg-red-950/70 border border-red-500/40 rounded-xl text-left text-[11px] font-mono text-red-300 max-h-48 overflow-auto">
+                <div className="font-bold text-red-200 mb-1">{this.state.error.name}: {this.state.error.message}</div>
+                <div className="text-[10px] text-red-400 whitespace-pre-wrap">{this.state.error.stack}</div>
+              </div>
+            )}
             <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
               <button
                 onClick={this.handleReload}

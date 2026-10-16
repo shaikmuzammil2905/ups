@@ -39,7 +39,9 @@ export default function Batteries() {
 
   // Filter battery products
   const batteryProducts = useMemo(() => {
+    if (!Array.isArray(products)) return [];
     return products.filter(p => {
+      if (!p) return false;
       const cat = String(p.category_id || p.category || p.categoryName || '').toLowerCase();
       const name = String(p.name || '').toLowerCase();
       const isBat = cat.includes('battery') || cat.includes('batteries') || name.includes('battery') || name.includes('quanta') || name.includes('powersafe') || name.includes('tubular');
@@ -57,7 +59,7 @@ export default function Batteries() {
 
       // Capacity Ah filter
       if (selectedCapacity !== 'all') {
-        const text = `${p.name} ${p.capacity || ''} ${JSON.stringify(p.specs || {})}`.toLowerCase();
+        const text = `${p.name || ''} ${p.capacity || ''} ${JSON.stringify(p.specs || {})}`.toLowerCase();
         if (selectedCapacity === 'small' && !text.includes('7ah') && !text.includes('12ah') && !text.includes('18ah')) return false;
         if (selectedCapacity === 'mid' && !text.includes('26ah') && !text.includes('42ah') && !text.includes('65ah')) return false;
         if (selectedCapacity === 'large' && !text.includes('100ah') && !text.includes('120ah') && !text.includes('150ah')) return false;
@@ -65,9 +67,9 @@ export default function Batteries() {
       }
 
       // Search query
-      if (searchQuery.trim()) {
+      if (searchQuery && searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const fullText = `${p.name} ${p.brand_name || ''} ${p.capacity || ''} ${p.description || ''}`.toLowerCase();
+        const fullText = `${p.name || ''} ${p.brand_name || ''} ${p.capacity || ''} ${p.description || ''}`.toLowerCase();
         if (!fullText.includes(q)) return false;
       }
 
