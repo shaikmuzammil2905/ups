@@ -8,6 +8,117 @@ import {
 import { getCatalogEntry, APPLIANCES_LIST, TROUBLESHOOTING_STEPS, INSTALLATION_STEPS } from '../data/catalogsData';
 import { supabase } from '../lib/supabase';
 
+// Animated Metric Card with Typing Mode, Scroll Animations & Popups (image copy 68)
+function TypingMetricCard({ targetNum, suffix, label, popupTitle, popupDesc, delay = 0 }) {
+  const [displayedNumber, setDisplayedNumber] = useState(0);
+  const [typedSuffix, setTypedSuffix] = useState('');
+  const [isTypingDone, setIsTypingDone] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const metricRef = React.useRef(null);
+
+  // Scroll into view observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.15 });
+
+    if (metricRef.current) {
+      observer.observe(metricRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  // Number counting & typing effect
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime;
+    const duration = 1200;
+    let animationFrame;
+
+    const timeout = setTimeout(() => {
+      const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const currentNum = Math.floor(easeOut * targetNum);
+        setDisplayedNumber(currentNum);
+
+        if (progress < 1) {
+          animationFrame = requestAnimationFrame(step);
+        } else {
+          setDisplayedNumber(targetNum);
+          // Start typing suffix character by character
+          let charIndex = 0;
+          const typingInterval = setInterval(() => {
+            if (charIndex <= suffix.length) {
+              setTypedSuffix(suffix.slice(0, charIndex));
+              charIndex++;
+            } else {
+              clearInterval(typingInterval);
+              setIsTypingDone(true);
+            }
+          }, 90);
+        }
+      };
+
+      animationFrame = requestAnimationFrame(step);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+    };
+  }, [isVisible, targetNum, suffix, delay]);
+
+  return (
+    <div
+      ref={metricRef}
+      onMouseEnter={() => setShowPopup(true)}
+      onMouseLeave={() => setShowPopup(false)}
+      onClick={() => setShowPopup(!showPopup)}
+      className={`relative group p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer text-center transform ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      }`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <div className="space-y-1.5">
+        <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-red-600 flex items-center justify-center tracking-tight font-mono">
+          <span>{displayedNumber}</span>
+          <span>{typedSuffix}</span>
+          {!isTypingDone && (
+            <span className="inline-block w-1.5 h-6 sm:h-8 ml-1 bg-red-600 animate-pulse"></span>
+          )}
+        </div>
+        <div className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-[#16a34a] transition-colors">
+          {label}
+        </div>
+        <div className="inline-flex items-center gap-1 text-[10px] text-slate-400 font-semibold group-hover:text-red-500 transition-colors">
+          <span>ⓘ Click / hover for info</span>
+        </div>
+      </div>
+
+      {/* Interactive Popup Bubble */}
+      {showPopup && (
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 sm:w-72 p-4 bg-slate-900/95 backdrop-blur-md text-white rounded-2xl shadow-2xl border border-slate-700 text-left z-30 animate-in fade-in zoom-in-95 duration-200 pointer-events-none">
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#22c55e] inline-block animate-ping"></span>
+            <span className="text-xs font-black text-[#22c55e] uppercase tracking-wider">{popupTitle}</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-relaxed font-normal">
+            {popupDesc}
+          </p>
+          <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900"></div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function CatalogDetail({ type = 'online-ups' }) {
   const { slug } = useParams();
   const [refreshKey, setRefreshKey] = useState(0);
@@ -196,24 +307,40 @@ export default function CatalogDetail({ type = 'online-ups' }) {
             </div>
           </div>
 
-          {/* Metrics Strip (Image Copy 42) */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 py-8 border-y border-slate-200/80 bg-slate-50/50 rounded-2xl text-center">
-            <div className="space-y-1">
-              <div className="text-3xl sm:text-4xl font-black text-red-600">50K +</div>
-              <div className="text-xs sm:text-sm font-bold text-slate-700">Completed Projects</div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-3xl sm:text-4xl font-black text-red-600">100K +</div>
-              <div className="text-xs sm:text-sm font-bold text-slate-700">Happy Clients</div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-3xl sm:text-4xl font-black text-red-600">10+</div>
-              <div className="text-xs sm:text-sm font-bold text-slate-700">Years Experience</div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-3xl sm:text-4xl font-black text-red-600">3 +</div>
-              <div className="text-xs sm:text-sm font-bold text-slate-700">Industry Awards</div>
-            </div>
+          {/* Metrics Strip (Image Copy 42 & 68 with Typing Mode, Scroll Animations & Popups) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 py-8 border-y border-slate-200/80 bg-slate-50/50 rounded-2xl">
+            <TypingMetricCard
+              targetNum={50}
+              suffix="K +"
+              label="Completed Projects"
+              popupTitle="50,000+ Verified Installations"
+              popupDesc="Data centers, hospitals, industrial manufacturing plants, IT tech parks, and corporate office complexes successfully powered across Karnataka and South India."
+              delay={0}
+            />
+            <TypingMetricCard
+              targetNum={100}
+              suffix="K +"
+              label="Happy Clients"
+              popupTitle="100,000+ Satisfied Clients"
+              popupDesc="Trusted by leading enterprises, healthcare centers, banks, and educational institutions with guaranteed 24/7 SLA emergency breakdown dispatch."
+              delay={150}
+            />
+            <TypingMetricCard
+              targetNum={10}
+              suffix="+"
+              label="Years Experience"
+              popupTitle="10+ Years Engineering Excellence"
+              popupDesc="Over a decade of certified power electronics distribution, authorized Schneider APC, Vertiv, Delta, and Amaron Quanta business partnerships."
+              delay={300}
+            />
+            <TypingMetricCard
+              targetNum={3}
+              suffix=" +"
+              label="Industry Awards"
+              popupTitle="3+ Prestigious Industry Awards"
+              popupDesc="Recognized excellence in power quality engineering, premier regional UPS distribution, and eco-certified green battery lifecycle management."
+              delay={450}
+            />
           </div>
         </div>
       </section>

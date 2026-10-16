@@ -23,7 +23,8 @@ import {
   Monitor,
   MessageCircle,
   ExternalLink,
-  CheckCircle2
+  CheckCircle2,
+  ArrowRight
 } from 'lucide-react';
 import LivkamLogo from './LivkamLogo';
 import { useCart } from '../context/CartContext';
@@ -47,6 +48,37 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
   const [productsOpen, setProductsOpen] = useState(false);
   const [brandsOpen, setBrandsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+
+  // Active Category Selection for Seamless 2-Pane Dropdown
+  const [selectedUpsCat, setSelectedUpsCat] = useState(ONLINE_UPS_DROPDOWN[0]?.id || 'ups-manufacturer');
+  const [selectedBatCat, setSelectedBatCat] = useState(BATTERIES_DROPDOWN[0]?.id || 'amaron-battery-wholesale-distributor');
+  
+  const upsLeaveTimeout = useRef(null);
+  const batteriesLeaveTimeout = useRef(null);
+
+  const handleUpsMouseEnter = () => {
+    if (upsLeaveTimeout.current) clearTimeout(upsLeaveTimeout.current);
+    setUpsOpen(true);
+    setBatteriesOpen(false);
+  };
+
+  const handleUpsMouseLeave = () => {
+    upsLeaveTimeout.current = setTimeout(() => {
+      setUpsOpen(false);
+    }, 250);
+  };
+
+  const handleBatteriesMouseEnter = () => {
+    if (batteriesLeaveTimeout.current) clearTimeout(batteriesLeaveTimeout.current);
+    setBatteriesOpen(true);
+    setUpsOpen(false);
+  };
+
+  const handleBatteriesMouseLeave = () => {
+    batteriesLeaveTimeout.current = setTimeout(() => {
+      setBatteriesOpen(false);
+    }, 250);
+  };
 
   // Close menus on route change
   useEffect(() => {
@@ -442,11 +474,11 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               )}
             </div>
 
-            {/* 6. ONLINE UPS DROPDOWN (9 Categories with Flyout Sub-menus) */}
+            {/* 6. ONLINE UPS DROPDOWN (Seamless 2-Pane Master-Detail Menu) */}
             <div 
               className="relative"
-              onMouseEnter={() => setUpsOpen(true)}
-              onMouseLeave={() => setUpsOpen(false)}
+              onMouseEnter={handleUpsMouseEnter}
+              onMouseLeave={handleUpsMouseLeave}
             >
               <Link
                 to="/online-ups"
@@ -462,47 +494,107 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               </Link>
 
               {upsOpen && (
-                <div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                  <div className="p-2 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                    <span>UPS Categories</span>
-                    <Link to="/online-ups" className="text-[#16a34a] hover:underline font-bold">All Overview →</Link>
-                  </div>
-                  <div className="py-1">
-                    {ONLINE_UPS_DROPDOWN.map((cat) => (
-                      <div key={cat.id} className="relative group/sub">
-                        <div className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-[#16a34a] cursor-pointer transition-colors">
-                          <span className="truncate pr-2">{cat.title}</span>
-                          <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-[#16a34a] group-hover/sub:translate-x-0.5 transition-all flex-shrink-0" />
-                        </div>
-                        {/* Nested Flyout Menu */}
-                        <div className="hidden group-hover/sub:block absolute top-0 left-full ml-1.5 w-72 bg-white rounded-xl shadow-2xl border border-slate-100 p-2 z-50">
-                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1.5 border-b border-slate-100 mb-1">
-                            {cat.title} Catalogues
-                          </div>
-                          <div className="space-y-0.5 max-h-80 overflow-y-auto">
-                            {cat.items.map((item) => (
-                              <Link
-                                key={item.slug}
-                                to={`/online-ups/${item.slug}`}
-                                className="block px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#16a34a] rounded-lg transition-colors leading-snug"
-                              >
-                                {item.title}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
+                <div 
+                  className="absolute top-full left-0 w-[640px] bg-white rounded-2xl shadow-2xl border border-slate-100 flex overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50"
+                  onMouseEnter={handleUpsMouseEnter}
+                  onMouseLeave={handleUpsMouseLeave}
+                >
+                  {/* Left Column: Categories List */}
+                  <div className="w-[270px] bg-slate-50/90 p-2.5 border-r border-slate-100 flex flex-col justify-between">
+                    <div>
+                      <div className="px-3 py-1.5 text-[10px] font-black text-slate-400 uppercase tracking-wider border-b border-slate-200/80 mb-1">
+                        Select Category ({ONLINE_UPS_DROPDOWN.length})
                       </div>
-                    ))}
+                      <div className="space-y-0.5">
+                        {ONLINE_UPS_DROPDOWN.map((cat) => {
+                          const isSelected = cat.id === selectedUpsCat;
+                          return (
+                            <button
+                              key={cat.id}
+                              type="button"
+                              onMouseEnter={() => setSelectedUpsCat(cat.id)}
+                              onClick={() => setSelectedUpsCat(cat.id)}
+                              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-left transition-all ${
+                                isSelected
+                                  ? 'bg-emerald-100/80 text-[#16a34a] shadow-xs'
+                                  : 'text-slate-700 hover:bg-white hover:text-slate-900'
+                              }`}
+                            >
+                              <span className="truncate pr-2">{cat.title}</span>
+                              <ChevronRight className={`w-3.5 h-3.5 flex-shrink-0 transition-transform ${isSelected ? 'text-[#16a34a] translate-x-0.5' : 'text-slate-400'}`} />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="pt-2 mt-2 border-t border-slate-200/80">
+                      <Link
+                        to="/online-ups"
+                        onClick={() => setUpsOpen(false)}
+                        className="block text-center text-[11px] font-black text-[#16a34a] hover:underline py-1"
+                      >
+                        ⚡ View All Online UPS Systems →
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Catalogues of Active Category */}
+                  <div className="flex-1 p-4 bg-white flex flex-col justify-between">
+                    <div>
+                      {(() => {
+                        const currentCat = ONLINE_UPS_DROPDOWN.find(c => c.id === selectedUpsCat) || ONLINE_UPS_DROPDOWN[0];
+                        return (
+                          <div>
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-3">
+                              <div>
+                                <span className="text-[10px] font-black uppercase text-[#16a34a] tracking-wider block">
+                                  Category Catalogues
+                                </span>
+                                <h4 className="text-sm font-black text-slate-900">
+                                  {currentCat.title}
+                                </h4>
+                              </div>
+                              <span className="text-[10px] bg-emerald-50 text-[#16a34a] font-bold px-2 py-0.5 rounded-full border border-emerald-200">
+                                {currentCat.items.length} Options
+                              </span>
+                            </div>
+
+                            <div className="space-y-1 max-h-[340px] overflow-y-auto pr-1">
+                              {currentCat.items.map((item) => (
+                                <Link
+                                  key={item.slug}
+                                  to={`/online-ups/${item.slug}`}
+                                  onClick={() => setUpsOpen(false)}
+                                  className="flex items-center justify-between p-2.5 rounded-xl hover:bg-emerald-50/80 text-slate-700 hover:text-[#16a34a] transition-all group/item border border-transparent hover:border-emerald-100"
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] group-hover/item:scale-125 transition-transform flex-shrink-0"></span>
+                                    <span className="text-xs font-semibold leading-snug">{item.title}</span>
+                                  </div>
+                                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/item:text-[#16a34a] group-hover/item:translate-x-1 transition-all flex-shrink-0 ml-2" />
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between">
+                      <span>Certified OEM Distributorship</span>
+                      <span className="text-[#16a34a] font-bold">Bangalore Engineering Hub</span>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* 7. BATTERIES DROPDOWN (3 Categories with Flyout Sub-menus) */}
+            {/* 7. BATTERIES DROPDOWN (Seamless 2-Pane Master-Detail Menu) */}
             <div 
               className="relative"
-              onMouseEnter={() => setBatteriesOpen(true)}
-              onMouseLeave={() => setBatteriesOpen(false)}
+              onMouseEnter={handleBatteriesMouseEnter}
+              onMouseLeave={handleBatteriesMouseLeave}
             >
               <Link
                 to="/batteries"
@@ -518,37 +610,97 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               </Link>
 
               {batteriesOpen && (
-                <div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                  <div className="p-2 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                    <span>Battery Categories</span>
-                    <Link to="/batteries" className="text-blue-600 hover:underline font-bold">All Overview →</Link>
-                  </div>
-                  <div className="py-1">
-                    {BATTERIES_DROPDOWN.map((cat) => (
-                      <div key={cat.id} className="relative group/sub">
-                        <div className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 cursor-pointer transition-colors">
-                          <span className="truncate pr-2">{cat.title}</span>
-                          <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-blue-600 group-hover/sub:translate-x-0.5 transition-all flex-shrink-0" />
-                        </div>
-                        {/* Nested Flyout Menu */}
-                        <div className="hidden group-hover/sub:block absolute top-0 left-full ml-1.5 w-72 bg-white rounded-xl shadow-2xl border border-slate-100 p-2 z-50">
-                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1.5 border-b border-slate-100 mb-1">
-                            {cat.title} Catalogues
-                          </div>
-                          <div className="space-y-0.5 max-h-80 overflow-y-auto">
-                            {cat.items.map((item) => (
-                              <Link
-                                key={item.slug}
-                                to={`/batteries/${item.slug}`}
-                                className="block px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors leading-snug"
-                              >
-                                {item.title}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
+                <div 
+                  className="absolute top-full left-0 w-[640px] bg-white rounded-2xl shadow-2xl border border-slate-100 flex overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50"
+                  onMouseEnter={handleBatteriesMouseEnter}
+                  onMouseLeave={handleBatteriesMouseLeave}
+                >
+                  {/* Left Column: Categories List */}
+                  <div className="w-[270px] bg-slate-50/90 p-2.5 border-r border-slate-100 flex flex-col justify-between">
+                    <div>
+                      <div className="px-3 py-1.5 text-[10px] font-black text-slate-400 uppercase tracking-wider border-b border-slate-200/80 mb-1">
+                        Battery Categories ({BATTERIES_DROPDOWN.length})
                       </div>
-                    ))}
+                      <div className="space-y-0.5">
+                        {BATTERIES_DROPDOWN.map((cat) => {
+                          const isSelected = cat.id === selectedBatCat;
+                          return (
+                            <button
+                              key={cat.id}
+                              type="button"
+                              onMouseEnter={() => setSelectedBatCat(cat.id)}
+                              onClick={() => setSelectedBatCat(cat.id)}
+                              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all ${
+                                isSelected
+                                  ? 'bg-blue-100/80 text-blue-700 shadow-xs'
+                                  : 'text-slate-700 hover:bg-white hover:text-slate-900'
+                              }`}
+                            >
+                              <span className="truncate pr-2">{cat.title}</span>
+                              <ChevronRight className={`w-3.5 h-3.5 flex-shrink-0 transition-transform ${isSelected ? 'text-blue-600 translate-x-0.5' : 'text-slate-400'}`} />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="pt-2 mt-2 border-t border-slate-200/80">
+                      <Link
+                        to="/batteries"
+                        onClick={() => setBatteriesOpen(false)}
+                        className="block text-center text-[11px] font-black text-blue-600 hover:underline py-1"
+                      >
+                        🔋 View All Battery Solutions →
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Catalogues of Active Category */}
+                  <div className="flex-1 p-4 bg-white flex flex-col justify-between">
+                    <div>
+                      {(() => {
+                        const currentCat = BATTERIES_DROPDOWN.find(c => c.id === selectedBatCat) || BATTERIES_DROPDOWN[0];
+                        return (
+                          <div>
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-3">
+                              <div>
+                                <span className="text-[10px] font-black uppercase text-blue-600 tracking-wider block">
+                                  Category Catalogues
+                                </span>
+                                <h4 className="text-sm font-black text-slate-900">
+                                  {currentCat.title}
+                                </h4>
+                              </div>
+                              <span className="text-[10px] bg-blue-50 text-blue-700 font-bold px-2 py-0.5 rounded-full border border-blue-200">
+                                {currentCat.items.length} Options
+                              </span>
+                            </div>
+
+                            <div className="space-y-1 max-h-[340px] overflow-y-auto pr-1">
+                              {currentCat.items.map((item) => (
+                                <Link
+                                  key={item.slug}
+                                  to={`/batteries/${item.slug}`}
+                                  onClick={() => setBatteriesOpen(false)}
+                                  className="flex items-center justify-between p-2.5 rounded-xl hover:bg-blue-50/80 text-slate-700 hover:text-blue-700 transition-all group/item border border-transparent hover:border-blue-100"
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-600 group-hover/item:scale-125 transition-transform flex-shrink-0"></span>
+                                    <span className="text-xs font-semibold leading-snug">{item.title}</span>
+                                  </div>
+                                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/item:text-blue-600 group-hover/item:translate-x-1 transition-all flex-shrink-0 ml-2" />
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between">
+                      <span>Amaron Quanta & Exide Authorized</span>
+                      <span className="text-blue-600 font-bold">Scrap Buyback Available</span>
+                    </div>
                   </div>
                 </div>
               )}

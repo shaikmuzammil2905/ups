@@ -52,66 +52,98 @@ import heroMobileSlide2Img from '../assets/hero-mobile-slide-2.png';
 import heroMobileSlide3Img from '../assets/hero-mobile-slide-3.png';
 import aboutShowcaseImg from '../assets/about-showcase.png';
 
-// Custom Animated Counter Hook
-function useCounter(endValue, duration = 2000) {
-  const [count, setCount] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
+function CounterCard({ value, label, sublabel, suffix = '+', popupTitle, popupDesc }) {
+  const [displayedNumber, setDisplayedNumber] = useState(0);
+  const [typedSuffix, setTypedSuffix] = useState('');
+  const [isTypingDone, setIsTypingDone] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasStarted) {
-          setHasStarted(true);
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasStarted]);
+  const numValue = parseInt(value.toString().replace(/[^0-9]/g, '')) || 0;
 
   useEffect(() => {
-    if (!hasStarted) return;
-
-    let start = 0;
-    const end = parseFloat(endValue.toString().replace(/[^0-9.]/g, ''));
-    const stepTime = 20;
-    const totalSteps = duration / stepTime;
-    const increment = end / totalSteps;
-
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Number(start.toFixed(end % 1 === 0 ? 0 : 1)));
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
       }
-    }, stepTime);
+    }, { threshold: 0.15 });
 
-    return () => clearInterval(timer);
-  }, [hasStarted, endValue, duration]);
+    if (elementRef.current) observer.observe(elementRef.current);
+    return () => observer.disconnect();
+  }, []);
 
-  return { count, elementRef };
-}
+  useEffect(() => {
+    if (!isVisible) return;
 
-function CounterCard({ value, label, sublabel, suffix = '+' }) {
-  const isDecimal = value.toString().includes('.');
-  const numValue = isDecimal ? 99.9 : parseInt(value);
-  const { count, elementRef } = useCounter(numValue, 1800);
+    let startTime;
+    const duration = 1200;
+    let animationFrame;
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      setDisplayedNumber(Math.floor(easeOut * numValue));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(step);
+      } else {
+        setDisplayedNumber(numValue);
+        let charIndex = 0;
+        const interval = setInterval(() => {
+          if (charIndex <= suffix.length) {
+            setTypedSuffix(suffix.slice(0, charIndex));
+            charIndex++;
+          } else {
+            clearInterval(interval);
+            setIsTypingDone(true);
+          }
+        }, 80);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(step);
+    return () => {
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+    };
+  }, [isVisible, numValue, suffix]);
 
   return (
-    <div ref={elementRef} className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 text-center shadow-sm hover:shadow-md transition-shadow">
-      <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0f2b48] tracking-tight">
-        {count}{suffix}
+    <div
+      ref={elementRef}
+      onMouseEnter={() => setShowPopup(true)}
+      onMouseLeave={() => setShowPopup(false)}
+      onClick={() => setShowPopup(!showPopup)}
+      className={`relative group bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 text-center shadow-xs hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer transform ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      }`}
+    >
+      <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0f2b48] tracking-tight font-mono flex items-center justify-center">
+        <span>{displayedNumber}</span>
+        <span>{typedSuffix}</span>
+        {!isTypingDone && (
+          <span className="inline-block w-1.5 h-6 sm:h-8 ml-1 bg-[#16a34a] animate-pulse"></span>
+        )}
       </div>
-      <div className="text-xs sm:text-sm font-bold text-slate-800 mt-2">{label}</div>
+      <div className="text-xs sm:text-sm font-bold text-slate-800 mt-2 group-hover:text-[#16a34a] transition-colors">
+        {label}
+      </div>
       <div className="text-[10px] sm:text-xs text-slate-500 mt-0.5">{sublabel}</div>
+
+      {showPopup && (
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-60 sm:w-68 p-3.5 bg-slate-900/95 backdrop-blur-md text-white rounded-2xl shadow-2xl border border-slate-700 text-left z-30 animate-in fade-in zoom-in-95 duration-200 pointer-events-none">
+          <div className="flex items-center gap-1.5 mb-1">
+            <span className="w-2 h-2 rounded-full bg-[#16a34a] inline-block animate-ping"></span>
+            <span className="text-xs font-bold text-[#22c55e]">{popupTitle || label}</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-relaxed font-normal">
+            {popupDesc || `${label}: Authorized Livkam Power Technologies verified benchmark across Bengaluru.`}
+          </p>
+          <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900"></div>
+        </div>
+      )}
     </div>
   );
 }
