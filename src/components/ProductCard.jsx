@@ -11,7 +11,7 @@ export default function ProductCard({ product, layout = 'grid' }) {
 
   if (!product) return null;
 
-  const wishlisted = isWishlisted(product.id);
+  const wishlisted = typeof isWishlisted === 'function' ? isWishlisted(product.id) : false;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -96,11 +96,13 @@ export default function ProductCard({ product, layout = 'grid' }) {
         <div className="pt-4 mt-auto">
           <div className="flex items-baseline gap-2 mb-3">
             <span className="text-lg font-black text-[#0f2b48]">
-              ₹ {product.price.toLocaleString('en-IN')}
+              {product.price != null && !isNaN(Number(product.price)) && Number(product.price) > 0
+                ? `₹ ${Number(product.price).toLocaleString('en-IN')}`
+                : 'Price on Request'}
             </span>
-            {product.originalPrice && product.originalPrice > product.price && (
+            {product.originalPrice != null && !isNaN(Number(product.originalPrice)) && Number(product.originalPrice) > Number(product.price || 0) && (
               <span className="text-xs text-slate-400 line-through font-medium">
-                ₹ {product.originalPrice.toLocaleString('en-IN')}
+                ₹ {Number(product.originalPrice).toLocaleString('en-IN')}
               </span>
             )}
           </div>
