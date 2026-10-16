@@ -10,6 +10,7 @@ import {
   Menu, 
   X, 
   ChevronDown, 
+  ChevronRight,
   Zap, 
   BatteryCharging, 
   Battery, 
@@ -28,6 +29,7 @@ import LivkamLogo from './LivkamLogo';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useBrands, useServices, useCategories, useProducts } from '../context/DataContext';
+import { ONLINE_UPS_DROPDOWN, BATTERIES_DROPDOWN } from '../data/catalogsData';
 
 export default function Header({ onOpenSearch, onOpenMobileMenu }) {
   const brands = useBrands();
@@ -73,15 +75,54 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               </a>
             </div>
 
-            <a 
-              href="https://wa.me/918884988990?text=Hi%20Livkam%20Power,%20I%20need%20assistance%20with%20UPS%20/%20Batteries" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[#22c55e] font-semibold hover:underline"
-            >
-              <MessageCircle className="w-3.5 h-3.5 fill-[#22c55e]" />
-              <span>WhatsApp</span>
-            </a>
+            {/* Social Media Logos (WhatsApp, FB, Insta, LinkedIn, YouTube) per image copy 67 */}
+            <div className="flex items-center space-x-3 text-slate-300 pl-2 border-l border-slate-700/80">
+              <a 
+                href="https://wa.me/918884988990?text=Hi%20Livkam%20Power,%20I%20need%20assistance%20with%20UPS%20/%20Batteries" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                title="WhatsApp"
+                className="text-[#22c55e] hover:text-[#16a34a] transition-transform hover:scale-110"
+              >
+                <MessageCircle className="w-3.5 h-3.5 fill-[#22c55e]" />
+              </a>
+              <a 
+                href="https://facebook.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                title="Facebook"
+                className="hover:text-blue-400 transition-transform hover:scale-110"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+              <a 
+                href="https://instagram.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                title="Instagram"
+                className="hover:text-pink-400 transition-transform hover:scale-110"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+              <a 
+                href="https://linkedin.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                title="LinkedIn"
+                className="hover:text-sky-400 transition-transform hover:scale-110"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              </a>
+              <a 
+                href="https://youtube.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                title="YouTube"
+                className="hover:text-red-500 transition-transform hover:scale-110"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
+            </div>
           </div>
 
           {/* Right Info: Email, Location, GST */}
@@ -401,18 +442,117 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               )}
             </div>
 
-            {/* 6. ONLINE UPS (PROMINENT DEDICATED NAV ITEM) */}
-            <Link
-              to="/online-ups"
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
-                location.pathname === '/online-ups'
-                  ? 'bg-[#16a34a] text-white shadow-md'
-                  : 'bg-emerald-50 text-[#16a34a] hover:bg-[#16a34a] hover:text-white border border-emerald-200'
-              }`}
+            {/* 6. ONLINE UPS DROPDOWN (9 Categories with Flyout Sub-menus) */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setUpsOpen(true)}
+              onMouseLeave={() => setUpsOpen(false)}
             >
-              <Zap className="w-3.5 h-3.5" />
-              <span>ONLINE UPS</span>
-            </Link>
+              <Link
+                to="/online-ups"
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black tracking-wide transition-all ${
+                  location.pathname.startsWith('/online-ups')
+                    ? 'bg-[#16a34a] text-white shadow-sm'
+                    : 'bg-emerald-50 text-[#16a34a] hover:bg-[#16a34a] hover:text-white border border-emerald-200'
+                }`}
+              >
+                <Zap className="w-3.5 h-3.5" />
+                <span>ONLINE UPS</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${upsOpen ? 'rotate-180' : ''}`} />
+              </Link>
+
+              {upsOpen && (
+                <div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                  <div className="p-2 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                    <span>UPS Categories</span>
+                    <Link to="/online-ups" className="text-[#16a34a] hover:underline font-bold">All Overview →</Link>
+                  </div>
+                  <div className="py-1">
+                    {ONLINE_UPS_DROPDOWN.map((cat) => (
+                      <div key={cat.id} className="relative group/sub">
+                        <div className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-[#16a34a] cursor-pointer transition-colors">
+                          <span className="truncate pr-2">{cat.title}</span>
+                          <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-[#16a34a] group-hover/sub:translate-x-0.5 transition-all flex-shrink-0" />
+                        </div>
+                        {/* Nested Flyout Menu */}
+                        <div className="hidden group-hover/sub:block absolute top-0 left-full ml-1.5 w-72 bg-white rounded-xl shadow-2xl border border-slate-100 p-2 z-50">
+                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1.5 border-b border-slate-100 mb-1">
+                            {cat.title} Catalogues
+                          </div>
+                          <div className="space-y-0.5 max-h-80 overflow-y-auto">
+                            {cat.items.map((item) => (
+                              <Link
+                                key={item.slug}
+                                to={`/online-ups/${item.slug}`}
+                                className="block px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-emerald-50 hover:text-[#16a34a] rounded-lg transition-colors leading-snug"
+                              >
+                                {item.title}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 7. BATTERIES DROPDOWN (3 Categories with Flyout Sub-menus) */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setBatteriesOpen(true)}
+              onMouseLeave={() => setBatteriesOpen(false)}
+            >
+              <Link
+                to="/batteries"
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black tracking-wide transition-all ${
+                  location.pathname.startsWith('/batteries')
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white border border-blue-200'
+                }`}
+              >
+                <BatteryCharging className="w-3.5 h-3.5" />
+                <span>BATTERIES</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${batteriesOpen ? 'rotate-180' : ''}`} />
+              </Link>
+
+              {batteriesOpen && (
+                <div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                  <div className="p-2 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                    <span>Battery Categories</span>
+                    <Link to="/batteries" className="text-blue-600 hover:underline font-bold">All Overview →</Link>
+                  </div>
+                  <div className="py-1">
+                    {BATTERIES_DROPDOWN.map((cat) => (
+                      <div key={cat.id} className="relative group/sub">
+                        <div className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 cursor-pointer transition-colors">
+                          <span className="truncate pr-2">{cat.title}</span>
+                          <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-blue-600 group-hover/sub:translate-x-0.5 transition-all flex-shrink-0" />
+                        </div>
+                        {/* Nested Flyout Menu */}
+                        <div className="hidden group-hover/sub:block absolute top-0 left-full ml-1.5 w-72 bg-white rounded-xl shadow-2xl border border-slate-100 p-2 z-50">
+                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1.5 border-b border-slate-100 mb-1">
+                            {cat.title} Catalogues
+                          </div>
+                          <div className="space-y-0.5 max-h-80 overflow-y-auto">
+                            {cat.items.map((item) => (
+                              <Link
+                                key={item.slug}
+                                to={`/batteries/${item.slug}`}
+                                className="block px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors leading-snug"
+                              >
+                                {item.title}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* 7. CONTACT US */}
             <Link

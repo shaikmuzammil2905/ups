@@ -4,11 +4,13 @@ import { supabase } from '../lib/supabase';
 import { notifyDataUpdated } from '../lib/syncEvents';
 import ConfirmDialog from './components/ConfirmDialog';
 import ImageUpload from './components/ImageUpload';
+import CatalogContentEditor from './components/CatalogContentEditor';
+import { BATTERIES_DROPDOWN } from '../data/catalogsData';
 import {
   BatteryCharging, Plus, Search, Filter, Edit2, Trash2, Eye, Package,
   Save, X, Check, Loader, AlertCircle, ArrowUpDown,
   ToggleLeft, ToggleRight, Star, ExternalLink, Settings,
-  RefreshCw, Battery, Cpu
+  RefreshCw, Battery, Cpu, BookOpen
 } from 'lucide-react';
 
 const BATTERY_CATEGORIES = [
@@ -19,6 +21,7 @@ const BATTERY_CATEGORIES = [
 
 export default function BatteriesManager() {
   const navigate = useNavigate();
+  const [managerTab, setManagerTab] = useState('catalogues'); // 'catalogues' | 'inventory'
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'smf-batteries', 'tubular-batteries', 'lithium-ups-batteries'
   const [products, setProducts] = useState([]);
   const [categoriesMap, setCategoriesMap] = useState({});
@@ -290,8 +293,39 @@ export default function BatteriesManager() {
         </div>
       )}
 
-      {/* Battery Subcategory Tabs */}
-      <div className="flex flex-wrap gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
+      {/* Manager Tab Selector */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-2">
+        <button
+          onClick={() => setManagerTab('catalogues')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${
+            managerTab === 'catalogues'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <BookOpen className="w-4 h-4" />
+          <span>⚡ Batteries Catalogues & Content Editor (3 Categories)</span>
+        </button>
+
+        <button
+          onClick={() => setManagerTab('inventory')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${
+            managerTab === 'inventory'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <Package className="w-4 h-4" />
+          <span>📦 Product Inventory & SKUs ({products.length})</span>
+        </button>
+      </div>
+
+      {managerTab === 'catalogues' ? (
+        <CatalogContentEditor type="batteries" categoriesList={BATTERIES_DROPDOWN} />
+      ) : (
+        <>
+          {/* Battery Subcategory Tabs */}
+          <div className="flex flex-wrap gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
         <button
           onClick={() => setActiveTab('all')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
@@ -532,6 +566,8 @@ export default function BatteriesManager() {
           </table>
         </div>
       </div>
+      </>
+      )}
 
       {/* Edit Category Modal */}
       {isCatModalOpen && (

@@ -22,6 +22,7 @@ import LivkamLogo from './LivkamLogo';
 import { useCategories, useBrands, useServices, useProducts } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { ONLINE_UPS_DROPDOWN, BATTERIES_DROPDOWN } from '../data/catalogsData';
 
 export default function MobileDrawer({ isOpen, onClose }) {
   const categories = useCategories();
@@ -248,35 +249,109 @@ export default function MobileDrawer({ isOpen, onClose }) {
               )}
             </div>
 
-            {/* ONLINE UPS — HIGHLIGHTED HUB */}
-            <Link
-              to="/online-ups"
-              onClick={onClose}
-              className="flex items-center justify-between p-3 rounded-lg text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors"
-            >
-              <span className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-emerald-600 fill-emerald-600" />
-                <span>ONLINE UPS</span>
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-600 text-white">
-                1kVA - 60kVA+
-              </span>
-            </Link>
+            {/* ONLINE UPS ACCORDION (9 Categories with Catalogues) */}
+            <div>
+              <div className="flex items-center justify-between p-3 rounded-lg text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200">
+                <Link
+                  to="/online-ups"
+                  onClick={onClose}
+                  className="flex items-center gap-2 flex-1"
+                >
+                  <Zap className="w-4 h-4 text-[#16a34a] fill-[#16a34a]" />
+                  <span>ONLINE UPS</span>
+                </Link>
+                <button
+                  onClick={() => setOnlineUpsOpen(!onlineUpsOpen)}
+                  className="p-1 text-emerald-700 hover:text-emerald-900"
+                  aria-label="Toggle Online UPS"
+                >
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${onlineUpsOpen ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
 
-            {/* BATTERIES HUB */}
-            <Link
-              to="/batteries"
-              onClick={onClose}
-              className="flex items-center justify-between p-3 rounded-lg text-sm font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-colors"
-            >
-              <span className="flex items-center gap-2">
-                <BatteryCharging className="w-4 h-4 text-blue-600" />
-                <span>BATTERIES</span>
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-600 text-white">
-                SMF / Tubular / LiFePO4
-              </span>
-            </Link>
+              {onlineUpsOpen && (
+                <div className="pl-3 pr-2 py-2 space-y-2 bg-slate-50/80 rounded-lg my-1 max-h-80 overflow-y-auto border border-emerald-100">
+                  <Link
+                    to="/online-ups"
+                    onClick={onClose}
+                    className="block py-1.5 px-2 text-xs font-bold text-[#16a34a] border-b border-slate-200"
+                  >
+                    ⚡ All Online UPS Catalogues Hub →
+                  </Link>
+                  {ONLINE_UPS_DROPDOWN.map((cat) => (
+                    <div key={cat.id} className="pt-1">
+                      <div className="px-2 text-[10px] font-black text-slate-500 uppercase tracking-wider">
+                        {cat.title}
+                      </div>
+                      <div className="space-y-0.5 mt-0.5">
+                        {cat.items.map((item) => (
+                          <Link
+                            key={item.slug}
+                            to={`/online-ups/${item.slug}`}
+                            onClick={onClose}
+                            className="block py-1 px-2 text-xs text-slate-700 hover:text-[#16a34a] hover:bg-emerald-50/50 rounded"
+                          >
+                            • {item.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* BATTERIES ACCORDION (3 Categories with Catalogues) */}
+            <div>
+              <div className="flex items-center justify-between p-3 rounded-lg text-sm font-bold text-blue-800 bg-blue-50 border border-blue-200">
+                <Link
+                  to="/batteries"
+                  onClick={onClose}
+                  className="flex items-center gap-2 flex-1"
+                >
+                  <BatteryCharging className="w-4 h-4 text-blue-600" />
+                  <span>BATTERIES</span>
+                </Link>
+                <button
+                  onClick={() => setBatteriesOpen(!batteriesOpen)}
+                  className="p-1 text-blue-700 hover:text-blue-900"
+                  aria-label="Toggle Batteries"
+                >
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${batteriesOpen ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+
+              {batteriesOpen && (
+                <div className="pl-3 pr-2 py-2 space-y-2 bg-slate-50/80 rounded-lg my-1 max-h-80 overflow-y-auto border border-blue-100">
+                  <Link
+                    to="/batteries"
+                    onClick={onClose}
+                    className="block py-1.5 px-2 text-xs font-bold text-blue-700 border-b border-slate-200"
+                  >
+                    🔋 All Batteries & Buyback Hub →
+                  </Link>
+                  {BATTERIES_DROPDOWN.map((cat) => (
+                    <div key={cat.id} className="pt-1">
+                      <div className="px-2 text-[10px] font-black text-slate-500 uppercase tracking-wider">
+                        {cat.title}
+                      </div>
+                      <div className="space-y-0.5 mt-0.5">
+                        {cat.items.map((item) => (
+                          <Link
+                            key={item.slug}
+                            to={`/batteries/${item.slug}`}
+                            onClick={onClose}
+                            className="block py-1 px-2 text-xs text-slate-700 hover:text-blue-600 hover:bg-blue-50/50 rounded"
+                          >
+                            • {item.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <Link
               to="/posts"

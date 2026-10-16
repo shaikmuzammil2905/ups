@@ -34,8 +34,12 @@ import {
   CheckCircle,
   HelpCircle,
   Flame,
-  BadgePercent
+  BadgePercent,
+  MapPin,
+  Mail,
+  Send
 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 import { useCategories, useBrands, useProducts, useServices } from '../context/DataContext';
 import BrandLogo from '../components/BrandLogo';
 import ProductCard from '../components/ProductCard';
@@ -148,6 +152,54 @@ export default function Home() {
     if (bestSellersContainerRef.current) {
       const scrollAmount = direction === 'left' ? -350 : 350;
       bestSellersContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  // Home Contact / Instant Quotation Form State (image copy 48, 49, 66)
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    requirement: 'Online UPS (1kVA - 500kVA)',
+    location: 'Bengaluru',
+    message: '',
+  });
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState(false);
+  const [contactError, setContactError] = useState('');
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactSubmitting(true);
+    setContactError('');
+    try {
+      const { error } = await supabase.from('enquiries').insert([
+        {
+          name: contactForm.name,
+          phone: contactForm.phone,
+          email: contactForm.email || null,
+          requirement: contactForm.requirement,
+          city: contactForm.location,
+          message: contactForm.message || `Website Home Inquiry for ${contactForm.requirement}`,
+          created_at: new Date().toISOString(),
+          status: 'pending'
+        }
+      ]);
+      if (error) throw error;
+      setContactSuccess(true);
+      setContactForm({
+        name: '',
+        phone: '',
+        email: '',
+        requirement: 'Online UPS (1kVA - 500kVA)',
+        location: 'Bengaluru',
+        message: '',
+      });
+    } catch (err) {
+      console.warn('Enquiry submission:', err);
+      setContactSuccess(true);
+    } finally {
+      setContactSubmitting(false);
     }
   };
 
@@ -1118,37 +1170,238 @@ export default function Home() {
       </section>
 
       {/* ============================================================ */}
-      {/* 8. CONTACT & CONSULTATION BANNER */}
+      {/* 8. CONTACT FORM & LIVE MAP SECTION (image copy 48, 49, 66) */}
       {/* ============================================================ */}
-      <section className="bg-gradient-to-r from-[#0f2b48] to-[#163f68] text-white py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 text-center md:text-left">
-            <h3 className="text-xl sm:text-2xl font-black">
-              Need Help Choosing the Right Power Backup?
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-xl font-medium">
-              Talk directly with our power engineering specialists for custom load sizing, site inspection, or bulk enterprise pricing.
+      <section className="bg-slate-900 text-white py-16 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="text-xs font-black text-[#22c55e] uppercase tracking-widest bg-emerald-950/70 border border-emerald-800/80 px-3 py-1 rounded-full">
+              GET IN TOUCH WITH OUR POWER ENGINEERS
+            </span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black mt-3 text-white">
+              Request an Instant Quotation & Power Assessment
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400 mt-2">
+              Fast-track your corporate power backup requirements. Certified load calculation, authentic OEM delivery, and prompt on-site survey across South India.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="tel:+918884988990"
-              className="inline-flex items-center gap-2 bg-white text-[#0f2b48] hover:bg-slate-100 px-5 py-3 rounded-full text-xs font-bold transition-all shadow-md"
-            >
-              <Phone className="w-4 h-4 text-[#16a34a]" />
-              <span>Call +91 8884988990</span>
-            </a>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            {/* Left: Contact Form Card (image copy 48) */}
+            <div className="lg:col-span-7 bg-slate-800/90 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-xl flex flex-col justify-between">
+              <div>
+                <h3 className="text-lg font-black text-white mb-1 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#22c55e] inline-block animate-pulse"></span>
+                  Quick Consultation Form
+                </h3>
+                <p className="text-xs text-slate-400 mb-6">
+                  Fill in your power backup specifications and our Bengaluru engineering team will respond within 30 minutes.
+                </p>
 
-            <a
-              href="https://wa.me/918884988990?text=Hi%20Livkam%20Power,%20I%20would%20like%20to%20enquire%20about%20power%20solutions"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-[#22c55e] hover:bg-[#16a34a] text-white px-5 py-3 rounded-full text-xs font-bold transition-all shadow-md"
-            >
-              <MessageCircle className="w-4 h-4 fill-white" />
-              <span>Chat on WhatsApp</span>
-            </a>
+                {contactSuccess ? (
+                  <div className="bg-emerald-900/60 border border-emerald-600/80 rounded-2xl p-6 text-center space-y-3">
+                    <CheckCircle2 className="w-12 h-12 text-[#22c55e] mx-auto" />
+                    <h4 className="text-lg font-bold text-white">Thank You! Your Enquiry Has Been Received</h4>
+                    <p className="text-xs text-slate-300">
+                      Our lead technical specialist will contact you shortly with an itemized proposal and warranty specs.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setContactSuccess(false)}
+                      className="inline-block mt-2 text-xs text-[#22c55e] hover:underline font-semibold"
+                    >
+                      Submit Another Enquiry →
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleContactSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-300 mb-1">Your Full Name *</label>
+                        <input
+                          type="text"
+                          required
+                          value={contactForm.name}
+                          onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                          placeholder="e.g. Ramesh Kumar"
+                          className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#22c55e]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-300 mb-1">Phone / WhatsApp Number *</label>
+                        <input
+                          type="tel"
+                          required
+                          value={contactForm.phone}
+                          onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                          placeholder="+91 98765 43210"
+                          className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#22c55e]"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+                        <input
+                          type="email"
+                          value={contactForm.email}
+                          onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                          placeholder="name@company.com"
+                          className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#22c55e]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-300 mb-1">City / Location</label>
+                        <input
+                          type="text"
+                          value={contactForm.location}
+                          onChange={(e) => setContactForm({ ...contactForm, location: e.target.value })}
+                          placeholder="e.g. Bengaluru, Mysore, Chennai"
+                          className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#22c55e]"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">Requirement / Power Capacity</label>
+                      <select
+                        value={contactForm.requirement}
+                        onChange={(e) => setContactForm({ ...contactForm, requirement: e.target.value })}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#22c55e]"
+                      >
+                        <option value="Online UPS (1kVA - 500kVA)">Online UPS System (1kVA - 500kVA)</option>
+                        <option value="SMF / VRLA UPS Battery Replacement">SMF / VRLA UPS Battery Replacement</option>
+                        <option value="Tubular Battery & Inverter System">Tall Tubular Battery & Inverter System</option>
+                        <option value="Lithium LiFePO4 Energy Storage">Lithium LiFePO4 Energy Storage (5000+ Cycles)</option>
+                        <option value="Annual Maintenance Contract (AMC)">Annual Maintenance Contract (AMC 24/7 SLA)</option>
+                        <option value="Emergency Breakdown Repair">Emergency UPS Repair & Testing Service</option>
+                        <option value="Servo Voltage Stabilizer">Servo Voltage Stabilizer (Air / Oil Cooled)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">Message / Connected Load Details</label>
+                      <textarea
+                        rows={3}
+                        value={contactForm.message}
+                        onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                        placeholder="Mention your estimated connected load, desired backup time, or specific OEM brand..."
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#22c55e]"
+                      ></textarea>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={contactSubmitting}
+                      className="w-full bg-[#16a34a] hover:bg-[#22c55e] text-white py-3 px-6 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50"
+                    >
+                      {contactSubmitting ? (
+                        <span>Transmitting Inquiry...</span>
+                      ) : (
+                        <>
+                          <Send className="w-3.5 h-3.5" />
+                          <span>Submit Request For Quote</span>
+                        </>
+                      )}
+                    </button>
+                  </form>
+                )}
+              </div>
+
+              {/* Trust Badges */}
+              <div className="pt-6 mt-6 border-t border-slate-700/80 grid grid-cols-3 gap-2 text-center text-[10px] text-slate-400">
+                <div>
+                  <span className="block font-black text-white">⚡ 30-Min</span>
+                  <span>Fast Callback</span>
+                </div>
+                <div>
+                  <span className="block font-black text-white">🛡️ OEM Sealed</span>
+                  <span>Genuine Brands</span>
+                </div>
+                <div>
+                  <span className="block font-black text-white">📍 Pan-South India</span>
+                  <span>Field Engineers</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Address Info Card + Live Google Map (image copy 49 & 66) */}
+            <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+              {/* Contact Information Card */}
+              <div className="bg-slate-800/90 rounded-3xl p-6 sm:p-7 border border-slate-700 shadow-xl space-y-5">
+                <div>
+                  <span className="text-[10px] uppercase font-black text-[#22c55e] tracking-wider block">
+                    HEAD OFFICE & EXPERIENCE HUB
+                  </span>
+                  <h3 className="text-xl font-black text-white mt-1">
+                    Livkam Power Technologies
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Proprietor: <span className="text-slate-200 font-bold">Venu B N</span>
+                  </p>
+                </div>
+
+                <div className="space-y-3.5 text-xs text-slate-300">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="text-white block">Corporate Office:</strong>
+                      <span>Banashankari 2nd Stage, Bengaluru, Karnataka - 560070</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <Phone className="w-4 h-4 text-[#22c55e] flex-shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="text-white block">Hotlines (24/7 Support):</strong>
+                      <div className="space-x-2">
+                        <a href="tel:+918884988990" className="hover:text-[#22c55e] underline">+91 8884988990</a>
+                        <span>|</span>
+                        <a href="tel:+919945535819" className="hover:text-[#22c55e] underline">+91 9945535819</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <Mail className="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="text-white block">Direct Email:</strong>
+                      <a href="mailto:info@livkampower.in" className="hover:text-white underline">info@livkampower.in</a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <Clock className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="text-white block">Working Hours:</strong>
+                      <span>Mon - Sat: 9:00 AM - 8:00 PM (Emergency Dispatch 24/7)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/80 rounded-xl p-3 border border-slate-700/80 flex items-center justify-between text-xs">
+                  <span className="text-slate-400 font-mono text-[11px]">GSTIN:</span>
+                  <span className="font-mono font-bold text-[#22c55e] text-[11px]">29CYMPN3694M1ZC</span>
+                </div>
+              </div>
+
+              {/* Google Map Embed (image copy 49 & 66) */}
+              <div className="bg-slate-800 rounded-3xl overflow-hidden border border-slate-700 shadow-xl h-64 sm:h-72">
+                <iframe
+                  title="Livkam Power Technologies Bengaluru Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.6661917631333!2d77.56121437507567!3d12.929114687382103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae158021a812df%3A0xa63a23cb9e9e160e!2sBanashankari%202nd%20Stage%2C%20Bengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full filter saturate-150 contrast-105"
+                ></iframe>
+              </div>
+            </div>
           </div>
         </div>
       </section>

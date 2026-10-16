@@ -4,15 +4,18 @@ import { supabase } from '../lib/supabase';
 import { notifyDataUpdated } from '../lib/syncEvents';
 import ConfirmDialog from './components/ConfirmDialog';
 import ImageUpload from './components/ImageUpload';
+import CatalogContentEditor from './components/CatalogContentEditor';
+import { ONLINE_UPS_DROPDOWN } from '../data/catalogsData';
 import {
   Zap, Plus, Search, Filter, Edit2, Trash2, Eye, Package,
   Save, X, Check, Loader, AlertCircle, ArrowUpDown,
   ToggleLeft, ToggleRight, Star, ExternalLink, Settings,
-  ShieldAlert, RefreshCw
+  ShieldAlert, RefreshCw, BookOpen
 } from 'lucide-react';
 
 export default function OnlineUpsManager() {
   const navigate = useNavigate();
+  const [managerTab, setManagerTab] = useState('catalogues'); // 'catalogues' | 'inventory'
   const [products, setProducts] = useState([]);
   const [categoryData, setCategoryData] = useState(null);
   const [brands, setBrands] = useState([]);
@@ -263,8 +266,39 @@ export default function OnlineUpsManager() {
         </div>
       )}
 
-      {/* Online UPS Category Overview Card */}
-      {categoryData && (
+      {/* Manager Tab Selector */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-2">
+        <button
+          onClick={() => setManagerTab('catalogues')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${
+            managerTab === 'catalogues'
+              ? 'bg-[#16a34a] text-white shadow-md'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <BookOpen className="w-4 h-4" />
+          <span>⚡ Online UPS Catalogues & Content Editor (9 Categories)</span>
+        </button>
+
+        <button
+          onClick={() => setManagerTab('inventory')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${
+            managerTab === 'inventory'
+              ? 'bg-[#16a34a] text-white shadow-md'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <Package className="w-4 h-4" />
+          <span>📦 Products & SKU Inventory ({products.length})</span>
+        </button>
+      </div>
+
+      {managerTab === 'catalogues' ? (
+        <CatalogContentEditor type="online-ups" categoriesList={ONLINE_UPS_DROPDOWN} />
+      ) : (
+        <>
+          {/* Online UPS Category Overview Card */}
+          {categoryData && (
         <div className="bg-white rounded-2xl shadow-xs border border-slate-100 p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-5 justify-between">
           <div className="flex items-center gap-4 w-full sm:w-auto">
             <img
@@ -471,6 +505,8 @@ export default function OnlineUpsManager() {
           </table>
         </div>
       </div>
+      </>
+      )}
 
       {/* Edit Category Modal */}
       {isCatModalOpen && (
