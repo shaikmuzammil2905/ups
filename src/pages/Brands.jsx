@@ -39,7 +39,7 @@ export default function Brands() {
             <div>
               {/* Brand Logo Container */}
               <div className="h-20 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center p-4 mb-4 group-hover:scale-105 transition-transform duration-300">
-                <BrandLogo brandId={brand.id} className="h-10" />
+                <BrandLogo brand={brand} brandId={brand.id} className="h-10" />
               </div>
 
               <div className="flex items-center justify-between mb-2">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { notifyDataUpdated } from '../lib/syncEvents';
 import ImageUpload from './components/ImageUpload';
 import ConfirmDialog from './components/ConfirmDialog';
 import {
@@ -87,6 +88,7 @@ export default function AdvertisementsAdmin() {
       if (err) throw err;
       setAds(prev => prev.map(a => a.id === ad.id ? { ...a, is_active: updatedStatus } : a));
       showNotification(`Banner ${updatedStatus ? 'activated' : 'paused'}.`);
+      notifyDataUpdated({ type: 'AD_UPDATED' });
     } catch (err) {
       alert(`Error toggling banner: ${err.message}`);
     }
@@ -121,12 +123,14 @@ export default function AdvertisementsAdmin() {
           .eq('id', editingAd.id);
         if (err) throw err;
         showNotification('Advertisement updated successfully!');
+        notifyDataUpdated({ type: 'AD_SAVED' });
       } else {
         const { error: err } = await supabase
           .from('advertisements')
           .insert({ ...payload, created_at: new Date().toISOString() });
         if (err) throw err;
         showNotification('Advertisement created successfully!');
+        notifyDataUpdated({ type: 'AD_SAVED' });
       }
 
       setIsModalOpen(false);
@@ -150,6 +154,7 @@ export default function AdvertisementsAdmin() {
       setAds(prev => prev.filter(a => a.id !== deleteConfirm.id));
       setDeleteConfirm(null);
       showNotification('Banner deleted.');
+      notifyDataUpdated({ type: 'AD_DELETED' });
     } catch (err) {
       alert(`Delete error: ${err.message}`);
     }

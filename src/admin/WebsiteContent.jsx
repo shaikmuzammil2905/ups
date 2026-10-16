@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { notifyDataUpdated } from '../lib/syncEvents';
 import ImageUpload from './components/ImageUpload';
 import {
   Globe, Shield, Sparkles, Plus, Trash2, Save, Loader,
@@ -86,6 +87,7 @@ export default function WebsiteContentAdmin() {
 
       if (error) throw error;
       setSuccessMsg('Website content saved successfully!');
+      notifyDataUpdated({ type: 'CONTENT_SAVED' });
       setTimeout(() => setSuccessMsg(''), 4000);
     } catch (err) {
       console.error('Save content error:', err);
@@ -113,6 +115,7 @@ export default function WebsiteContentAdmin() {
       setIsSlideModalOpen(false);
       fetchContent();
       setSuccessMsg('Hero slide saved!');
+      notifyDataUpdated({ type: 'HERO_SLIDE_SAVED' });
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (err) {
       alert(`Error saving slide: ${err.message}`);
@@ -126,6 +129,7 @@ export default function WebsiteContentAdmin() {
       if (error) throw error;
       setHeroSlides(prev => prev.filter(s => s.id !== id));
       setSuccessMsg('Hero slide deleted.');
+      notifyDataUpdated({ type: 'HERO_SLIDE_DELETED' });
     } catch (err) {
       alert(`Delete error: ${err.message}`);
     }

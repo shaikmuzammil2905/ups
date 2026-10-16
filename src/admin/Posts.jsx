@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { notifyDataUpdated } from '../lib/syncEvents';
 import ImageUpload from './components/ImageUpload';
 import ConfirmDialog from './components/ConfirmDialog';
 import {
@@ -106,6 +107,7 @@ export default function PostsAdmin() {
       if (err) throw err;
       setPosts(prev => prev.map(p => p.id === post.id ? { ...p, is_published: updatedStatus } : p));
       showNotification(`Post ${updatedStatus ? 'published' : 'hidden'}.`);
+      notifyDataUpdated({ type: 'POST_UPDATED' });
     } catch (err) {
       alert(`Error toggling post: ${err.message}`);
     }
@@ -146,12 +148,14 @@ export default function PostsAdmin() {
           .eq('id', editingPost.id);
         if (err) throw err;
         showNotification('Post updated successfully!');
+        notifyDataUpdated({ type: 'POST_SAVED' });
       } else {
         const { error: err } = await supabase
           .from('posts')
           .insert({ ...payload, created_at: new Date().toISOString() });
         if (err) throw err;
         showNotification('Post created successfully!');
+        notifyDataUpdated({ type: 'POST_SAVED' });
       }
 
       setIsModalOpen(false);
@@ -175,6 +179,7 @@ export default function PostsAdmin() {
       setPosts(prev => prev.filter(p => p.id !== deleteConfirm.id));
       setDeleteConfirm(null);
       showNotification('Post deleted.');
+      notifyDataUpdated({ type: 'POST_DELETED' });
     } catch (err) {
       alert(`Delete error: ${err.message}`);
     }

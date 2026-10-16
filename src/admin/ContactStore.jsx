@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { notifyDataUpdated } from '../lib/syncEvents';
 import {
   MapPin, Phone, Mail, Clock, Shield, Globe, Save, Loader,
   Check, MessageSquare, ExternalLink, Building
@@ -73,6 +74,7 @@ export default function ContactStoreAdmin() {
 
       if (error) throw error;
       setSuccessMsg('Store information updated successfully!');
+      notifyDataUpdated({ type: 'SETTINGS_SAVED' });
       setTimeout(() => setSuccessMsg(''), 4000);
     } catch (err) {
       console.error('Save settings error:', err);

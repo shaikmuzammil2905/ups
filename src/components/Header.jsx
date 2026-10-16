@@ -111,6 +111,7 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
 
           {/* Center Navigation Links (Desktop) */}
           <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+            {/* 1. HOME */}
             <Link
               to="/"
               className={`px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
@@ -122,182 +123,19 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               Home
             </Link>
 
-            {/* Online UPS Dropdown */}
-            <div 
-              className="relative"
-              onMouseEnter={() => setUpsOpen(true)}
-              onMouseLeave={() => setUpsOpen(false)}
+            {/* 2. ABOUT US */}
+            <Link
+              to="/about"
+              className={`px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
+                location.pathname === '/about' 
+                  ? 'text-[#16a34a] border-b-2 border-[#16a34a] rounded-none' 
+                  : 'text-[#0f2b48] hover:text-[#16a34a]'
+              }`}
             >
-              <Link
-                to="/category/online-ups"
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
-                  location.pathname === '/category/online-ups' || location.pathname === '/category/small-backups'
-                    ? 'text-[#16a34a] border-b-2 border-[#16a34a] rounded-none'
-                    : 'text-[#0f2b48] hover:text-[#16a34a]'
-                }`}
-              >
-                <Zap className="w-3.5 h-3.5 text-[#16a34a]" />
-                <span>Online UPS</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${upsOpen ? 'rotate-180 text-[#16a34a]' : ''}`} />
-              </Link>
+              About Us
+            </Link>
 
-              {upsOpen && (
-                <div className="absolute top-full left-0 w-80 bg-white rounded-xl shadow-2xl border border-slate-100 p-3 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                  <div className="p-2 border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                    <span>Online UPS Systems</span>
-                    <span className="text-[10px] bg-emerald-100 text-[#16a34a] px-1.5 py-0.5 rounded font-bold">1kVA - 200kVA</span>
-                  </div>
-
-                  <div className="py-2 space-y-1">
-                    <Link
-                      to="/category/online-ups"
-                      className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 transition-colors group"
-                    >
-                      <Zap className="w-4 h-4 text-[#16a34a] mt-0.5 flex-shrink-0" />
-                      <div>
-                        <div className="text-xs font-bold text-slate-800 group-hover:text-[#16a34a]">
-                          Online UPS (1kVA - 200kVA)
-                        </div>
-                        <div className="text-[11px] text-slate-500">
-                          Pure sine wave for IT, servers & hospitals
-                        </div>
-                      </div>
-                    </Link>
-
-                    <Link
-                      to="/category/small-backups"
-                      className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 transition-colors group"
-                    >
-                      <Cpu className="w-4 h-4 text-sky-600 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <div className="text-xs font-bold text-slate-800 group-hover:text-[#16a34a]">
-                          Small Backups (600VA - 2kVA)
-                        </div>
-                        <div className="text-[11px] text-slate-500">
-                          Compact backup for desktops, CCTV & routers
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-100 bg-slate-50/50 p-2 rounded-lg">
-                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-1.5">Authorized Brands</div>
-                    <div className="flex flex-wrap gap-1 text-[11px] font-medium text-slate-700">
-                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded">APC</span>
-                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded">Vertiv</span>
-                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded">Delta</span>
-                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded">Numeric</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 text-center">
-                    <Link
-                      to="/category/online-ups"
-                      className="block text-xs font-bold text-[#16a34a] hover:underline py-1"
-                    >
-                      View All Online UPS Products →
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Batteries Dropdown */}
-            <div 
-              className="relative"
-              onMouseEnter={() => setBatteriesOpen(true)}
-              onMouseLeave={() => setBatteriesOpen(false)}
-            >
-              <Link
-                to="/category/smf-batteries"
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
-                  location.pathname.includes('batteries')
-                    ? 'text-blue-600 border-b-2 border-blue-600 rounded-none'
-                    : 'text-[#0f2b48] hover:text-[#16a34a]'
-                }`}
-              >
-                <BatteryCharging className="w-3.5 h-3.5 text-blue-600" />
-                <span>Batteries</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${batteriesOpen ? 'rotate-180 text-blue-600' : ''}`} />
-              </Link>
-
-              {batteriesOpen && (
-                <div className="absolute top-full left-0 w-80 bg-white rounded-xl shadow-2xl border border-slate-100 p-3 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                  <div className="p-2 border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                    <span>Industrial & UPS Batteries</span>
-                    <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold">12V 7Ah - 200Ah</span>
-                  </div>
-
-                  <div className="py-2 space-y-1">
-                    <Link
-                      to="/category/smf-batteries"
-                      className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 transition-colors group"
-                    >
-                      <BatteryCharging className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <div className="text-xs font-bold text-slate-800 group-hover:text-blue-600">
-                          SMF VRLA Batteries
-                        </div>
-                        <div className="text-[11px] text-slate-500">
-                          Maintenance-free sealed batteries for UPS
-                        </div>
-                      </div>
-                    </Link>
-
-                    <Link
-                      to="/category/tubular-batteries"
-                      className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 transition-colors group"
-                    >
-                      <BatteryCharging className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <div className="text-xs font-bold text-slate-800 group-hover:text-blue-600">
-                          Tubular Deep Cycle Batteries
-                        </div>
-                        <div className="text-[11px] text-slate-500">
-                          Long backup for heavy home use & inverters
-                        </div>
-                      </div>
-                    </Link>
-
-                    <Link
-                      to="/category/lithium-ups-batteries"
-                      className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 transition-colors group"
-                    >
-                      <Cpu className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <div className="text-xs font-bold text-slate-800 group-hover:text-blue-600">
-                          Lithium UPS & Storage
-                        </div>
-                        <div className="text-[11px] text-slate-500">
-                          LiFePO4 ultra-fast charging energy storage
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-100 bg-slate-50/50 p-2 rounded-lg">
-                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-1.5">Authorized Brands</div>
-                    <div className="flex flex-wrap gap-1 text-[11px] font-medium text-slate-700">
-                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded">Exide</span>
-                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded">Amaron</span>
-                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded">Quanta</span>
-                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded">Luminous</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 text-center">
-                    <Link
-                      to="/category/smf-batteries"
-                      className="block text-xs font-bold text-blue-600 hover:underline py-1"
-                    >
-                      View All Battery Products →
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Products Mega Dropdown */}
+            {/* 3. PRODUCTS MEGA DROPDOWN */}
             <div 
               className="relative"
               onMouseEnter={() => setProductsOpen(true)}
@@ -317,22 +155,32 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
 
               {/* Mega Menu Overlay */}
               {productsOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[720px] bg-white rounded-xl shadow-2xl border border-slate-100 p-6 grid grid-cols-3 gap-6 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                  {/* Col 1: UPS & Batteries */}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[760px] bg-white rounded-2xl shadow-2xl border border-slate-100 p-6 grid grid-cols-3 gap-6 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                  {/* Col 1: UPS Systems */}
                   <div className="space-y-4">
                     <div>
                       <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <Zap className="w-3.5 h-3.5 text-[#16a34a]" /> Online UPS
+                        <Zap className="w-3.5 h-3.5 text-[#16a34a]" /> Online & Offline UPS
                       </h4>
-                      <ul className="space-y-1.5 text-sm">
+                      <ul className="space-y-1.5 text-xs">
                         <li>
-                          <Link to="/category/online-ups" className="text-slate-700 hover:text-[#16a34a] font-medium block py-0.5">
-                            Online UPS (1kVA - 200kVA)
+                          <Link to="/online-ups" className="text-slate-800 hover:text-[#16a34a] font-semibold block py-0.5">
+                            Online UPS (1kVA - 500kVA)
                           </Link>
                         </li>
                         <li>
-                          <Link to="/category/small-backups" className="text-slate-700 hover:text-[#16a34a] font-medium block py-0.5">
-                            Small Backups (600VA - 2kVA)
+                          <Link to="/category/small-backups" className="text-slate-600 hover:text-[#16a34a] font-medium block py-0.5">
+                            Offline & Line Interactive UPS
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/online-ups" className="text-slate-600 hover:text-[#16a34a] font-medium block py-0.5">
+                            Industrial & Three-Phase UPS
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/online-ups" className="text-slate-600 hover:text-[#16a34a] font-medium block py-0.5">
+                            Modular & Rackmount UPS
                           </Link>
                         </li>
                       </ul>
@@ -340,38 +188,48 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
 
                     <div className="pt-2 border-t border-slate-100">
                       <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <BatteryCharging className="w-3.5 h-3.5 text-blue-600" /> Batteries
+                        <HomeIcon className="w-3.5 h-3.5 text-amber-500" /> Inverters & Solar
                       </h4>
-                      <ul className="space-y-1.5 text-sm">
+                      <ul className="space-y-1.5 text-xs">
+                        <li>
+                          <Link to="/category/home-inverter" className="text-slate-700 hover:text-[#16a34a] font-medium block py-0.5">
+                            Pure Sine Wave Home Inverters
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Col 2: Batteries & Power Protection */}
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <BatteryCharging className="w-3.5 h-3.5 text-blue-600" /> UPS Batteries
+                      </h4>
+                      <ul className="space-y-1.5 text-xs">
+                        <li>
+                          <Link to="/batteries" className="text-blue-700 hover:underline font-bold block py-0.5">
+                            All Batteries & Buyback Hub
+                          </Link>
+                        </li>
                         <li>
                           <Link to="/category/smf-batteries" className="text-slate-700 hover:text-[#16a34a] font-medium block py-0.5">
-                            SMF VRLA Batteries
+                            SMF / VRLA Batteries (AGM)
                           </Link>
                         </li>
                         <li>
                           <Link to="/category/tubular-batteries" className="text-slate-700 hover:text-[#16a34a] font-medium block py-0.5">
-                            Tubular Deep Cycle Batteries
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Col 2: Inverters & Lithium */}
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <HomeIcon className="w-3.5 h-3.5 text-amber-500" /> Home Inverters
-                      </h4>
-                      <ul className="space-y-1.5 text-sm">
-                        <li>
-                          <Link to="/category/home-inverter" className="text-slate-700 hover:text-[#16a34a] font-medium block py-0.5">
-                            Pure Sine Wave Inverters
+                            Tubular Deep-Cycle Batteries
                           </Link>
                         </li>
                         <li>
                           <Link to="/category/lithium-ups-batteries" className="text-slate-700 hover:text-[#16a34a] font-medium block py-0.5">
-                            Lithium UPS & Storage
+                            Lithium LiFePO4 Energy Storage
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/batteries" className="text-slate-600 hover:text-[#16a34a] font-medium block py-0.5">
+                            Battery Banks & Tiered Racks
                           </Link>
                         </li>
                       </ul>
@@ -379,41 +237,55 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
 
                     <div className="pt-2 border-t border-slate-100">
                       <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <ShieldAlert className="w-3.5 h-3.5 text-emerald-600" /> Power Protection
+                        <ShieldAlert className="w-3.5 h-3.5 text-emerald-600" /> Voltage Stabilizers
                       </h4>
-                      <ul className="space-y-1.5 text-sm">
+                      <ul className="space-y-1.5 text-xs">
                         <li>
                           <Link to="/category/stabilizer" className="text-slate-700 hover:text-[#16a34a] font-medium block py-0.5">
-                            Automatic Voltage Stabilizers
+                            Servo & Static Stabilizers
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/category/stabilizer" className="text-slate-700 hover:text-[#16a34a] font-medium block py-0.5">
+                            Power Protection Solutions
                           </Link>
                         </li>
                       </ul>
                     </div>
                   </div>
 
-                  {/* Col 3: Quick Promo Box */}
-                  <div className="bg-gradient-to-br from-[#0f2b48] to-[#1a3d60] rounded-lg p-5 text-white flex flex-col justify-between">
+                  {/* Col 3: Promoted Card */}
+                  <div className="bg-gradient-to-br from-[#0f2b48] to-[#1a3d60] rounded-xl p-5 text-white flex flex-col justify-between">
                     <div>
                       <span className="text-[10px] font-bold uppercase tracking-wider bg-[#16a34a] px-2 py-0.5 rounded text-white inline-block mb-2">
-                        500+ Products
+                        Livkam Power
                       </span>
-                      <h4 className="font-bold text-base leading-snug">Business Partner</h4>
-                      <p className="text-xs text-slate-300 mt-1">
-                        APC, Vertiv, Exide, Amaron & Luminous genuine power products with factory warranty.
+                      <h4 className="font-bold text-sm leading-snug">Authorized Business Partner</h4>
+                      <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                        APC, Vertiv, Delta, Numeric, Exide & Amaron Quanta factory-sealed genuine products.
                       </p>
                     </div>
-                    <Link
-                      to="/products"
-                      className="mt-4 inline-flex items-center justify-center gap-1.5 bg-white text-[#0f2b48] hover:bg-[#16a34a] hover:text-white px-3 py-2 rounded-md text-xs font-bold transition-colors"
-                    >
-                      Browse All Products
-                    </Link>
+                    <div className="space-y-2 pt-4">
+                      <Link
+                        to="/online-ups"
+                        className="w-full inline-flex items-center justify-center gap-1.5 bg-[#16a34a] hover:bg-green-600 text-white px-3 py-2 rounded-lg text-xs font-bold transition-colors"
+                      >
+                        <Zap className="w-3.5 h-3.5" />
+                        <span>Online UPS Section</span>
+                      </Link>
+                      <Link
+                        to="/products"
+                        className="w-full inline-flex items-center justify-center gap-1.5 bg-white text-[#0f2b48] hover:bg-slate-100 px-3 py-2 rounded-lg text-xs font-bold transition-colors"
+                      >
+                        <span>All Products Directory</span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Brands Dropdown */}
+            {/* 4. BRANDS DROPDOWN */}
             <div 
               className="relative"
               onMouseEnter={() => setBrandsOpen(true)}
@@ -434,17 +306,17 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               {brandsOpen && (
                 <div className="absolute top-full left-0 w-64 bg-white rounded-xl shadow-2xl border border-slate-100 p-2 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
                   <div className="p-2 border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                    Authorized Brand Partners
+                    Authorized OEM Brand Partners
                   </div>
                   <div className="py-1 max-h-72 overflow-y-auto">
                     {brands.map((brand) => (
                       <Link
                         key={brand.id}
                         to={`/brands/${brand.slug}`}
-                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#16a34a] transition-colors"
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-[#16a34a] transition-colors"
                       >
-                        <span>{brand.name}</span>
-                        <span className="text-[10px] text-slate-400">{brand.popularCategories?.length || 2}+ lines</span>
+                        <span className="font-bold">{brand.name}</span>
+                        <span className="text-[10px] text-slate-400">{brand.country || 'India'}</span>
                       </Link>
                     ))}
                   </div>
@@ -460,19 +332,7 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               )}
             </div>
 
-            {/* About Us */}
-            <Link
-              to="/about"
-              className={`px-3 py-2 text-sm font-semibold transition-colors ${
-                location.pathname === '/about' 
-                  ? 'text-[#16a34a] border-b-2 border-[#16a34a] rounded-none' 
-                  : 'text-[#0f2b48] hover:text-[#16a34a]'
-              }`}
-            >
-              About Us
-            </Link>
-
-            {/* Services Dropdown */}
+            {/* 5. SERVICES DROPDOWN */}
             <div 
               className="relative"
               onMouseEnter={() => setServicesOpen(true)}
@@ -491,56 +351,77 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               </Link>
 
               {servicesOpen && (
-                <div className="absolute top-full left-0 w-72 bg-white rounded-xl shadow-2xl border border-slate-100 p-2 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                  <div className="p-2 border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                    Engineering & Maintenance
+                <div className="absolute top-full left-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 p-3 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                  <div className="p-2 border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                    <span>Power Engineering Services</span>
+                    <span className="text-[10px] bg-emerald-100 text-[#16a34a] px-1.5 py-0.5 rounded font-bold">24/7 SLA</span>
                   </div>
-                  <div className="py-1">
-                    {services.slice(0, 6).map((srv) => (
-                      <Link
-                        key={srv.id}
-                        to={`/services/${srv.slug}`}
-                        className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-[#16a34a] transition-colors"
-                      >
-                        <Wrench className="w-3.5 h-3.5 text-[#16a34a]" />
-                        <span>{srv.title}</span>
-                      </Link>
-                    ))}
+                  <div className="py-2 space-y-1 text-xs">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase px-2 pt-1">Group A: Installation</div>
+                    <Link to="/services/ups-installation" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#16a34a]">
+                      <Wrench className="w-3.5 h-3.5 text-[#16a34a]" />
+                      <span>UPS Installation & Commissioning</span>
+                    </Link>
+                    <Link to="/services/site-inspection" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#16a34a]">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#16a34a]" />
+                      <span>Site Inspection & Load Assessment</span>
+                    </Link>
+                    
+                    <div className="text-[10px] font-bold text-slate-400 uppercase px-2 pt-2 border-t border-slate-100">Group B: Maintenance & AMC</div>
+                    <Link to="/services/amc-maintenance" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-blue-600">
+                      <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                      <span>Annual Maintenance Contracts (AMC)</span>
+                    </Link>
+                    <Link to="/services/ups-repair" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-blue-600">
+                      <Wrench className="w-3.5 h-3.5 text-blue-600" />
+                      <span>Emergency UPS Repair (24/7)</span>
+                    </Link>
+
+                    <div className="text-[10px] font-bold text-slate-400 uppercase px-2 pt-2 border-t border-slate-100">Group C: Battery Support</div>
+                    <Link to="/services/battery-replacement" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-purple-600">
+                      <BatteryCharging className="w-3.5 h-3.5 text-purple-600" />
+                      <span>Battery Replacement & Buyback</span>
+                    </Link>
+                    <Link to="/services/battery-maintenance-testing" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-purple-600">
+                      <Activity className="w-3.5 h-3.5 text-purple-600" />
+                      <span>Battery Health Testing & Impedance</span>
+                    </Link>
                   </div>
-                  <div className="pt-2 border-t border-slate-100">
+                  <div className="pt-2 border-t border-slate-100 text-center">
                     <Link
                       to="/services"
-                      className="block text-center text-xs font-bold text-[#16a34a] hover:underline py-1"
+                      className="block text-xs font-bold text-[#16a34a] hover:underline py-1"
                     >
-                      View All 8 Services →
+                      View All 9 Engineering Services →
                     </Link>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Posts / Blog */}
+            {/* 6. ONLINE UPS (PROMINENT DEDICATED NAV ITEM) */}
             <Link
-              to="/posts"
-              className={`px-3 py-2 text-sm font-semibold transition-colors ${
-                location.pathname.startsWith('/posts') 
-                  ? 'text-[#16a34a] border-b-2 border-[#16a34a] rounded-none' 
-                  : 'text-[#0f2b48] hover:text-[#16a34a]'
+              to="/online-ups"
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
+                location.pathname === '/online-ups'
+                  ? 'bg-[#16a34a] text-white shadow-md'
+                  : 'bg-emerald-50 text-[#16a34a] hover:bg-[#16a34a] hover:text-white border border-emerald-200'
               }`}
             >
-              Posts
+              <Zap className="w-3.5 h-3.5" />
+              <span>ONLINE UPS</span>
             </Link>
 
-            {/* Contact */}
+            {/* 7. CONTACT US */}
             <Link
               to="/contact"
-              className={`px-3 py-2 text-sm font-semibold transition-colors ${
+              className={`px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
                 location.pathname === '/contact' 
                   ? 'text-[#16a34a] border-b-2 border-[#16a34a] rounded-none' 
                   : 'text-[#0f2b48] hover:text-[#16a34a]'
               }`}
             >
-              Contact
+              Contact Us
             </Link>
           </nav>
 

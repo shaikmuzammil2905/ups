@@ -25,12 +25,46 @@ const DEFAULT_SETTINGS = {
 };
 
 export function DataProvider({ children }) {
-  const [products, setProducts] = useState(staticProducts);
-  const [categories, setCategories] = useState(staticCategories);
-  const [brands, setBrands] = useState(staticBrands);
-  const [services, setServices] = useState(staticServices);
+  const [products, setProducts] = useState(() => {
+    try {
+      const cached = localStorage.getItem('livkam_cached_products');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return staticProducts;
+  });
+
+  const [categories, setCategories] = useState(() => {
+    try {
+      const cached = localStorage.getItem('livkam_cached_categories');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return staticCategories;
+  });
+
+  const [brands, setBrands] = useState(() => {
+    try {
+      const cached = localStorage.getItem('livkam_cached_brands');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return staticBrands;
+  });
+
+  const [services, setServices] = useState(() => {
+    try {
+      const cached = localStorage.getItem('livkam_cached_services');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return staticServices;
+  });
+
   const [posts, setPosts] = useState(staticPosts);
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+  const [settings, setSettings] = useState(() => {
+    try {
+      const cached = localStorage.getItem('livkam_cached_settings');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return DEFAULT_SETTINGS;
+  });
   const [advertisements, setAdvertisements] = useState([]);
   const [heroSlides, setHeroSlides] = useState([]);
   const [isLiveConnected, setIsLiveConnected] = useState(false);
@@ -96,6 +130,7 @@ export function DataProvider({ children }) {
         });
 
         setProducts(mergedProducts);
+        try { localStorage.setItem('livkam_cached_products', JSON.stringify(mergedProducts)); } catch (_) {}
       }
 
       // 2. Fetch Categories
@@ -115,7 +150,7 @@ export function DataProvider({ children }) {
             imageUrl: catImg,
             image: catImg,
             image_url: catImg,
-            bannerUrl: c.banner_url || c.bannerUrl,
+            bannerUrl: c.banner_url || c.bannerUrl || catImg,
             fallbackIcon: c.fallback_icon || c.fallbackIcon || 'Zap',
           };
         });
@@ -134,6 +169,7 @@ export function DataProvider({ children }) {
         });
 
         setCategories(mergedCategories);
+        try { localStorage.setItem('livkam_cached_categories', JSON.stringify(mergedCategories)); } catch (_) {}
       }
 
       // 3. Fetch Brands
@@ -144,18 +180,24 @@ export function DataProvider({ children }) {
         .order('display_order', { ascending: true });
 
       if (!bErr && dbBrands && dbBrands.length > 0) {
-        const formatted = dbBrands.map(b => ({
-          ...b,
-          fullName: b.full_name || b.fullName,
-          logoText: b.logo_text || b.logoText,
-          subText: b.sub_text || b.subText,
-          authorizedPartner: b.authorized_partner ?? b.authorizedPartner,
-          popularCategories: b.popular_categories || b.popularCategories || [],
-          bannerUrl: b.banner_url || b.bannerUrl,
-          image: b.logo_url || b.image_url || b.image || b.banner_url,
-          logo: b.logo_url || b.image_url || b.image,
-        }));
+        const formatted = dbBrands.map(b => {
+          const img = b.logo_url || b.banner_url || b.image_url || b.logo || b.image || '';
+          return {
+            ...b,
+            fullName: b.full_name || b.fullName || b.name,
+            logoText: b.logo_text || b.logoText || b.name,
+            subText: b.sub_text || b.subText || '',
+            authorizedPartner: b.authorized_partner ?? b.authorizedPartner,
+            popularCategories: b.popular_categories || b.popularCategories || [],
+            bannerUrl: b.banner_url || b.bannerUrl || img,
+            logoUrl: b.logo_url || img,
+            image: img,
+            logo: img,
+            color: b.color || '#0284c7',
+          };
+        });
         setBrands(formatted);
+        try { localStorage.setItem('livkam_cached_brands', JSON.stringify(formatted)); } catch (_) {}
       }
 
       // 4. Fetch Services
@@ -179,6 +221,7 @@ export function DataProvider({ children }) {
           banner: s.image_url || s.banner || s.image || s.imageUrl,
         }));
         setServices(formatted);
+        try { localStorage.setItem('livkam_cached_services', JSON.stringify(formatted)); } catch (_) {}
       }
 
       // 5. Fetch Posts
@@ -206,6 +249,7 @@ export function DataProvider({ children }) {
           if (s.key in merged) merged[s.key] = s.value;
         });
         setSettings(merged);
+        try { localStorage.setItem('livkam_cached_settings', JSON.stringify(merged)); } catch (_) {}
       }
 
       // 7. Fetch Advertisements

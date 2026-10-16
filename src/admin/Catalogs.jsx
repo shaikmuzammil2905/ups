@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { notifyDataUpdated } from '../lib/syncEvents';
 import ImageUpload from './components/ImageUpload';
 import ConfirmDialog from './components/ConfirmDialog';
 import {
@@ -75,6 +76,7 @@ export default function CatalogsAdmin() {
       if (err) throw err;
       setCatalogs(prev => prev.map(c => c.id === cat.id ? { ...c, is_active: updated } : c));
       showNotification(`Catalog ${updated ? 'activated' : 'hidden'}.`);
+      notifyDataUpdated({ type: 'CATALOG_UPDATED' });
     } catch (err) {
       alert(`Error toggling catalog: ${err.message}`);
     }
@@ -107,12 +109,14 @@ export default function CatalogsAdmin() {
           .eq('id', editingCatalog.id);
         if (err) throw err;
         showNotification('Catalog updated!');
+        notifyDataUpdated({ type: 'CATALOG_SAVED' });
       } else {
         const { error: err } = await supabase
           .from('catalogs')
           .insert({ ...payload, created_at: new Date().toISOString() });
         if (err) throw err;
         showNotification('Catalog added!');
+        notifyDataUpdated({ type: 'CATALOG_SAVED' });
       }
 
       setIsModalOpen(false);
@@ -136,6 +140,7 @@ export default function CatalogsAdmin() {
       setCatalogs(prev => prev.filter(c => c.id !== deleteConfirm.id));
       setDeleteConfirm(null);
       showNotification('Catalog deleted.');
+      notifyDataUpdated({ type: 'CATALOG_DELETED' });
     } catch (err) {
       alert(`Delete error: ${err.message}`);
     }

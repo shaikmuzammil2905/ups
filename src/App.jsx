@@ -34,6 +34,8 @@ import SearchPage from './pages/SearchPage';
 import Account from './pages/Account';
 import NotFound from './pages/NotFound';
 import APCPage from './pages/APCPage';
+import OnlineUps from './pages/OnlineUps';
+import Batteries from './pages/Batteries';
 
 // Admin CMS Components & Modules
 import AdminProtectedRoute from './admin/AdminProtectedRoute';
@@ -340,6 +342,8 @@ function MainLayout() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/online-ups" element={<OnlineUps />} />
+          <Route path="/batteries" element={<Batteries />} />
           <Route path="/products/online-ups/apc" element={<APCPage />} />
           <Route path="/account" element={<Account />} />
           <Route path="*" element={<NotFound />} />

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import ImageUpload from './components/ImageUpload';
+import { notifyDataUpdated } from '../lib/syncEvents';
 import ConfirmDialog from './components/ConfirmDialog';
 import {
   Plus, Search, Edit2, Trash2, Building2, Save, X, Loader,
-  AlertCircle, Check, Award, ExternalLink, Globe
+  AlertCircle, Check, Award, ExternalLink, Globe, Image
 } from 'lucide-react';
 
 const DEFAULT_FORM = {
@@ -17,6 +18,7 @@ const DEFAULT_FORM = {
   color: '#0284c7',
   description: '',
   banner_url: '',
+  logo_url: '',
   authorized_partner: true,
   established: '',
   country: 'India',
@@ -111,6 +113,7 @@ export default function BrandsAdmin() {
       if (err) throw err;
       setBrands(prev => prev.map(b => b.id === brand.id ? { ...b, authorized_partner: updatedStatus } : b));
       showNotification(`Brand "${brand.name}" partner badge updated.`);
+      notifyDataUpdated({ type: 'BRAND_UPDATED', brandId: brand.id });
     } catch (err) {
       alert(`Error toggling partner status: ${err.message}`);
     }
@@ -130,6 +133,8 @@ export default function BrandsAdmin() {
       ? formData.popular_categories.split(',').map(s => s.trim()).filter(Boolean)
       : formData.popular_categories;
 
+    const imgUrl = (formData.banner_url || formData.logo_url || '').trim();
+
     setFormLoading(true);
     try {
       const payload = {
@@ -140,7 +145,8 @@ export default function BrandsAdmin() {
         sub_text: formData.sub_text?.trim() || '',
         color: formData.color || '#0284c7',
         description: formData.description || '',
-        banner_url: formData.banner_url || '',
+        banner_url: imgUrl,
+        logo_url: imgUrl,
         authorized_partner: formData.authorized_partner,
         established: formData.established ? String(formData.established) : '',
         country: formData.country || 'India',
@@ -157,12 +163,14 @@ export default function BrandsAdmin() {
           .eq('id', editingBrand.id);
         if (err) throw err;
         showNotification('Brand updated successfully!');
+        notifyDataUpdated({ type: 'BRAND_SAVED', brandId: editingBrand.id });
       } else {
         const { error: err } = await supabase
           .from('brands')
           .insert({ id: brandId, ...payload, created_at: new Date().toISOString() });
         if (err) throw err;
         showNotification('Brand created successfully!');
+        notifyDataUpdated({ type: 'BRAND_SAVED', brandId });
       }
 
       setIsModalOpen(false);
@@ -185,6 +193,7 @@ export default function BrandsAdmin() {
       if (err) throw err;
       showNotification(`Brand "${deleteConfirm.name}" deleted.`);
       setBrands(prev => prev.filter(b => b.id !== deleteConfirm.id));
+      notifyDataUpdated({ type: 'BRAND_DELETED', brandId: deleteConfirm.id });
       setDeleteConfirm(null);
     } catch (err) {
       alert(`Delete error: ${err.message}`);

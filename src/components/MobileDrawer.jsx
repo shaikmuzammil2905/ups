@@ -90,30 +90,43 @@ export default function MobileDrawer({ isOpen, onClose }) {
               onClick={onClose}
               className="flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
             >
-              <span>Home</span>
+              <span className="flex items-center gap-2">
+                <Home className="w-4 h-4 text-slate-500" />
+                <span>Home</span>
+              </span>
             </Link>
 
             <Link
-              to="/products"
+              to="/about"
               onClick={onClose}
               className="flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
             >
-              <span>All Products</span>
-              <span className="text-xs bg-emerald-100 text-[#16a34a] px-2 py-0.5 rounded-full font-bold">500+</span>
+              <span>About Us</span>
             </Link>
 
-            {/* Categories Accordion */}
+            {/* Products Accordion */}
             <div>
               <button
                 onClick={() => setCategoriesOpen(!categoriesOpen)}
                 className="w-full flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
               >
-                <span>Categories</span>
+                <span className="flex items-center gap-2">
+                  <Tag className="w-4 h-4 text-slate-500" />
+                  <span>Products</span>
+                </span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${categoriesOpen ? 'rotate-180 text-[#16a34a]' : ''}`} />
               </button>
 
               {categoriesOpen && (
                 <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1">
+                  <Link
+                    to="/products"
+                    onClick={onClose}
+                    className="flex items-center justify-between py-2 px-2 text-xs font-bold text-[#16a34a]"
+                  >
+                    <span>⚡ Browse All Products (500+)</span>
+                    <ChevronRight className="w-3 h-3 text-[#16a34a]" />
+                  </Link>
                   {categories.map((cat) => (
                     <Link
                       key={cat.id}
@@ -131,134 +144,6 @@ export default function MobileDrawer({ isOpen, onClose }) {
                     className="block py-2 text-center text-xs font-bold text-[#16a34a] hover:underline"
                   >
                     View All Categories →
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Online UPS Accordion */}
-            <div>
-              <button
-                onClick={() => setOnlineUpsOpen(!onlineUpsOpen)}
-                className="w-full flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
-              >
-                <span className="flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-[#16a34a]" />
-                  <span>Online UPS</span>
-                </span>
-                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${onlineUpsOpen ? 'rotate-180 text-[#16a34a]' : ''}`} />
-              </button>
-
-              {onlineUpsOpen && (
-                <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1 max-h-72 overflow-y-auto">
-                  <div className="px-2 pt-1 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                    Categories
-                  </div>
-                  <Link
-                    to="/category/online-ups"
-                    onClick={onClose}
-                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-[#16a34a]"
-                  >
-                    <span>⚡ Online UPS (1kVA - 200kVA)</span>
-                    <ChevronRight className="w-3 h-3 text-slate-400" />
-                  </Link>
-                  <Link
-                    to="/category/small-backups"
-                    onClick={onClose}
-                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-[#16a34a]"
-                  >
-                    <span>🖥️ Small Backups (600VA - 2kVA)</span>
-                    <ChevronRight className="w-3 h-3 text-slate-400" />
-                  </Link>
-
-                  <div className="px-2 pt-2 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-t border-slate-200/60 mt-1">
-                    Featured UPS Models
-                  </div>
-                  {products.filter(p => p.categoryId === 'online-ups' || p.categoryId === 'small-backups').slice(0, 6).map((prod) => (
-                    <Link
-                      key={prod.id}
-                      to={`/products/${prod.slug}`}
-                      onClick={onClose}
-                      className="flex items-center justify-between py-1.5 px-2 text-xs font-medium text-slate-600 hover:text-[#16a34a]"
-                    >
-                      <span className="truncate pr-2">{prod.name}</span>
-                      <ChevronRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
-                    </Link>
-                  ))}
-                  <Link
-                    to="/category/online-ups"
-                    onClick={onClose}
-                    className="block py-2 text-center text-xs font-bold text-[#16a34a] hover:underline border-t border-slate-200/60 mt-1"
-                  >
-                    View All Online UPS →
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Batteries Accordion */}
-            <div>
-              <button
-                onClick={() => setBatteriesOpen(!batteriesOpen)}
-                className="w-full flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
-              >
-                <span className="flex items-center gap-2">
-                  <BatteryCharging className="w-4 h-4 text-blue-600" />
-                  <span>Batteries</span>
-                </span>
-                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${batteriesOpen ? 'rotate-180 text-blue-600' : ''}`} />
-              </button>
-
-              {batteriesOpen && (
-                <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1 max-h-72 overflow-y-auto">
-                  <div className="px-2 pt-1 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                    Battery Categories
-                  </div>
-                  <Link
-                    to="/category/smf-batteries"
-                    onClick={onClose}
-                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-blue-600"
-                  >
-                    <span>🔋 SMF VRLA Batteries</span>
-                    <ChevronRight className="w-3 h-3 text-slate-400" />
-                  </Link>
-                  <Link
-                    to="/category/tubular-batteries"
-                    onClick={onClose}
-                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-blue-600"
-                  >
-                    <span>⚡ Tubular Deep Cycle Batteries</span>
-                    <ChevronRight className="w-3 h-3 text-slate-400" />
-                  </Link>
-                  <Link
-                    to="/category/lithium-ups-batteries"
-                    onClick={onClose}
-                    className="flex items-center justify-between py-1.5 px-2 text-xs font-semibold text-slate-700 hover:text-blue-600"
-                  >
-                    <span>💡 Lithium UPS & Storage</span>
-                    <ChevronRight className="w-3 h-3 text-slate-400" />
-                  </Link>
-
-                  <div className="px-2 pt-2 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-t border-slate-200/60 mt-1">
-                    Featured Battery Packs
-                  </div>
-                  {products.filter(p => ['smf-batteries', 'tubular-batteries', 'lithium-ups-batteries'].includes(p.categoryId)).slice(0, 6).map((prod) => (
-                    <Link
-                      key={prod.id}
-                      to={`/products/${prod.slug}`}
-                      onClick={onClose}
-                      className="flex items-center justify-between py-1.5 px-2 text-xs font-medium text-slate-600 hover:text-blue-600"
-                    >
-                      <span className="truncate pr-2">{prod.name}</span>
-                      <ChevronRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
-                    </Link>
-                  ))}
-                  <Link
-                    to="/category/smf-batteries"
-                    onClick={onClose}
-                    className="block py-2 text-center text-xs font-bold text-blue-600 hover:underline border-t border-slate-200/60 mt-1"
-                  >
-                    View All Batteries →
                   </Link>
                 </div>
               )}
@@ -298,39 +183,99 @@ export default function MobileDrawer({ isOpen, onClose }) {
               )}
             </div>
 
-            {/* Services Accordion */}
+            {/* Services Accordion (3 Groups) */}
             <div>
               <button
                 onClick={() => setServicesOpen(!servicesOpen)}
                 className="w-full flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
               >
-                <span>Services</span>
+                <span className="flex items-center gap-2">
+                  <Wrench className="w-4 h-4 text-slate-500" />
+                  <span>Services</span>
+                </span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${servicesOpen ? 'rotate-180 text-[#16a34a]' : ''}`} />
               </button>
 
               {servicesOpen && (
-                <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1">
-                  {services.map((srv) => (
-                    <Link
-                      key={srv.id}
-                      to={`/services/${srv.slug}`}
-                      onClick={onClose}
-                      className="flex items-center justify-between py-2 px-2 text-xs font-medium text-slate-600 hover:text-[#16a34a]"
-                    >
-                      <span className="truncate pr-2">{srv.title}</span>
-                      <ChevronRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
-                    </Link>
-                  ))}
+                <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1 max-h-80 overflow-y-auto">
+                  <Link
+                    to="/services"
+                    onClick={onClose}
+                    className="block py-2 px-2 text-xs font-bold text-[#16a34a] border-b border-slate-200/60"
+                  >
+                    🛠️ All 9 Comprehensive Services →
+                  </Link>
+
+                  <div className="px-2 pt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Group A: UPS Installation
+                  </div>
+                  <Link to="/services/ups-installation" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
+                    UPS Installation & Setup
+                  </Link>
+                  <Link to="/services/preventive-maintenance" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
+                    Preventive Maintenance
+                  </Link>
+                  <Link to="/services/testing-commissioning" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
+                    Testing & Commissioning
+                  </Link>
+
+                  <div className="px-2 pt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-t border-slate-200/60 mt-1">
+                    Group B: Maintenance & Repair (AMC)
+                  </div>
+                  <Link to="/services/ups-repair" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
+                    UPS Repair & Troubleshooting
+                  </Link>
+                  <Link to="/services/amc-contracts" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
+                    AMC Maintenance Contracts
+                  </Link>
+                  <Link to="/services/emergency-support" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
+                    24/7 Emergency Support
+                  </Link>
+
+                  <div className="px-2 pt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-t border-slate-200/60 mt-1">
+                    Group C: Battery & Power Support
+                  </div>
+                  <Link to="/services/battery-replacement" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
+                    Battery Replacement & Install
+                  </Link>
+                  <Link to="/services/battery-health-check" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
+                    Battery Health & Impedance
+                  </Link>
+                  <Link to="/services/scrap-battery-buyback" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
+                    Scrap Battery Buyback
+                  </Link>
                 </div>
               )}
             </div>
 
+            {/* ONLINE UPS — HIGHLIGHTED HUB */}
             <Link
-              to="/about"
+              to="/online-ups"
               onClick={onClose}
-              className="flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
+              className="flex items-center justify-between p-3 rounded-lg text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors"
             >
-              <span>About Us</span>
+              <span className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-emerald-600 fill-emerald-600" />
+                <span>ONLINE UPS</span>
+              </span>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-600 text-white">
+                1kVA - 60kVA+
+              </span>
+            </Link>
+
+            {/* BATTERIES HUB */}
+            <Link
+              to="/batteries"
+              onClick={onClose}
+              className="flex items-center justify-between p-3 rounded-lg text-sm font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-colors"
+            >
+              <span className="flex items-center gap-2">
+                <BatteryCharging className="w-4 h-4 text-blue-600" />
+                <span>BATTERIES</span>
+              </span>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-600 text-white">
+                SMF / Tubular / LiFePO4
+              </span>
             </Link>
 
             <Link
@@ -338,7 +283,10 @@ export default function MobileDrawer({ isOpen, onClose }) {
               onClick={onClose}
               className="flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
             >
-              <span>Guides & Posts</span>
+              <span className="flex items-center gap-2">
+                <FileText className="w-4 h-4 text-slate-500" />
+                <span>Guides & Posts</span>
+              </span>
             </Link>
 
             <Link
@@ -346,7 +294,10 @@ export default function MobileDrawer({ isOpen, onClose }) {
               onClick={onClose}
               className="flex items-center justify-between p-3 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
             >
-              <span>Contact & Store</span>
+              <span className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-slate-500" />
+                <span>Contact & Store</span>
+              </span>
             </Link>
           </div>
         </div>

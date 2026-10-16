@@ -27,12 +27,12 @@ export default function Footer() {
             <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li><Link to="/" className="hover:text-emerald-400 transition-colors">Home</Link></li>
-              <li><Link to="/products" className="hover:text-emerald-400 transition-colors">All Products</Link></li>
-              <li><Link to="/categories" className="hover:text-emerald-400 transition-colors">Categories</Link></li>
-              <li><Link to="/products" className="hover:text-emerald-400 transition-colors">Catalogs</Link></li>
-              <li><Link to="/brands" className="hover:text-emerald-400 transition-colors">Brands</Link></li>
-              <li><Link to="/services" className="hover:text-emerald-400 transition-colors">Services</Link></li>
               <li><Link to="/about" className="hover:text-emerald-400 transition-colors">About Us</Link></li>
+              <li><Link to="/products" className="hover:text-emerald-400 transition-colors">All Products</Link></li>
+              <li><Link to="/brands" className="hover:text-emerald-400 transition-colors">Brands</Link></li>
+              <li><Link to="/services" className="hover:text-emerald-400 transition-colors">Services (3 Groups)</Link></li>
+              <li><Link to="/online-ups" className="text-emerald-400 font-bold hover:text-emerald-300 transition-colors">⚡ Online UPS</Link></li>
+              <li><Link to="/batteries" className="text-blue-400 font-bold hover:text-blue-300 transition-colors">🔋 Batteries Hub</Link></li>
               <li><Link to="/contact" className="hover:text-emerald-400 transition-colors">Contact Us</Link></li>
               <li><Link to="/account" className="hover:text-emerald-400 transition-colors">My Account</Link></li>
               <li><Link to="/cart" className="hover:text-emerald-400 transition-colors">Cart</Link></li>
@@ -43,18 +43,17 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-4">What We Offer</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/category/online-ups" className="hover:text-emerald-400 transition-colors">Online UPS</Link></li>
-              <li><Link to="/category/smf-batteries" className="hover:text-emerald-400 transition-colors">SMF Batteries</Link></li>
-              <li><Link to="/category/tubular-batteries" className="hover:text-emerald-400 transition-colors">Tubular Batteries</Link></li>
-              <li><Link to="/category/lithium-ups-batteries" className="hover:text-emerald-400 transition-colors">Lithium UPS & Batteries</Link></li>
+              <li><Link to="/online-ups" className="hover:text-emerald-400 transition-colors font-medium text-emerald-400">Online UPS (1kVA - 60kVA+)</Link></li>
+              <li><Link to="/batteries" className="hover:text-emerald-400 transition-colors font-medium text-blue-400">Industrial Batteries Hub</Link></li>
+              <li><Link to="/category/smf-batteries" className="hover:text-emerald-400 transition-colors">SMF VRLA Batteries</Link></li>
+              <li><Link to="/category/tubular-batteries" className="hover:text-emerald-400 transition-colors">Tubular Inverter Batteries</Link></li>
+              <li><Link to="/category/lithium-ups-batteries" className="hover:text-emerald-400 transition-colors">Lithium LiFePO4 UPS</Link></li>
               <li><Link to="/category/home-inverter" className="hover:text-emerald-400 transition-colors">Home Inverters</Link></li>
-              <li><Link to="/category/stabilizer" className="hover:text-emerald-400 transition-colors">Stabilizers</Link></li>
-              <li><Link to="/category/small-backups" className="hover:text-emerald-400 transition-colors">Small Backups</Link></li>
+              <li><Link to="/category/stabilizer" className="hover:text-emerald-400 transition-colors">Servo Stabilizers</Link></li>
+              <li><Link to="/category/small-backups" className="hover:text-emerald-400 transition-colors">Line-Interactive Backups</Link></li>
               <li><Link to="/services/ups-installation" className="hover:text-emerald-400 transition-colors">UPS Installation</Link></li>
-              <li><Link to="/services/ups-maintenance" className="hover:text-emerald-400 transition-colors">UPS Maintenance</Link></li>
-              <li><Link to="/services/battery-replacement" className="hover:text-emerald-400 transition-colors">Battery Services</Link></li>
-              <li><Link to="/services/amc-maintenance" className="hover:text-emerald-400 transition-colors">AMC Services</Link></li>
-              <li><Link to="/services" className="hover:text-emerald-400 transition-colors">Power Solutions</Link></li>
+              <li><Link to="/services/amc-contracts" className="hover:text-emerald-400 transition-colors">Comprehensive AMC</Link></li>
+              <li><Link to="/services/scrap-battery-buyback" className="hover:text-emerald-400 transition-colors">Scrap Battery Buyback</Link></li>
             </ul>
           </div>
 

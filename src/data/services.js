@@ -276,5 +276,45 @@ export const services = [
     process: ['Call Support Line', 'Identify Error Code', 'Remote Troubleshooting', 'Resolution or Ticket Escalation'],
     technicalInfo: 'Support covers all major brands including APC, Vertiv, Microtek, and Luminous.',
     relatedProducts: []
+  },
+  {
+    id: "battery-maintenance-testing",
+    slug: "battery-maintenance-testing",
+    group: "battery-support",
+    groupName: "Battery & Power Support",
+    aliases: ["battery-health-testing", "battery-maintenance"],
+    title: "Battery Health Testing & Impedance Analysis",
+    shortDesc: "Individual cell internal resistance measurement, open-circuit voltage logging, and controlled DC load bank discharge testing. Detect weak or sulfated batteries before they cause catastrophic string failure in mission-critical Online UPS systems. On-site diagnostic testing across Bengaluru and Karnataka.",
+    introduction: "Comprehensive battery bank diagnostic health audits using calibrated internal resistance meters and controlled load banks.",
+    badge: "Preventive Audit",
+    priceStartsAt: "₹ 999",
+    turnaround: "Scheduled Visit / Same Day",
+    icon: "Activity",
+    banner: "/images/services/battery-replacement.png",
+    image: "/images/services/battery-replacement.png",
+    features: [
+      "Per-cell milliohm internal impedance & conductance audit",
+      "Thermal infrared hotspot scanning of high-current terminal connections",
+      "Float charging ripple voltage and equalization verification",
+      "Specific gravity hydrometer testing for flooded tubular banks",
+      "Comprehensive string health grading report with life expectancy projection"
+    ],
+    fullDesc: "A single failed cell in a 16 or 32 battery UPS string will drag down the entire DC bus and cause sudden failure during utility power cuts. Our battery testing engineers identify deteriorating blocks early, preventing unexpected downtime and extending battery life.",
+    aboutContent: [
+      { title: 'What is Battery Health Testing?', desc: 'A rigorous diagnostic audit measuring individual cell internal resistance, float voltage, inter-link torque, and thermal load.' },
+      { title: 'Why is it critical?', desc: 'Standard visual inspection cannot detect dry-out or internal plate sulfation. Impedance testing identifies failing cells weeks before actual failure occurs.' }
+    ],
+    fourColumns: [
+      { heading: 'WHAT WE PROVIDE', items: ['Impedance Analysis', 'Thermal Heat Scan', 'Load Bank Testing', 'Certified Report'] },
+      { heading: 'KEY BENEFITS', items: ['Prevents Blackouts', 'Saves Capital', 'Extends Battery Life', 'Ensures Runtime'] },
+      { heading: 'SERVICE PROCESS', items: ['Visual Check', 'Impedance Logging', 'Torque Audit', 'Health Grading'] },
+      { heading: 'SUITABLE FOR', items: ['Data Centers', 'Hospitals', 'Commercial Banks', 'Industrial Plants'] }
+    ],
+    process: ['Schedule On-Site Visit', 'String Isolation & Safety Check', 'Per-Cell Micro-Ohm Measurement', 'Terminal Torque Calibration', 'Report & Recommendation Delivery'],
+    technicalInfo: 'We test all SMF VRLA (AGM), Tall Tubular, and Lithium battery systems from 7Ah to 200Ah.',
+    relatedProducts: [
+      { name: 'Amaron Quanta 12V 100Ah', slug: 'amaron-quanta-100ah' },
+      { name: 'Exide Powersafe 12V 100Ah', slug: 'exide-powersafe-100ah' }
+    ]
   }
 ];

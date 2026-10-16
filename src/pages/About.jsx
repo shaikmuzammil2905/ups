@@ -146,7 +146,7 @@ export default function About() {
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
           {brands.map((b) => (
             <div key={b.id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center">
-              <BrandLogo brandId={b.id} className="h-8" />
+              <BrandLogo brand={b} brandId={b.id} className="h-8" />
             </div>
           ))}
         </div>

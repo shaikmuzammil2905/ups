@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { notifyDataUpdated } from '../lib/syncEvents';
 import ImageUpload from './components/ImageUpload';
 import ConfirmDialog from './components/ConfirmDialog';
 import {
@@ -108,6 +109,7 @@ export default function ServicesAdmin() {
       if (err) throw err;
       setServices(prev => prev.map(s => s.id === svc.id ? { ...s, is_published: updatedStatus } : s));
       showNotification(`Service "${svc.title}" ${updatedStatus ? 'published' : 'hidden'}.`);
+      notifyDataUpdated({ type: 'SERVICE_UPDATED', serviceId: svc.id });
     } catch (err) {
       alert(`Error toggling status: ${err.message}`);
     }
@@ -152,12 +154,14 @@ export default function ServicesAdmin() {
           .eq('id', editingService.id);
         if (err) throw err;
         showNotification('Service updated successfully!');
+        notifyDataUpdated({ type: 'SERVICE_SAVED', serviceId: editingService.id });
       } else {
         const { error: err } = await supabase
           .from('services')
           .insert({ id: svcId, ...payload, created_at: new Date().toISOString() });
         if (err) throw err;
         showNotification('Service created successfully!');
+        notifyDataUpdated({ type: 'SERVICE_SAVED', serviceId: svcId });
       }
 
       setIsModalOpen(false);
@@ -180,6 +184,7 @@ export default function ServicesAdmin() {
       if (err) throw err;
       showNotification(`Service "${deleteConfirm.title}" deleted.`);
       setServices(prev => prev.filter(s => s.id !== deleteConfirm.id));
+      notifyDataUpdated({ type: 'SERVICE_DELETED', serviceId: deleteConfirm.id });
       setDeleteConfirm(null);
     } catch (err) {
       alert(`Delete error: ${err.message}`);

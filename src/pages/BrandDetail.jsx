@@ -60,7 +60,7 @@ export default function BrandDetail() {
 
         {/* Brand Logo Box */}
         <div className="w-48 h-28 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-center p-4 flex-shrink-0 shadow-xs">
-          <BrandLogo brandId={brand.id} className="h-12" />
+          <BrandLogo brand={brand} brandId={brand.id} className="h-12" />
         </div>
       </div>
 
