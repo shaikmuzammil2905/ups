@@ -15,21 +15,30 @@ import { supabase } from '../lib/supabase';
 
 export default function ServiceDetail() {
   const { slug } = useParams();
-  const service = services.find((s) => {
+  const services = useServices();
+
+  const service = (services || []).find((s) => {
+    if (!s) return false;
     if (s.slug === slug || s.id === slug) return true;
     if (Array.isArray(s.aliases) && s.aliases.includes(slug)) return true;
     const cleanParam = (slug || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     const cleanSlug = (s.slug || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     const cleanId = (s.id || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     return cleanParam.includes(cleanSlug) || cleanSlug.includes(cleanParam) || cleanParam.includes(cleanId);
-  }) || services[0];
+  }) || (services && services[0]) || {
+    id: 'ups-service',
+    title: 'UPS Installation & Engineering Service',
+    description: 'Professional UPS installation, preventive maintenance, and battery support.',
+    priceStartsAt: 'Contact for Quote',
+    turnaround: 'Same Day'
+  };
 
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
     company: '',
-    service: service.title,
+    service: service?.title || 'General Engineering Service',
     message: ''
   });
 
