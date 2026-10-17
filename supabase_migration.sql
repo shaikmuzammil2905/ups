@@ -74,6 +74,8 @@ INSERT INTO site_settings (key, value) VALUES
   ('whatsapp', '8884988990'),
   ('email', 'info@livkampower.in'),
   ('address', '21, Subhash Chandra Bose Rd, Banashankari 2nd Stage, Bendre Nagar, Bengaluru, Karnataka 560070'),
+  ('warehouse_address', '6 And 7 4th Cross Ganesh Nagar, Main Road, Vidyaranyapura Post, Telecom Colony, Kodigehalli, Bengaluru, Karnataka 560097'),
+  ('branch_network', 'Bangalore, Mysore, Chennai, Hyderabad, Mumbai'),
   ('gst', '29CYMPN3694M1ZC'),
   ('business_hours', 'Mon-Sat: 9AM - 7PM'),
   ('google_maps_url', 'https://maps.google.com/?q=21+Subhash+Chandra+Bose+Rd+Banashankari+2nd+Stage+Bengaluru'),
@@ -231,6 +233,8 @@ CREATE TABLE IF NOT EXISTS services (
   id TEXT PRIMARY KEY,
   slug TEXT UNIQUE NOT NULL,
   title TEXT NOT NULL,
+  category TEXT DEFAULT 'APC UPS AMC SERVICE',
+  category_id TEXT DEFAULT 'apc-ups-amc-service',
   short_desc TEXT,
   introduction TEXT,
   badge TEXT,
@@ -240,6 +244,8 @@ CREATE TABLE IF NOT EXISTS services (
   image_url TEXT,
   banner_url TEXT,
   features JSONB DEFAULT '[]',
+  range_items JSONB DEFAULT '[]',
+  benefits_items JSONB DEFAULT '[]',
   about_content JSONB DEFAULT '[]',
   four_columns JSONB DEFAULT '[]',
   process JSONB DEFAULT '[]',
@@ -250,6 +256,14 @@ CREATE TABLE IF NOT EXISTS services (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Ensure newly supported columns exist on existing databases
+ALTER TABLE services ADD COLUMN IF NOT EXISTS category TEXT DEFAULT 'APC UPS AMC SERVICE';
+ALTER TABLE services ADD COLUMN IF NOT EXISTS category_id TEXT DEFAULT 'apc-ups-amc-service';
+ALTER TABLE services ADD COLUMN IF NOT EXISTS range_items JSONB DEFAULT '[]';
+ALTER TABLE services ADD COLUMN IF NOT EXISTS benefits_items JSONB DEFAULT '[]';
+ALTER TABLE brands ADD COLUMN IF NOT EXISTS logo_url TEXT;
+ALTER TABLE brands ADD COLUMN IF NOT EXISTS banner_url TEXT;
 
 INSERT INTO services (id, slug, title, short_desc, introduction, badge, price_starts_at, turnaround, icon, image_url, features, display_order) VALUES
 ('ups-installation', 'ups-installation', 'UPS Installation & Commissioning', 'End-to-end professional installation, cabling, load testing, and electrical safety commissioning.', 'Professional UPS installation and commissioning solutions designed for homes and commercial setups.', 'Most Popular', '₹ 1,499', 'Same Day / 24 Hours', 'Wrench', 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80', '["Load calculation & input/output wire sizing","Earth fault testing & neutral grounding verification","Battery rack assembly & inter-cell torque calibration","Full load testing with safety circuit verification"]', 1),
