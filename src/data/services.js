@@ -1,320 +1,682 @@
+// Comprehensive Services & Categories Data for Livkam Power Technologies
+// Matches Image Copy 70 through 79:
+// 8 Categories with flyout sub-catalogues, detailed range lists, grand level benefits, and photo representations.
+
+export const SERVICE_CATEGORIES = [
+  {
+    id: 'apc-ups-amc-service',
+    title: 'APC UPS AMC SERVICE',
+    catalogues: [
+      { slug: 'apc-ups-service', title: 'APC UPS SERVICE' }
+    ]
+  },
+  {
+    id: 'emerson-ups-service',
+    title: 'EMERSON UPS SERVICE',
+    catalogues: [
+      { slug: 'emerson-vertiv-ups-amc-services', title: 'EMERSON VERTIV UPS AMC SERVICES' }
+    ]
+  },
+  {
+    id: 'delta-ups-repair-services',
+    title: 'DELTA UPS REPAIR SERVICES',
+    catalogues: [
+      { slug: 'delta-ups-amc-service', title: 'DELTA UPS AMC SERVICE' }
+    ]
+  },
+  {
+    id: 'microtek-ups-service',
+    title: 'MICROTEK UPS SERVICE',
+    catalogues: [
+      { slug: 'microtek-inverter-repair', title: 'Microtek Inverter Repair' },
+      { slug: 'microtek-ups-amc-services', title: 'MICROTEK UPS AMC SERVICES' }
+    ]
+  },
+  {
+    id: 'eaton-amc-services',
+    title: 'EATON AMC SERVICES',
+    catalogues: [
+      { slug: 'eaton-ups-repair-services', title: 'EATON UPS REPAIR SERVICES' }
+    ]
+  },
+  {
+    id: 'numeric-ups-service',
+    title: 'NUMERIC UPS SERVICE',
+    catalogues: [
+      { slug: 'ups-service-in-bangalore', title: 'UPS SERVICE IN BANAGALOR' },
+      { slug: 'numeric-ups-amc-service', title: 'NUMERIC UPS AMC SERVICE' }
+    ]
+  },
+  {
+    id: 'ups-amc-services',
+    title: 'UPS AMC Services',
+    catalogues: [
+      { slug: 'ups-service-center-near-you', title: 'UPS SERVICE CENTER NEAR YOU' },
+      { slug: 'online-ups-services', title: 'Online UPS Services' }
+    ]
+  },
+  {
+    id: 'online-ups-service-in-chennai',
+    title: 'Online UPS Service in Chennai',
+    catalogues: [
+      { slug: 'ups-service-in-hyderabad', title: 'Ups Service In Hyderabad' },
+      { slug: 'ups-services-in-kerala', title: 'Ups Services in Kerala' }
+    ]
+  }
+];
+
 export const services = [
+  // 1. APC UPS SERVICE (Image Copy 70, 78, 79)
+  {
+    id: 'apc-ups-service',
+    slug: 'apc-ups-service',
+    title: 'APC UPS Service',
+    category: 'APC UPS AMC SERVICE',
+    categoryId: 'apc-ups-amc-service',
+    badge: 'Authorized Specialist',
+    priceStartsAt: '₹ 1,499',
+    turnaround: 'Same Day / 2 - 4 Hrs',
+    icon: 'ShieldCheck',
+    banner: '/images/services/apc-service-cabinets.jpg',
+    image: '/images/services/apc-service-cabinets.jpg',
+    imageUrl: '/images/services/apc-service-cabinets.jpg',
+    shortDesc: 'Livkam Power Technologies is your go-to source for comprehensive APC UPS services. Our team of experienced professionals is dedicated to providing reliable and efficient solutions for your APC UPS systems, ensuring optimal performance and minimal downtime.',
+    introduction: 'Livkam Power Technologies is your go-to source for comprehensive APC UPS services. Our team of experienced professionals is dedicated to providing reliable and efficient solutions for your APC UPS systems, ensuring optimal performance and minimal downtime.',
+    rangeHeading: 'Our Comprehensive Range of APC UPS Services',
+    rangeSubheading: 'Our extensive APC UPS services include:',
+    rangeItems: [
+      'APC UPS installation and setup, ensuring your systems are correctly configured for optimal performance.',
+      'Regular preventive maintenance to keep your APC UPS systems running smoothly and efficiently.',
+      'Troubleshooting and repair services to address any issues or breakdowns promptly.',
+      'System upgrades and replacements to enhance the efficiency and reliability of your APC UPS infrastructure.',
+      'Expert consultation and advice on power management solutions tailored to your business needs.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for APC UPS Services',
+    benefitsSubheading: 'Choosing Livkam Power Technologies for your APC ONLINE UPS services offers several benefits, such as:',
+    benefitsItems: [
+      'Access to a team of experienced professionals with in-depth knowledge of APC UPS systems.',
+      'Reliable and efficient solutions to minimize downtime and disruptions for your business.',
+      'Competitive pricing for top-quality UPS services.',
+      'Responsive customer support, ensuring your concerns are promptly addressed.',
+      'A commitment to maintaining the highest standards of service and satisfaction.'
+    ],
+    features: [
+      'APC Smart-UPS, Symmetra & Easy UPS certified engineers',
+      'Original Schneider Electric OEM spare parts & battery cartridges',
+      'Annual Maintenance Contracts (AMC) with guaranteed SLA',
+      'Doorstep diagnostic testing across Bengaluru & South India'
+    ],
+    display_order: 1,
+    is_published: true
+  },
+
+  // 2. EMERSON VERTIV UPS AMC SERVICES (Image Copy 71)
+  {
+    id: 'emerson-vertiv-ups-amc-services',
+    slug: 'emerson-vertiv-ups-amc-services',
+    title: 'Emerson Vertiv UPS AMC Services',
+    category: 'EMERSON UPS SERVICE',
+    categoryId: 'emerson-ups-service',
+    badge: 'Enterprise SLA',
+    priceStartsAt: 'Custom Enterprise Quote',
+    turnaround: 'Guaranteed 4-Hr SLA',
+    icon: 'Server',
+    banner: '/images/services/vertiv-service-ups.jpg',
+    image: '/images/services/vertiv-service-ups.jpg',
+    imageUrl: '/images/services/vertiv-service-ups.jpg',
+    shortDesc: 'Livkam Power Technologies delivers premier Emerson and Vertiv Liebert UPS AMC services and maintenance across corporate, data center, and hospital power facilities.',
+    introduction: 'Livkam Power Technologies is your premier engineering partner for Emerson and Vertiv Liebert UPS maintenance and comprehensive AMC contracts.',
+    rangeHeading: 'Our Comprehensive Range of Emerson Vertiv UPS Services',
+    rangeSubheading: 'Our extensive Emerson and Vertiv Liebert UPS services include:',
+    rangeItems: [
+      'Emerson Liebert Hipulse, APM, and ITA UPS comprehensive electrical commissioning and installation.',
+      'Routine quarterly preventive maintenance audits with full thermal infrared scanning.',
+      'DC bus capacitor bank ripple analysis, cooling fan maintenance, and bypass static switch testing.',
+      'Emergency component-level motherboard and IGBT rectifier bridge troubleshooting and repairs.',
+      'Tailored Comprehensive and Non-Comprehensive Annual Maintenance Contracts with prioritized response.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for Emerson Vertiv UPS Services',
+    benefitsSubheading: 'Choosing Livkam Power Technologies for Emerson & Vertiv services provides your enterprise with:',
+    benefitsItems: [
+      'Engineers trained specifically on Vertiv Liebert power protection architectures.',
+      'Guaranteed 4-hour emergency turnaround SLA to minimize any business disruption.',
+      'Access to 100% authentic Emerson and Vertiv OEM replacement components.',
+      'Detailed power quality certification and annual performance logs.',
+      'Predictable maintenance costs with zero unexpected diagnostic fees.'
+    ],
+    features: [
+      'Dedicated support for Emerson Liebert APM, Hipulse & ITA series',
+      'Thermal imaging inspection for early hotspot detection',
+      'Battery conductance impedance testing included in AMC',
+      '24/7 dedicated enterprise helpline and emergency mobile dispatch'
+    ],
+    display_order: 2,
+    is_published: true
+  },
+
+  // 3. DELTA UPS AMC SERVICE (Image Copy 72)
+  {
+    id: 'delta-ups-amc-service',
+    slug: 'delta-ups-amc-service',
+    title: 'Delta UPS AMC Service',
+    category: 'DELTA UPS REPAIR SERVICES',
+    categoryId: 'delta-ups-repair-services',
+    badge: 'High Efficiency',
+    priceStartsAt: '₹ 999',
+    turnaround: 'Same Day / 24 Hours',
+    icon: 'Zap',
+    banner: '/images/services/delta-eaton-ups.jpg',
+    image: '/images/services/delta-eaton-ups.jpg',
+    imageUrl: '/images/services/delta-eaton-ups.jpg',
+    shortDesc: 'Specialized Delta UPS repair and AMC services by Livkam Power Technologies for Amplon, Ultron, and Modulon series UPS systems.',
+    introduction: 'Livkam Power Technologies offers specialized Delta UPS AMC services and component-level repair solutions for Amplon, Ultron, and Modulon series UPS systems.',
+    rangeHeading: 'Our Comprehensive Range of Delta UPS Services',
+    rangeSubheading: 'Our extensive Delta UPS repair and maintenance offerings include:',
+    rangeItems: [
+      'Delta online UPS modular installation, bypass cabling, and multi-module synchronization.',
+      'Scheduled preventive maintenance visits with internal dust purge and connector torque calibration.',
+      'Troubleshooting and component repair for high-speed IGBT inverters and rectifier modules.',
+      'Battery string health monitoring, individual cell replacement, and float charge calibration.',
+      'Fast-track spare board replacement and modular hot-swap module servicing.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for Delta UPS Services',
+    benefitsSubheading: 'Partnering with Livkam Power Technologies for Delta UPS support ensures:',
+    benefitsItems: [
+      'Deep domain expertise in Delta green energy and high-efficiency modular power systems.',
+      'Zero downtime architecture support with fast standby/loaner unit provisioning.',
+      'Competitive corporate and SME pricing for all AMC tiers.',
+      'Round-the-clock priority customer service helpline and WhatsApp ticketing.',
+      'Comprehensive repair warranties on all installed Delta electronic modules.'
+    ],
+    features: [
+      'Certified on Delta Amplon (1kVA-10kVA) and Ultron (10kVA-400kVA)',
+      'Rapid component-level PCB and gate drive repairs',
+      'Quarterly scheduled preventive checkups',
+      'Genuine factory-tested Delta spare parts'
+    ],
+    display_order: 3,
+    is_published: true
+  },
+
+  // 4. MICROTEK INVERTER REPAIR (Image Copy 73)
+  {
+    id: 'microtek-inverter-repair',
+    slug: 'microtek-inverter-repair',
+    title: 'Microtek Inverter Repair',
+    category: 'MICROTEK UPS SERVICE',
+    categoryId: 'microtek-ups-service',
+    badge: 'Quick Doorstep Fix',
+    priceStartsAt: '₹ 499',
+    turnaround: '2 - 3 Hours',
+    icon: 'Wrench',
+    banner: '/images/services/microtek-numeric-ups.jpg',
+    image: '/images/services/microtek-numeric-ups.jpg',
+    imageUrl: '/images/services/microtek-numeric-ups.jpg',
+    shortDesc: 'Doorstep rapid Microtek inverter repair, PCB servicing, MOSFET replacement, and transformer rewinding by Livkam Power Technologies.',
+    introduction: 'Fast, reliable Microtek inverter and home UPS repair services by Livkam Power Technologies, restoring power backup to your home and office in hours.',
+    rangeHeading: 'Our Comprehensive Range of Microtek Inverter Repair Services',
+    rangeSubheading: 'Our specialized Microtek inverter repair services include:',
+    rangeItems: [
+      'Microtek Pure Sine Wave and Square Wave inverter diagnostic troubleshooting and fault isolation.',
+      'MOSFET power stage replacement, driver circuit rebuilding, and transformer repair.',
+      'Overload buzzer alarm, low voltage cutoff, and battery charging failure resolution.',
+      'Battery terminal desulfation, electrolyte top-up, and gravity calibration.',
+      'Doorstep collection, bench testing, and re-installation services across Bengaluru.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for Microtek Inverter Repair',
+    benefitsSubheading: 'Choosing Livkam Power Technologies for your Microtek inverter ensures:',
+    benefitsItems: [
+      'Certified repair specialists with extensive hands-on Microtek hardware experience.',
+      '100% genuine Microtek replacement PCBs, relays, and heavy-duty transformers.',
+      '90-day comprehensive service warranty on all repaired components.',
+      'Affordable, upfront flat-rate pricing with zero hidden inspection fees.',
+      'Prompt doorstep arrival anywhere in Bengaluru and Karnataka.'
+    ],
+    features: [
+      'Same-day doorstep technician visits',
+      'Repairs for Microtek Sinewave, Merlyn, and Heavy Duty models',
+      'Digital load testing before customer handover',
+      'Doorstep battery health checks included'
+    ],
+    display_order: 4,
+    is_published: true
+  },
+
+  // 5. MICROTEK UPS AMC SERVICES (Image Copy 73)
+  {
+    id: 'microtek-ups-amc-services',
+    slug: 'microtek-ups-amc-services',
+    title: 'Microtek UPS AMC Services',
+    category: 'MICROTEK UPS SERVICE',
+    categoryId: 'microtek-ups-service',
+    badge: 'Total Peace of Mind',
+    priceStartsAt: '₹ 899 / Year',
+    turnaround: 'Scheduled Quarterly Visits',
+    icon: 'ShieldCheck',
+    banner: '/images/services/microtek-numeric-ups.jpg',
+    image: '/images/services/microtek-numeric-ups.jpg',
+    imageUrl: '/images/services/microtek-numeric-ups.jpg',
+    shortDesc: 'Annual maintenance contracts for Microtek line-interactive and online UPS units, keeping small offices, retail shops, and clinics powered without interruption.',
+    introduction: 'Keep your Microtek UPS running year-round with Livkam Power Technologies’ comprehensive and non-comprehensive AMC maintenance contracts.',
+    rangeHeading: 'Our Comprehensive Range of Microtek UPS AMC Services',
+    rangeSubheading: 'Our annual Microtek UPS maintenance contracts include:',
+    rangeItems: [
+      'Scheduled preventive inspections covering internal electronics, capacitors, and cooling fans.',
+      'Microcontroller calibration and battery charge float/boost voltage optimization.',
+      'Periodic full-load battery backup duration testing to verify actual runtime.',
+      'Priority emergency callouts with guaranteed technician dispatch during power outages.',
+      'Comprehensive spare replacement options for all PCBs, switches, and wiring.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for Microtek AMC Services',
+    benefitsSubheading: 'Signing an AMC with Livkam Power Technologies offers your business:',
+    benefitsItems: [
+      'Drastically reduced risk of sudden failure during grid power cuts.',
+      'Prolonged operational life for both Microtek UPS units and attached batteries.',
+      'Fixed low annual cost protecting your operational budget from surprise repair bills.',
+      'Dedicated relationship engineer and instant WhatsApp support channel.',
+      'Free loaner units provided if extensive workshop bench service is ever required.'
+    ],
+    features: [
+      '4 quarterly preventive maintenance visits per year',
+      'Unlimited emergency breakdown callout visits',
+      'Battery health impedance audit included',
+      'Applicable for Microtek Line-Interactive & Maxi Online UPS'
+    ],
+    display_order: 5,
+    is_published: true
+  },
+
+  // 6. EATON UPS REPAIR SERVICES (Image Copy 74)
+  {
+    id: 'eaton-ups-repair-services',
+    slug: 'eaton-ups-repair-services',
+    title: 'Eaton UPS Repair Services',
+    category: 'EATON AMC SERVICES',
+    categoryId: 'eaton-amc-services',
+    badge: 'Eaton Certified',
+    priceStartsAt: '₹ 1,499',
+    turnaround: 'Same Day / 24 Hours',
+    icon: 'Cpu',
+    banner: '/images/services/delta-eaton-ups.jpg',
+    image: '/images/services/delta-eaton-ups.jpg',
+    imageUrl: '/images/services/delta-eaton-ups.jpg',
+    shortDesc: 'Component-level repair and AMC for Eaton 9E, 93E, 9395, and Powerware Online UPS series by certified engineers at Livkam Power Technologies.',
+    introduction: 'Livkam Power Technologies delivers expert Eaton UPS repair and AMC services, handling 9E, 93E, 9395, and Powerware systems with precision engineering.',
+    rangeHeading: 'Our Comprehensive Range of Eaton UPS Repair Services',
+    rangeSubheading: 'Our extensive Eaton UPS repair capabilities include:',
+    rangeItems: [
+      'Eaton 9E, 93E, and 9395 industrial online UPS component diagnostic fault analysis.',
+      'Advanced Battery Management (ABM) sensor testing and charging circuit recalibration.',
+      'Replacement of high-voltage IGBT modules, rectifier diodes, and DC link capacitors.',
+      'Firmware updates, event log extraction, and synchronization parameter tuning.',
+      'Emergency breakdown service with mobile diagnostic instruments across Karnataka.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for Eaton UPS Services',
+    benefitsSubheading: 'Choosing Livkam Power Technologies for Eaton UPS repair ensures:',
+    benefitsItems: [
+      'Specialized knowledge of Eaton proprietary power electronics and ABM battery management.',
+      'Direct procurement of authentic Eaton OEM replacement parts and power modules.',
+      'Rapid turnaround to safeguard continuous power for banking, health, and IT servers.',
+      'Competitive transparent pricing with detailed inspection and handover reports.',
+      'Post-repair load bank certification to prove 100% capacity readiness.'
+    ],
+    features: [
+      'Support for Eaton 9E, 93E, 9355, 9395 and Powerware systems',
+      'Genuine Eaton components with 90-day warranty',
+      'Preventive capacitor aging assessment',
+      'Emergency on-site response in 2-4 hours'
+    ],
+    display_order: 6,
+    is_published: true
+  },
+
+  // 7. UPS SERVICE IN BANGALORE (Image Copy 75)
+  {
+    id: 'ups-service-in-bangalore',
+    slug: 'ups-service-in-bangalore',
+    title: 'UPS Service In Bangalore',
+    category: 'NUMERIC UPS SERVICE',
+    categoryId: 'numeric-ups-service',
+    badge: 'Bengaluru No. 1',
+    priceStartsAt: '₹ 499',
+    turnaround: '2 Hours Doorstep',
+    icon: 'MapPin',
+    banner: '/images/services/microtek-numeric-ups.jpg',
+    image: '/images/services/microtek-numeric-ups.jpg',
+    imageUrl: '/images/services/microtek-numeric-ups.jpg',
+    shortDesc: 'Bengaluru’s leading doorstep multi-brand UPS repair and maintenance network. Fast 2-hour dispatch across Peenya, Banashankari, Whitefield, Electronic City, and all zones.',
+    introduction: 'Bengaluru’s most trusted UPS repair and maintenance service network by Livkam Power Technologies, providing doorstep technical support across the city.',
+    rangeHeading: 'Our Comprehensive Range of UPS Services in Bangalore',
+    rangeSubheading: 'Our Bengaluru citywide UPS service portfolio includes:',
+    rangeItems: [
+      'Doorstep mobile engineer visits covering all zones of Bengaluru within 2 hours of booking.',
+      'Comprehensive repairs for APC, Vertiv, Delta, Numeric, Microtek, and Luminous UPS units.',
+      'Doorstep battery replacement with free collection of old battery scrap at top buyback rates.',
+      'Preventive maintenance contracts for homes, offices, schools, and industrial manufacturing plants.',
+      'Turnkey electrical cabling, isolation transformer integration, and earthing audits.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for UPS Service in Bangalore',
+    benefitsSubheading: 'Why Bengaluru residents and enterprises choose Livkam Power Technologies:',
+    benefitsItems: [
+      'Local Bengaluru headquarters in Banashankari and Vidyaranyapura warehouse for immediate parts dispatch.',
+      'Over 8+ years of dedicated excellence with 5,000+ satisfied clients across Karnataka.',
+      'Honest, transparent pricing with no hidden charges and free initial load assessments.',
+      'Certified, verified, and courteous power technicians equipped with mobile testing kits.',
+      '100% customer satisfaction guarantee with comprehensive service warranty on every job.'
+    ],
+    features: [
+      'Average 2-hour response time in Bengaluru urban and industrial belts',
+      'Multi-brand expertise under one single helpline',
+      'Doorstep old battery buyback with instant cash rebate',
+      'Emergency 24/7 hotline for critical facilities'
+    ],
+    display_order: 7,
+    is_published: true
+  },
+
+  // 8. NUMERIC UPS AMC SERVICE (Image Copy 75)
+  {
+    id: 'numeric-ups-amc-service',
+    slug: 'numeric-ups-amc-service',
+    title: 'Numeric UPS AMC Service',
+    category: 'NUMERIC UPS SERVICE',
+    categoryId: 'numeric-ups-service',
+    badge: 'Numeric Legrand Specialist',
+    priceStartsAt: '₹ 1,199 / Year',
+    turnaround: 'Scheduled Quarterly Visits',
+    icon: 'Wrench',
+    banner: '/images/services/microtek-numeric-ups.jpg',
+    image: '/images/services/microtek-numeric-ups.jpg',
+    imageUrl: '/images/services/microtek-numeric-ups.jpg',
+    shortDesc: 'Annual maintenance contracts for Numeric Digital HP, Onfiniti, and HPI series online UPS systems across offices, banks, and production lines.',
+    introduction: 'Keep your Numeric Digital HP, Onfiniti, and HPI series UPS systems at peak performance with Livkam Power Technologies tailored AMC service contracts.',
+    rangeHeading: 'Our Comprehensive Range of Numeric UPS AMC Services',
+    rangeSubheading: 'Our annual Numeric UPS maintenance agreements include:',
+    rangeItems: [
+      'Complete diagnostic inspections of Numeric single-phase and three-phase online UPS hardware.',
+      'Thermal scanning, internal cleaning, and loose terminal re-torqueing.',
+      'Battery bank cell impedance testing, conductance audits, and inter-battery link replacements.',
+      'Fast resolution of Numeric fault codes, inverter overload trips, and bypass alerts.',
+      'Priority dispatch with guaranteed response time SLAs for commercial and industrial clients.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for Numeric AMC Services',
+    benefitsSubheading: 'Enjoy dependable uninterrupted power with our Numeric AMC contracts:',
+    benefitsItems: [
+      'Extensive engineering experience with Legrand-Numeric industrial power electronics.',
+      'Minimized risk of sudden power drops during critical production and server operations.',
+      'Cost savings through regular preventive care that extends equipment and battery lifespan.',
+      'Dedicated helpline with direct phone and WhatsApp contact with our lead engineers.',
+      'Official service logbook and safety compliance certification after each maintenance cycle.'
+    ],
+    features: [
+      'Covers Numeric Digital HP, Onfiniti, and Keor T EVO series',
+      'Comprehensive (with spares) & Non-Comprehensive options',
+      '4 scheduled visits + unlimited emergency callouts',
+      'Battery string life expectancy reports provided'
+    ],
+    display_order: 8,
+    is_published: true
+  },
+
+  // 9. UPS SERVICE CENTER NEAR YOU (Image Copy 76)
+  {
+    id: 'ups-service-center-near-you',
+    slug: 'ups-service-center-near-you',
+    title: 'UPS Service Center Near You',
+    category: 'UPS AMC Services',
+    categoryId: 'ups-amc-services',
+    badge: 'Local Doorstep Help',
+    priceStartsAt: '₹ 499',
+    turnaround: '1 - 2 Hours',
+    icon: 'MapPin',
+    banner: '/images/services/ups-technician.jpg',
+    image: '/images/services/ups-technician.jpg',
+    imageUrl: '/images/services/ups-technician.jpg',
+    shortDesc: 'Looking for a reliable UPS service center near you? Livkam Power Technologies provides doorstep technician visits for all major UPS and inverter brands.',
+    introduction: 'Looking for an authorized, reliable UPS service center near you? Livkam Power Technologies brings doorstep repairs and multi-brand service right to your doorstep.',
+    rangeHeading: 'Our Comprehensive Range of Local UPS Services',
+    rangeSubheading: 'Our nearby doorstep service center offerings include:',
+    rangeItems: [
+      'Instant doorstep booking and dispatch of qualified power engineers to your home or office.',
+      'On-site diagnosis of UPS continuous beeping, failure to power on, and battery backup drops.',
+      'Component-level board repair, fuse replacement, and transformer recalibration.',
+      'Doorstep battery capacity testing, terminal cleaning, and replacement with genuine brands.',
+      'Convenient pick-up and drop service with standby loaner UPS units for major repairs.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies Local Service Center',
+    benefitsSubheading: 'Why Livkam Power Technologies is the top choice for local UPS service:',
+    benefitsItems: [
+      'Fastest response time in your locality with mobile technicians stationed across the city.',
+      'Universal brand competency across APC, Vertiv, Delta, Luminous, Microtek, and Exide.',
+      'Transparent estimates provided upfront before any repair work commences.',
+      'Authentic OEM replacement spares accompanied by clear warranty documentation.',
+      'Friendly, certified technicians dedicated to courteous customer service.'
+    ],
+    features: [
+      'Doorstep visits within 1-2 hours of request',
+      'Repairs for home inverters, office UPS, and online UPS',
+      'Doorstep replacement for SMF and Tubular batteries',
+      'Full safety check and load testing before handover'
+    ],
+    display_order: 9,
+    is_published: true
+  },
+
+  // 10. ONLINE UPS SERVICES (Image Copy 76)
+  {
+    id: 'online-ups-services',
+    slug: 'online-ups-services',
+    title: 'Online UPS Services',
+    category: 'UPS AMC Services',
+    categoryId: 'ups-amc-services',
+    badge: 'Mission-Critical Ready',
+    priceStartsAt: '₹ 1,499',
+    turnaround: 'Same Day / 24x7 Support',
+    icon: 'Zap',
+    banner: '/images/services/apc-service-cabinets.jpg',
+    image: '/images/services/apc-service-cabinets.jpg',
+    imageUrl: '/images/services/apc-service-cabinets.jpg',
+    shortDesc: 'Complete Online UPS engineering solutions for 1kVA to 500kVA systems. Double conversion topology, isolation transformers, battery strings, and enterprise AMC contracts.',
+    introduction: 'Comprehensive Online UPS engineering services covering 1kVA to 500kVA setups, high-frequency double conversion systems, and parallel redundant configurations.',
+    rangeHeading: 'Our Comprehensive Range of Online UPS Services',
+    rangeSubheading: 'Our end-to-end Online UPS service portfolio includes:',
+    rangeItems: [
+      'Turnkey electrical installation, 3-phase cabling, circuit breaker sizing, and grounding audits.',
+      'Scheduled preventive maintenance, thermal imaging scans, and harmonic distortion (THDi) audits.',
+      'Emergency fault repair for IGBT inverters, SCR rectifiers, and DSP control logic boards.',
+      'High-voltage battery bank management, cell impedance testing, and battery rack assembly.',
+      'Comprehensive and non-comprehensive enterprise AMC agreements with 4-hour SLA guarantee.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for Online UPS Services',
+    benefitsSubheading: 'Ensure uninterrupted mission-critical power with Livkam Power Technologies:',
+    benefitsItems: [
+      'Certified senior power engineers with deep experience on industrial double-conversion UPS.',
+      'Zero downtime protection for data centers, medical imaging, and continuous manufacturing.',
+      'Reduced total cost of ownership through scheduled preventive maintenance and component tuning.',
+      '24/7 priority emergency dispatch line and dedicated enterprise account management.',
+      'Compliance certification and electrical safety documentation provided with every service.'
+    ],
+    features: [
+      'Supports 1kVA to 500kVA single-phase and 3-phase online UPS',
+      'True double-conversion zero-transfer-time assurance',
+      'Isolation transformer integration and load balancing',
+      '24/7 breakdown support with spare parts backup'
+    ],
+    display_order: 10,
+    is_published: true
+  },
+
+  // 11. UPS SERVICE IN HYDERABAD (Image Copy 77)
+  {
+    id: 'ups-service-in-hyderabad',
+    slug: 'ups-service-in-hyderabad',
+    title: 'UPS Service In Hyderabad',
+    category: 'Online UPS Service in Chennai',
+    categoryId: 'online-ups-service-in-chennai',
+    badge: 'Regional Network',
+    priceStartsAt: '₹ 999',
+    turnaround: 'Same Day Support',
+    icon: 'MapPin',
+    banner: '/images/services/vertiv-service-ups.jpg',
+    image: '/images/services/vertiv-service-ups.jpg',
+    imageUrl: '/images/services/vertiv-service-ups.jpg',
+    shortDesc: 'Premier power engineering services across Hyderabad, Secunderabad, HITEC City, Gachibowli, and Telangana industrial estates for all UPS brands.',
+    introduction: 'Livkam Power Technologies regional power engineering network provides high-standard UPS installation, repair, and AMC services across Hyderabad and Secunderabad.',
+    rangeHeading: 'Our Comprehensive Range of UPS Services in Hyderabad',
+    rangeSubheading: 'Our Hyderabad and Telangana UPS engineering offerings include:',
+    rangeItems: [
+      'On-site technical support covering HITEC City, Gachibowli, Madhapur, and industrial estates.',
+      'Emergency component repair for corporate data centers, financial institutions, and hospitals.',
+      'Doorstep industrial SMF battery replacement and eco-friendly scrap battery buyback.',
+      'Annual Maintenance Contracts (AMC) with dedicated local technical squads and SLA backing.',
+      'Engineering consultation and turnkey setup for large 3-phase online UPS systems.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies in Hyderabad',
+    benefitsSubheading: 'Why Telangana businesses trust Livkam Power Technologies:',
+    benefitsItems: [
+      'Prompt local engineer dispatch across all Hyderabad metropolitan zones.',
+      'High technical acumen covering APC, Vertiv, Delta, Numeric, and Eaton systems.',
+      'Transparent corporate pricing with flexible contract and service tiers.',
+      'Fast delivery of authentic replacement batteries and verified OEM spare boards.',
+      'Dependable, long-term power protection partner with proven regional track record.'
+    ],
+    features: [
+      'Coverage across HITEC City, Cyberabad, and surrounding industrial hubs',
+      'Multi-brand repairs for 1kVA to 200kVA UPS systems',
+      'Doorstep battery replacement with top buyback value',
+      'Custom AMC plans for IT parks and healthcare facilities'
+    ],
+    display_order: 11,
+    is_published: true
+  },
+
+  // 12. UPS SERVICES IN KERALA (Image Copy 77)
+  {
+    id: 'ups-services-in-kerala',
+    slug: 'ups-services-in-kerala',
+    title: 'UPS Services in Kerala',
+    category: 'Online UPS Service in Chennai',
+    categoryId: 'online-ups-service-in-chennai',
+    badge: 'Regional Network',
+    priceStartsAt: '₹ 999',
+    turnaround: 'Same Day Support',
+    icon: 'MapPin',
+    banner: '/images/services/apc-service-cabinets.jpg',
+    image: '/images/services/apc-service-cabinets.jpg',
+    imageUrl: '/images/services/apc-service-cabinets.jpg',
+    shortDesc: 'Complete UPS servicing, repairs, and AMC contracts adapted for Kerala’s climate. Serving Kochi, Thiruvananthapuram, Kozhikode, and all districts.',
+    introduction: 'Livkam Power Technologies brings premium multi-brand UPS maintenance, repair, and AMC engineering services to Kochi, Thiruvananthapuram, and throughout Kerala.',
+    rangeHeading: 'Our Comprehensive Range of UPS Services in Kerala',
+    rangeSubheading: 'Our Kerala statewide UPS engineering services include:',
+    rangeItems: [
+      'Tropical climate-adapted UPS servicing with moisture protection and anti-corrosion PCB coatings.',
+      'Fast on-site emergency repair for solar hybrids, online UPS, and tubular inverter batteries.',
+      'Scheduled preventive AMC maintenance visits with full electrical parameter logging.',
+      'Battery health impedance audits, individual cell revival, and certified scrap recycling.',
+      'Industrial, hospital, and residential power backup support across Kochi, Trivandrum, and Calicut.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies in Kerala',
+    benefitsSubheading: 'Why Kerala commercial and residential clients count on us:',
+    benefitsItems: [
+      'Experienced engineers adept at handling regional grid voltage surges and storm fluctuations.',
+      '100% genuine OEM spare parts supply with full manufacturer backing.',
+      'Doorstep fresh-date battery replacement with certified green recycling.',
+      'Dedicated helpline and regional customer relationship managers.',
+      'Reliable power assurance protecting vital tourism, medical, and IT operations.'
+    ],
+    features: [
+      'Statewide network across Kochi, Trivandrum, Thrissur, and Calicut',
+      'Surge and moisture-resistant engineering protocols',
+      'Comprehensive solar hybrid & online UPS maintenance',
+      'Fast emergency dispatch and loaner unit support'
+    ],
+    display_order: 12,
+    is_published: true
+  },
+
+  // PRESERVED COMPATIBILITY SERVICES (for existing direct links)
   {
     id: 'ups-installation',
     slug: 'ups-installation',
     title: 'UPS Installation & Commissioning',
-    shortDesc: 'End-to-end professional installation, cabling, load testing, and electrical safety commissioning. Our certified engineers handle complete physical and electrical installation for 1kVA to 200kVA UPS systems. Available across residential, corporate data centers, hospitals, and industrial facilities in Bengaluru and throughout Karnataka.',
-    introduction: 'Professional UPS installation and commissioning solutions designed to provide reliable and uninterrupted power protection for homes, offices and commercial environments.',
+    category: 'UPS AMC Services',
+    categoryId: 'ups-amc-services',
     badge: 'Most Popular',
     priceStartsAt: '₹ 1,499',
     turnaround: 'Same Day / 24 Hours',
     icon: 'Wrench',
     banner: '/images/services/ups-installation.png',
     image: '/images/services/ups-installation.png',
+    imageUrl: '/images/services/ups-installation.png',
+    shortDesc: 'End-to-end professional installation, cabling, load testing, and electrical safety commissioning for 1kVA to 200kVA UPS systems.',
+    introduction: 'Professional UPS installation and commissioning solutions designed to provide reliable and uninterrupted power protection for homes, offices and commercial environments.',
+    rangeHeading: 'Our Comprehensive Range of UPS Installation Services',
+    rangeSubheading: 'Our extensive installation services include:',
+    rangeItems: [
+      'Precision load calculation and input/output wire sizing.',
+      'Earth fault testing and neutral grounding verification.',
+      'Battery rack assembly and inter-cell torque calibration.',
+      'Full load testing with safety circuit verification.',
+      'Official warranty registration and handover report.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for UPS Installation',
+    benefitsSubheading: 'Professional installation ensures your system runs safely and effectively:',
+    benefitsItems: [
+      'Certified engineers with years of high-voltage commissioning experience.',
+      'Guaranteed compliance with Indian electrical standards and OEM specifications.',
+      'Prolonged battery life through correct charging calibration from day one.',
+      'Full documentation and handover safety training for your staff.',
+      'Prompt post-installation checkup and warranty assurance.'
+    ],
     features: [
       'Precision load calculation & input/output wire sizing',
       'Earth fault testing & neutral grounding verification',
       'Battery rack assembly & inter-cell torque calibration',
-      'Full load testing with safety circuit verification',
-      'Official warranty registration and handover report'
+      'Full load testing with safety circuit verification'
     ],
-    fullDesc: 'Our certified engineers handle complete physical and electrical installation for 1kVA to 200kVA UPS systems across residential, corporate data centers, hospitals, and industrial facilities in Bengaluru and Karnataka.',
-    aboutContent: [
-      { title: 'What is UPS Installation?', desc: 'Professional UPS installation involves site assessment, load consideration, UPS placement, electrical connections, and commissioning to ensure your backup power is ready when needed.' },
-      { title: 'Why it is important?', desc: 'Proper installation guarantees safety, longevity, and optimal performance of your UPS and batteries.' }
-    ],
-    fourColumns: [
-      { heading: 'WHAT WE PROVIDE', items: ['Professional Service', 'Site Assessment', 'Installation Support', 'Technical Assistance'] },
-      { heading: 'KEY BENEFITS', items: ['Reliable Power', 'Better Performance', 'Professional Support', 'Reduced Downtime'] },
-      { heading: 'SERVICE PROCESS', items: ['Consultation', 'Assessment', 'Installation/Service', 'Testing'] },
-      { heading: 'SUITABLE FOR', items: ['Homes', 'Offices', 'Commercial Spaces', 'Industrial Applications'] }
-    ],
-    process: ['Requirement Discussion', 'Site Assessment', 'Solution Recommendation', 'Installation/Service', 'Testing', 'Customer Handover'],
-    technicalInfo: 'We handle installations up to 200kVA for APC, Delta, Vertiv, and more.',
-    relatedProducts: [
-      { name: 'APC Smart-UPS', slug: 'apc-smart-ups' },
-      { name: 'Delta Amplon', slug: 'delta-amplon' }
-    ]
-  },
-  {
-    id: "ups-maintenance",
-    slug: "ups-maintenance",
-    title: "Preventive UPS Maintenance",
-    shortDesc: "Scheduled diagnostic health checks, capacitor inspections, and thermal heat imaging. Avoid catastrophic sudden outages with quarterly and bi-annual preventive maintenance protocols tailored to protect sensitive servers and medical electronics. Service available in Bengaluru and across Karnataka.",
-    introduction: "Ensure the longevity and reliability of your UPS systems with our comprehensive preventive maintenance programs.",
-    badge: "Recommended",
-    priceStartsAt: "₹ 999",
-    turnaround: "Scheduled Visit",
-    icon: "ShieldCheck",
-    banner: "/images/services/ups-maintenance.png",
-    image: "/images/services/ups-maintenance.png",
-    features: [
-      "DC bus capacitor ripple voltage analysis",
-      "Internal thermal scanning for hotspot detection",
-      "Cooling fan bearing check and dust cleaning",
-      "Firmware updates and alarm history diagnostics",
-      "Battery internal impedance & conductance audit"
-    ],
-    fullDesc: "Avoid catastrophic sudden outages with quarterly and bi-annual preventive maintenance protocols tailored to protect sensitive servers and medical electronics.",
-    aboutContent: [
-      { title: 'What is UPS Maintenance?', desc: 'Routine diagnostic health checks to identify potential issues before they cause unexpected power failures or hardware damage.' },
-      { title: 'Why it is important?', desc: 'Routine maintenance extends the lifespan of your critical power infrastructure and ensures you are never left in the dark during an outage.' }
-    ],
-    fourColumns: [
-      { heading: 'WHAT WE PROVIDE', items: ['Diagnostic Scans', 'Thermal Imaging', 'Firmware Updates', 'Cleaning'] },
-      { heading: 'KEY BENEFITS', items: ['Prevents Outages', 'Extends Lifespan', 'Ensures Safety', 'Optimizes Efficiency'] },
-      { heading: 'SERVICE PROCESS', items: ['Visual Inspection', 'Testing', 'Cleaning', 'Reporting'] },
-      { heading: 'SUITABLE FOR', items: ['Data Centers', 'Hospitals', 'Corporate Offices', 'Industrial Plants'] }
-    ],
-    process: ['Schedule Visit', 'Visual Inspection', 'Electrical Testing', 'Thermal Scanning', 'Cleaning & Calibration', 'Maintenance Report'],
-    technicalInfo: 'Includes comprehensive testing of IGBTs, rectifiers, and inverter circuits.',
-    relatedProducts: []
-  },
-  {
-    id: "ups-repair",
-    slug: "ups-repair",
-    title: "Emergency UPS Repair & Component Service",
-    shortDesc: "Rapid fault isolation, motherboard PCB repair, IGBT replacement, and inverter rectifiers. When your power backup fails, our on-call mobile squad arrives with emergency diagnostic gear and genuine OEM replacement components to restore uptime fast. Emergency service available 24/7 across Bengaluru.",
-    introduction: "Fast, reliable emergency UPS repair services to get your critical systems back online with minimal downtime.",
-    badge: "24/7 Emergency",
-    priceStartsAt: "₹ 1,299",
-    turnaround: "2 - 4 Hours Emergency SLA",
-    icon: "AlertTriangle",
-    banner: "/images/services/ups-repair.png",
-    image: "/images/services/ups-repair.png",
-    features: [
-      "Genuine OEM spare replacement (APC, Delta, Vertiv, etc.)",
-      "Faulty IGBT & power module component level repair",
-      "Microcontroller calibration and bypass circuit diagnostics",
-      "Loaner/Standby UPS provision for critical clients",
-      "90-day comprehensive repair warranty"
-    ],
-    fullDesc: "When your power backup fails, our on-call Bangalore mobile squad arrives with emergency diagnostic gear and genuine OEM replacement components to restore uptime fast.",
-    aboutContent: [
-      { title: 'Emergency Repair Services', desc: 'When your UPS fails, our expert technicians isolate faults down to the component level to rapidly restore your power protection.' },
-      { title: 'Why choose our service?', desc: 'We offer 24/7 emergency dispatch, genuine spare parts, and loaner UPS systems to keep your business running.' }
-    ],
-    fourColumns: [
-      { heading: 'WHAT WE PROVIDE', items: ['Rapid Response', 'Component Repair', 'Genuine Spares', 'Standby Units'] },
-      { heading: 'KEY BENEFITS', items: ['Minimizes Downtime', 'Cost-Effective', 'Guaranteed Fix', '24/7 Availability'] },
-      { heading: 'SERVICE PROCESS', items: ['Fault Diagnosis', 'Quotation', 'Component Repair', 'Load Testing'] },
-      { heading: 'SUITABLE FOR', items: ['Critical IT', 'Medical Systems', 'Manufacturing', 'Commercial Hubs'] }
-    ],
-    process: ['Emergency Call', 'Dispatch Technician', 'Fault Diagnosis', 'Repair/Replace Components', 'Testing', 'Handover'],
-    technicalInfo: 'We repair PCBs, replace faulty IGBTs, and restore inverter/rectifier functionality for all major brands.',
-    relatedProducts: []
+    display_order: 13,
+    is_published: true
   },
   {
     id: 'battery-replacement',
     slug: 'battery-replacement',
     title: 'Battery Replacement & Buyback',
-    shortDesc: 'Fresh factory-sealed SMF/Tubular battery swap with doorstep installation and old battery scrap buyback. Upgrade sagging backup time with authentic batteries. We provide free doorstep collection of old batteries with maximum scrap discounts. Doorstep service available everywhere in Bengaluru and Karnataka.',
-    introduction: 'Professional battery replacement services ensuring your backup power systems run smoothly with fresh, high-quality batteries.',
+    category: 'UPS AMC Services',
+    categoryId: 'ups-amc-services',
     badge: 'Best Buyback Value',
     priceStartsAt: 'Exchange Discounts Available',
     turnaround: 'Instant Doorstep Delivery',
     icon: 'BatteryCharging',
     banner: '/images/services/battery-replacement.png',
     image: '/images/services/battery-replacement.png',
+    imageUrl: '/images/services/battery-replacement.png',
+    shortDesc: 'Fresh factory-sealed SMF/Tubular battery swap with doorstep installation and old battery scrap buyback.',
+    introduction: 'Professional battery replacement services ensuring your backup power systems run smoothly with fresh, high-quality batteries.',
+    rangeHeading: 'Our Comprehensive Range of Battery Replacement Services',
+    rangeSubheading: 'Our battery replacement solutions include:',
+    rangeItems: [
+      '100% genuine fresh manufacturing date batteries from Exide, Amaron, and Quanta.',
+      'Doorstep delivery, physical removal, and heavy-duty terminal connection replacement.',
+      'Float and equalize charging voltage calibration on your existing UPS/inverter.',
+      'Safe eco-friendly recycling with the highest scrap rebate in Bengaluru.',
+      'Manufacturer warranty card activation on-site.'
+    ],
+    benefitsHeading: 'Benefits of Choosing Livkam Power Technologies for Battery Replacement',
+    benefitsSubheading: 'Why customers trust our doorstep battery replacement:',
+    benefitsItems: [
+      'Maximum scrap buyback value credited instantly toward your new batteries.',
+      'Freshly manufactured stock ensuring maximum Ah capacity and backup hours.',
+      'Professional installation preventing terminal corrosion and loose contact hazards.',
+      'Hassle-free warranty support with doorstep replacement assistance.',
+      'Free disposal and certified green recycling compliance.'
+    ],
     features: [
       '100% genuine fresh manufacturing date batteries',
       'Safe eco-friendly recycling with highest scrap rebate',
       'Heavy duty copper link connectors replacement',
-      'Float/Equalize charging voltage calibration on UPS',
-      'Free terminal greasing and corrosion removal'
+      'Float/Equalize charging voltage calibration on UPS'
     ],
-    fullDesc: 'Upgrade sagging backup time with authentic Exide, Amaron, Quanta, or Luminous batteries. We provide free doorstep collection of old batteries with maximum scrap discounts.',
-    aboutContent: [
-      { title: 'What is Battery Replacement?', desc: 'Replacing old, degraded batteries with brand new units to restore the backup time of your UPS or Inverter.' },
-      { title: 'Why choose our service?', desc: 'We offer genuine batteries from top brands, eco-friendly disposal of old batteries, and professional installation.' }
-    ],
-    fourColumns: [
-      { heading: 'WHAT WE PROVIDE', items: ['Genuine Batteries', 'Old Battery Buyback', 'Doorstep Installation', 'Warranty Support'] },
-      { heading: 'KEY BENEFITS', items: ['Extended Backup Time', 'Peace of Mind', 'Safe Disposal', 'Cost Savings'] },
-      { heading: 'SERVICE PROCESS', items: ['Battery Selection', 'Delivery', 'Installation', 'Old Battery Pickup'] },
-      { heading: 'SUITABLE FOR', items: ['Home Inverters', 'UPS Systems', 'Solar Setups', 'Industrial Equipment'] }
-    ],
-    process: ['Requirement Discussion', 'Battery Recommendation', 'Doorstep Delivery', 'Installation', 'Testing', 'Old Battery Handover'],
-    technicalInfo: 'We deal with 12V SMF, Tubular, and Lithium batteries of all AH ratings.',
-    relatedProducts: [
-      { name: 'Exide Tubular', slug: 'exide-tubular' },
-      { name: 'Amaron Quanta', slug: 'amaron-quanta' }
-    ]
-  },
-  {
-    id: "amc-maintenance",
-    slug: "amc-maintenance",
-    title: "Annual Maintenance Contracts (AMC)",
-    shortDesc: "Comprehensive & non-comprehensive AMC agreements with 4hr response time SLA for offices and factories. Zero-stress enterprise power assurance covering single workstation UPS units to multi-kVA parallel redundant enterprise UPS banks. Contractual availability and fast response SLA across Bengaluru and Karnataka.",
-    introduction: "Zero-stress enterprise power assurance with guaranteed SLAs and dedicated priority support.",
-    badge: "Enterprise SLA",
-    priceStartsAt: "Custom Corporate Quote",
-    turnaround: "Contractual SLA Guarantee",
-    icon: "FileCheck",
-    banner: "/images/services/ups-technician.jpg",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1200",
-    features: [
-      "Guaranteed 4-hour breakdown turnaround time",
-      "4 mandatory quarterly preventive maintenance visits",
-      "Unlimited breakdown emergency callouts",
-      "Comprehensive option covering all PCB & spare parts",
-      "Dedicated account manager & priority phone line"
-    ],
-    fullDesc: "Zero-stress enterprise power assurance. Our AMC plans cover single workstation UPS units to multi-kVA parallel redundant enterprise UPS banks with guaranteed uptime.",
-    aboutContent: [
-      { title: 'What is an AMC?', desc: 'An Annual Maintenance Contract ensures your power infrastructure is professionally managed year-round with guaranteed response times.' },
-      { title: 'Why do you need it?', desc: 'It provides predictable maintenance costs, minimizes sudden breakdowns, and extends the operational life of expensive UPS equipment.' }
-    ],
-    fourColumns: [
-      { heading: 'WHAT WE PROVIDE', items: ['Comprehensive Coverage', 'Quarterly Visits', 'Priority Support', 'Account Management'] },
-      { heading: 'KEY BENEFITS', items: ['Zero Stress', 'Guaranteed Uptime', 'Predictable Costs', 'Fast SLA'] },
-      { heading: 'SERVICE PROCESS', items: ['Audit', 'Agreement', 'Scheduled Maintenance', 'Emergency Callouts'] },
-      { heading: 'SUITABLE FOR', items: ['Enterprises', 'IT Parks', 'Hospitals', 'Government Facilities'] }
-    ],
-    process: ['Initial Site Audit', 'Custom Quote Generation', 'Contract Signing', 'First Preventive Maintenance', 'Ongoing Priority Support'],
-    technicalInfo: 'Available in Comprehensive (includes parts) and Non-Comprehensive (service only) formats.',
-    relatedProducts: []
-  },
-  {
-    id: "power-backup-consultation",
-    slug: "power-backup-consultation",
-    title: "Power Backup Consultation & Sizing",
-    shortDesc: "Free expert sizing calculation for solar hybrid, lithium storage, and online UPS architecture. Don't overspend on oversized systems or risk undersized inverters tripping. Speak directly with our seasoned engineering team for custom engineering advice. Consultation available on-site in Bengaluru or via remote support.",
-    introduction: "Professional consultation to help you architect the perfect power backup solution tailored to your exact load requirements.",
-    badge: "Free Consultation",
-    priceStartsAt: "FREE",
-    turnaround: "Same Day Call / Video",
-    icon: "Headphones",
-    banner: "/images/services/ups-technician.jpg",
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=1200",
-    features: [
-      "Total connected load (VA/Watts) & inrush current audit",
-      "Runtime duration calculation based on discharge curves",
-      "Solar inverter hybrid ROI estimation",
-      "Cost-optimized brand comparisons without bias",
-      "Architectural single-line diagrams (SLD) review"
-    ],
-    fullDesc: "Don't overspend on oversized systems or risk undersized inverters tripping. Speak directly with Venu B N and our seasoned engineering team for custom engineering advice.",
-    aboutContent: [
-      { title: 'Expert Consultation', desc: 'We calculate your exact power requirements, considering inrush currents and future expansion, to recommend the optimal UPS or inverter system.' },
-      { title: 'Why it is important?', desc: 'Improper sizing can lead to frequent tripping, hardware damage, or wasted capital on oversized equipment.' }
-    ],
-    fourColumns: [
-      { heading: 'WHAT WE PROVIDE', items: ['Load Calculation', 'Brand Comparison', 'ROI Estimation', 'Architecture Review'] },
-      { heading: 'KEY BENEFITS', items: ['Cost Optimization', 'Right-Sized Systems', 'Unbiased Advice', 'Future Proofing'] },
-      { heading: 'SERVICE PROCESS', items: ['Discovery Call', 'Load Audit', 'Solution Design', 'Recommendation'] },
-      { heading: 'SUITABLE FOR', items: ['New Constructions', 'Data Centers', 'Factories', 'Large Homes'] }
-    ],
-    process: ['Initial Contact', 'Load Data Collection', 'Engineering Analysis', 'System Design', 'Proposal Presentation'],
-    technicalInfo: 'We utilize advanced sizing calculators for precise KVA/KW ratings and battery AH calculations.',
-    relatedProducts: []
-  },
-  {
-    id: "site-inspection",
-    slug: "site-inspection",
-    title: "Site Inspection & Power Quality Audit",
-    shortDesc: "Physical site readiness inspection, voltage harmonic analysis, and thermal load assessment. Ensure your commercial premises are ready for large 3-phase online UPS installations, preventing neutral floats and premature battery sulfation. Available for commercial sites throughout Bengaluru and Karnataka.",
-    introduction: "Comprehensive power quality audits and site readiness inspections to ensure a flawless installation environment.",
-    badge: "Bengaluru Wide",
-    priceStartsAt: "₹ 499 (Waived upon order)",
-    turnaround: "Within 24 Hours",
-    icon: "Search",
-    banner: "/images/services/ups-technician.jpg",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=1200",
-    features: [
-      "Physical room ventilation & ambient heat inspection",
-      "Neutral-to-Earth voltage spike measurement",
-      "Circuit breaker rating and cable gauge validation",
-      "Harmonic distortion (THDi) evaluation",
-      "Detailed site readiness certification report"
-    ],
-    fullDesc: "Ensure your commercial premises are ready for large 3-phase online UPS installations, preventing neutral floats and premature battery sulfation.",
-    aboutContent: [
-      { title: 'Site Inspection Services', desc: 'Our engineers physically inspect your site for ventilation, cabling, grounding, and harmonic distortions before installing sensitive power equipment.' },
-      { title: 'Why it matters?', desc: 'A poor electrical environment can instantly void UPS warranties and drastically reduce battery lifespan.' }
-    ],
-    fourColumns: [
-      { heading: 'WHAT WE PROVIDE', items: ['Harmonic Analysis', 'Grounding Checks', 'Thermal Assessment', 'Wiring Audit'] },
-      { heading: 'KEY BENEFITS', items: ['Prevents Failures', 'Ensures Warranty', 'Improves Safety', 'Identifies Faults'] },
-      { heading: 'SERVICE PROCESS', items: ['Site Visit', 'Measurement', 'Analysis', 'Certification'] },
-      { heading: 'SUITABLE FOR', items: ['Commercial Buildings', 'Manufacturing', 'Server Rooms', 'Hospitals'] }
-    ],
-    process: ['Schedule Visit', 'Visual Inspection', 'Power Quality Measurement', 'Load Assessment', 'Readiness Report Delivery'],
-    technicalInfo: 'Includes THDi evaluation and neutral-to-earth voltage spike measurement.',
-    relatedProducts: []
-  },
-  {
-    id: "technical-support",
-    slug: "technical-support",
-    title: "Dedicated Technical Support & Helpdesk",
-    shortDesc: "Direct helpline for troubleshooting error codes, battery beeps, and bypass operational guidance. Immediate over-the-phone and remote technical assistance for all your power backup operational queries. Our Bengaluru-based technical team is on standby to guide you step-by-step or dispatch emergency technicians anywhere in Karnataka.",
-    introduction: "Immediate over-the-phone and remote technical assistance for all your power backup operational queries.",
-    badge: "Direct Helpline",
-    priceStartsAt: "FREE for Livkam Customers",
-    turnaround: "Immediate Phone / WhatsApp",
-    icon: "HelpCircle",
-    banner: "/images/services/ups-technician.jpg",
-    image: "https://images.unsplash.com/photo-1534536281715-e28d76689b4d?auto=format&fit=crop&q=80&w=1200",
-    features: [
-      "Immediate troubleshooting of fault codes (F01, Overload, E04, etc.)",
-      "Guidance on manual maintenance bypass operation",
-      "Inverter solar settings & battery mode configuration",
-      "Warranty claim facilitation with APC, Vertiv, Luminous & Exide",
-      "Multilingual support in Kannada, English, Hindi, and Tamil"
-    ],
-    fullDesc: "Got a flashing red light or continuous alarm beep? Our Bangalore technical team is on standby to guide you step-by-step or dispatch emergency technicians.",
-    aboutContent: [
-      { title: 'Technical Helpdesk', desc: 'A dedicated line for instant remote troubleshooting of annoying beeps, error codes, and operational uncertainties.' },
-      { title: 'Why call us?', desc: 'Most common UPS issues can be resolved remotely in minutes without the need for an expensive technician visit.' }
-    ],
-    fourColumns: [
-      { heading: 'WHAT WE PROVIDE', items: ['Error Troubleshooting', 'Bypass Guidance', 'Warranty Facilitation', 'Multilingual Support'] },
-      { heading: 'KEY BENEFITS', items: ['Instant Resolution', 'Free for Customers', 'Zero Downtime', 'Expert Advice'] },
-      { heading: 'SERVICE PROCESS', items: ['Call Helpdesk', 'Describe Issue', 'Follow Guidance', 'Resolve or Dispatch'] },
-      { heading: 'SUITABLE FOR', items: ['All Customers', 'Facility Managers', 'IT Admins', 'Homeowners'] }
-    ],
-    process: ['Call Support Line', 'Identify Error Code', 'Remote Troubleshooting', 'Resolution or Ticket Escalation'],
-    technicalInfo: 'Support covers all major brands including APC, Vertiv, Microtek, and Luminous.',
-    relatedProducts: []
-  },
-  {
-    id: "battery-maintenance-testing",
-    slug: "battery-maintenance-testing",
-    group: "battery-support",
-    groupName: "Battery & Power Support",
-    aliases: ["battery-health-testing", "battery-maintenance"],
-    title: "Battery Health Testing & Impedance Analysis",
-    shortDesc: "Individual cell internal resistance measurement, open-circuit voltage logging, and controlled DC load bank discharge testing. Detect weak or sulfated batteries before they cause catastrophic string failure in mission-critical Online UPS systems. On-site diagnostic testing across Bengaluru and Karnataka.",
-    introduction: "Comprehensive battery bank diagnostic health audits using calibrated internal resistance meters and controlled load banks.",
-    badge: "Preventive Audit",
-    priceStartsAt: "₹ 999",
-    turnaround: "Scheduled Visit / Same Day",
-    icon: "Activity",
-    banner: "/images/services/battery-replacement.png",
-    image: "/images/services/battery-replacement.png",
-    features: [
-      "Per-cell milliohm internal impedance & conductance audit",
-      "Thermal infrared hotspot scanning of high-current terminal connections",
-      "Float charging ripple voltage and equalization verification",
-      "Specific gravity hydrometer testing for flooded tubular banks",
-      "Comprehensive string health grading report with life expectancy projection"
-    ],
-    fullDesc: "A single failed cell in a 16 or 32 battery UPS string will drag down the entire DC bus and cause sudden failure during utility power cuts. Our battery testing engineers identify deteriorating blocks early, preventing unexpected downtime and extending battery life.",
-    aboutContent: [
-      { title: 'What is Battery Health Testing?', desc: 'A rigorous diagnostic audit measuring individual cell internal resistance, float voltage, inter-link torque, and thermal load.' },
-      { title: 'Why is it critical?', desc: 'Standard visual inspection cannot detect dry-out or internal plate sulfation. Impedance testing identifies failing cells weeks before actual failure occurs.' }
-    ],
-    fourColumns: [
-      { heading: 'WHAT WE PROVIDE', items: ['Impedance Analysis', 'Thermal Heat Scan', 'Load Bank Testing', 'Certified Report'] },
-      { heading: 'KEY BENEFITS', items: ['Prevents Blackouts', 'Saves Capital', 'Extends Battery Life', 'Ensures Runtime'] },
-      { heading: 'SERVICE PROCESS', items: ['Visual Check', 'Impedance Logging', 'Torque Audit', 'Health Grading'] },
-      { heading: 'SUITABLE FOR', items: ['Data Centers', 'Hospitals', 'Commercial Banks', 'Industrial Plants'] }
-    ],
-    process: ['Schedule On-Site Visit', 'String Isolation & Safety Check', 'Per-Cell Micro-Ohm Measurement', 'Terminal Torque Calibration', 'Report & Recommendation Delivery'],
-    technicalInfo: 'We test all SMF VRLA (AGM), Tall Tubular, and Lithium battery systems from 7Ah to 200Ah.',
-    relatedProducts: [
-      { name: 'Amaron Quanta 12V 100Ah', slug: 'amaron-quanta-100ah' },
-      { name: 'Exide Powersafe 12V 100Ah', slug: 'exide-powersafe-100ah' }
-    ]
+    display_order: 14,
+    is_published: true
   }
 ];

@@ -23,6 +23,7 @@ import { useCategories, useBrands, useServices, useProducts } from '../context/D
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { ONLINE_UPS_DROPDOWN, BATTERIES_DROPDOWN } from '../data/catalogsData';
+import { SERVICE_CATEGORIES } from '../data/services';
 
 export default function MobileDrawer({ isOpen, onClose }) {
   const categories = useCategories();
@@ -38,6 +39,7 @@ export default function MobileDrawer({ isOpen, onClose }) {
   const [batteriesOpen, setBatteriesOpen] = useState(false);
   const [brandsOpen, setBrandsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [openServiceCategory, setOpenServiceCategory] = useState(null);
 
   if (!isOpen) return null;
 
@@ -198,53 +200,45 @@ export default function MobileDrawer({ isOpen, onClose }) {
               </button>
 
               {servicesOpen && (
-                <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50 rounded-lg my-1 max-h-80 overflow-y-auto">
+                <div className="pl-3 pr-2 py-1 space-y-1.5 bg-amber-500/10 rounded-xl my-1 max-h-96 overflow-y-auto border border-amber-500/30">
                   <Link
                     to="/services"
                     onClick={onClose}
-                    className="block py-2 px-2 text-xs font-bold text-[#16a34a] border-b border-slate-200/60"
+                    className="block py-2 px-2 text-xs font-black text-amber-700 hover:text-amber-900 border-b border-amber-500/20"
                   >
-                    🛠️ All 9 Comprehensive Services →
+                    🛠️ View All Services & AMC Hub →
                   </Link>
 
-                  <div className="px-2 pt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    Group A: UPS Installation
-                  </div>
-                  <Link to="/services/ups-installation" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
-                    UPS Installation & Setup
-                  </Link>
-                  <Link to="/services/preventive-maintenance" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
-                    Preventive Maintenance
-                  </Link>
-                  <Link to="/services/testing-commissioning" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
-                    Testing & Commissioning
-                  </Link>
+                  {SERVICE_CATEGORIES.map((cat) => {
+                    const isCatOpen = openServiceCategory === cat.id;
+                    return (
+                      <div key={cat.id} className="border-b border-amber-500/10 last:border-b-0 pb-1">
+                        <button
+                          type="button"
+                          onClick={() => setOpenServiceCategory(isCatOpen ? null : cat.id)}
+                          className="w-full flex items-center justify-between py-1.5 px-2 text-xs font-black text-slate-800 hover:text-amber-700 text-left"
+                        >
+                          <span className="truncate pr-1">{cat.title}</span>
+                          <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform ${isCatOpen ? 'rotate-180 text-amber-700' : ''}`} />
+                        </button>
 
-                  <div className="px-2 pt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-t border-slate-200/60 mt-1">
-                    Group B: Maintenance & Repair (AMC)
-                  </div>
-                  <Link to="/services/ups-repair" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
-                    UPS Repair & Troubleshooting
-                  </Link>
-                  <Link to="/services/amc-contracts" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
-                    AMC Maintenance Contracts
-                  </Link>
-                  <Link to="/services/emergency-support" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
-                    24/7 Emergency Support
-                  </Link>
-
-                  <div className="px-2 pt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-t border-slate-200/60 mt-1">
-                    Group C: Battery & Power Support
-                  </div>
-                  <Link to="/services/battery-replacement" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
-                    Battery Replacement & Install
-                  </Link>
-                  <Link to="/services/battery-health-check" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
-                    Battery Health & Impedance
-                  </Link>
-                  <Link to="/services/scrap-battery-buyback" onClick={onClose} className="block py-1 px-2 text-xs text-slate-600 hover:text-[#16a34a]">
-                    Scrap Battery Buyback
-                  </Link>
+                        {isCatOpen && (
+                          <div className="pl-3 py-1 space-y-1 bg-amber-500/10 rounded-lg mt-0.5">
+                            {cat.catalogues.map((item) => (
+                              <Link
+                                key={item.slug}
+                                to={`/services/${item.slug}`}
+                                onClick={onClose}
+                                className="block py-1 px-2 text-[11px] font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-500/20 rounded"
+                              >
+                                • {item.title}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>

@@ -37,7 +37,8 @@ import {
   BadgePercent,
   MapPin,
   Mail,
-  Send
+  Send,
+  Globe
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useCategories, useBrands, useProducts, useServices } from '../context/DataContext';
@@ -572,6 +573,131 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* ============================================================ */}
+      {/* 1.5. WELCOME TO LIVKAM POWER TECHNOLOGIES & UPS RENTAL (Image Copy 69) */}
+      {/* ============================================================ */}
+      <section className="py-8 md:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xs hover:shadow-md transition-shadow p-6 sm:p-8 lg:p-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            
+            {/* Left Column: Welcome Content */}
+            <div className="lg:col-span-6 xl:col-span-7 space-y-5">
+              <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-[#16a34a] px-3.5 py-1 rounded-full text-xs font-bold tracking-wide">
+                <span className="w-2 h-2 rounded-full bg-[#16a34a] animate-pulse"></span>
+                <span>Established in 2016 • Trusted Partner</span>
+              </div>
+
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0f2b48] tracking-tight leading-tight">
+                Welcome To <span className="text-[#16a34a]">Livkam Power Technologies</span>
+              </h2>
+
+              <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
+                <p>
+                  Established in 2016, <strong className="text-[#0f2b48] font-bold">Livkam Power Technologies</strong> is a premier trader and supplier specializing in Online UPS Systems and SMF Batteries. Our extensive product lineup includes Online UPS and offline UPS, as well as versatile UPS systems compatible with various brands. By consistently sourcing the most advanced and reliable UPS systems and batteries from trusted vendors, we ensure that our clients receive the best in the market.
+                </p>
+                <p>
+                  Our UPS systems are known for their exceptional efficiency, cutting-edge smart charge technology, and safe no-load shutdown features. Furthermore, our batteries are lauded for their rapid charging capabilities and long operational lifespan. We take pride in our role as Manufacturers, Suppliers, Distributors, Wholesalers, and Dealers of esteemed brands such as APC UPS, Emerson UPS, and Eaton UPS. Our network spans across regions like Bangalore, Goa, Telangana, Tamil Nadu, Kerala, and Hyderabad, Noida, Pune.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <Link
+                  to="/about"
+                  className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all"
+                >
+                  <span>Read More</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+
+                <Link
+                  to="/online-ups"
+                  className="inline-flex items-center gap-2 text-slate-700 hover:text-[#16a34a] font-bold text-xs sm:text-sm border border-slate-300 hover:border-[#16a34a] px-5 py-2.5 rounded-full transition-all"
+                >
+                  <span>Explore Online UPS</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Column: UPS Rental Service Banner (Image Copy 69) */}
+            <div className="lg:col-span-6 xl:col-span-5">
+              <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-[#0f2b48] text-white p-6 sm:p-7 shadow-2xl border border-slate-700/70">
+                {/* Glow backdrop */}
+                <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div className="relative z-10 space-y-4">
+                  {/* Top orange kicker */}
+                  <span className="block text-xs sm:text-sm font-black text-amber-400 tracking-wider uppercase">
+                    UPS RENTAL SERVICE - BEST DEALS FOR YOUR BACKUP NEEDS
+                  </span>
+
+                  {/* Headline */}
+                  <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase leading-snug">
+                    STAY POWERED - ANYTIME ANYWHERE
+                  </h3>
+
+                  {/* Subtitle */}
+                  <p className="text-xs sm:text-[13px] text-slate-300 leading-relaxed font-normal">
+                    At Livkam Power Technologies, we offer top-notch UPS rental services designed to meet your power backup needs.
+                  </p>
+
+                  {/* Four Audience Pills */}
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <span className="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold py-1.5 px-3 rounded-full text-center">
+                      🏢 Offices
+                    </span>
+                    <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold py-1.5 px-3 rounded-full text-center">
+                      💼 Small Businesses
+                    </span>
+                    <span className="bg-sky-500/20 text-sky-300 border border-sky-500/30 text-[11px] font-bold py-1.5 px-3 rounded-full text-center">
+                      🎪 Event Organizers
+                    </span>
+                    <span className="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[11px] font-bold py-1.5 px-3 rounded-full text-center">
+                      🏭 Industrial
+                    </span>
+                  </div>
+
+                  {/* Showcase Product Photo of UPS Systems */}
+                  <div className="relative rounded-2xl overflow-hidden bg-white/95 p-2 shadow-inner border border-white/20 mt-2">
+                    <img
+                      src="/images/ups-rental-showcase.jpg"
+                      alt="UPS Rental Systems - Small, Medium and Large Tower Units"
+                      className="w-full h-44 sm:h-52 object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Contact Strip */}
+                  <div className="bg-white/10 backdrop-blur-md rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-200 border border-white/10">
+                    <div className="flex items-center gap-1.5 font-bold">
+                      <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                      <a href="tel:+918884988990" className="hover:text-emerald-400">+91 8884988990</a>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Globe className="w-3.5 h-3.5 text-sky-400" />
+                      <span>www.livkampower.in</span>
+                    </div>
+                  </div>
+
+                  {/* Prominent PAY NOW / GET QUOTE Button */}
+                  <div className="pt-1">
+                    <a
+                      href="https://wa.me/918884988990?text=Hi%20Livkam%20Power,%20I%20am%20interested%20in%20your%20UPS%20Rental%20Services"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white py-3 px-6 rounded-2xl font-black text-sm uppercase tracking-wider shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all"
+                    >
+                      <span>PAY NOW / GET RENTAL QUOTE</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
 
       {/* ============================================================ */}
       {/* 2. IMAGE COPY 7: SHOP BY CATEGORY (STUDIO IMAGES) */}

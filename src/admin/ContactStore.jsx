@@ -14,11 +14,12 @@ const DEFAULT_SETTINGS = {
   whatsapp: '8884988990',
   email: 'info@livkampower.in',
   address: '21, Subhash Chandra Bose Rd, Banashankari 2nd Stage, Bendre Nagar, Bengaluru, Karnataka 560070',
+  warehouse_address: '6 And 7 4th Cross Ganesh Nagar, Main Road, Vidyaranyapura Post, Telecom Colony, Kodigehalli, Bengaluru, Karnataka 560097',
   gst: '29CYMPN3694M1ZC',
   business_hours: 'Mon-Sat: 9AM - 7PM',
   google_maps_url: 'https://maps.google.com/?q=21+Subhash+Chandra+Bose+Rd+Banashankari+2nd+Stage+Bengaluru',
   google_maps_embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.3245!2d77.5495!3d12.9279!',
-  facebook_url: '',
+  facebook_url: 'https://www.facebook.com/share/14tTKpW4pF4/',
   instagram_url: '',
   linkedin_url: '',
   youtube_url: '',
@@ -253,12 +254,25 @@ export default function ContactStoreAdmin() {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                Full Physical Address (Bengaluru, Karnataka)
+                Full Physical Address / Head Office (Bengaluru, Karnataka)
               </label>
               <textarea
                 rows={2}
                 value={settings.address}
                 onChange={(e) => handleChange('address', e.target.value)}
+                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:border-[#16a34a]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                Warehouse Address (Vidyaranyapura, Bengaluru)
+              </label>
+              <textarea
+                rows={2}
+                value={settings.warehouse_address}
+                onChange={(e) => handleChange('warehouse_address', e.target.value)}
+                placeholder="6 And 7 4th Cross Ganesh Nagar, Main Road, Vidyaranyapura Post, Telecom Colony, Kodigehalli, Bengaluru, Karnataka 560097"
                 className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:border-[#16a34a]"
               />
             </div>

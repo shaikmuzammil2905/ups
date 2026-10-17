@@ -992,7 +992,7 @@ export default function CatalogDetail({ type = 'online-ups' }) {
                 </div>
                 <div className="flex items-start gap-2.5">
                   <MapPin className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
-                  <span><strong>Warehouse:</strong> #39 Sy No 24 Bommandahalli village, Dyavasandra, Anekal Taluk, Jigani, Bengaluru, Karnataka 560105</span>
+                  <span><strong>Warehouse:</strong> 6 And 7 4th Cross Ganesh Nagar, Main Road, Vidyaranyapura Post, Telecom Colony, Kodigehalli, Bengaluru, Karnataka 560097</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-emerald-400 flex-shrink-0" />

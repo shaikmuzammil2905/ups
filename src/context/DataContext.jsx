@@ -16,10 +16,12 @@ const DEFAULT_SETTINGS = {
   whatsapp: '8884988990',
   email: 'info@livkampower.in',
   address: '21, Subhash Chandra Bose Rd, Banashankari 2nd Stage, Bendre Nagar, Bengaluru, Karnataka 560070',
+  warehouse_address: '6 And 7 4th Cross Ganesh Nagar, Main Road, Vidyaranyapura Post, Telecom Colony, Kodigehalli, Bengaluru, Karnataka 560097',
   gst: '29CYMPN3694M1ZC',
   business_hours: 'Mon-Sat: 9AM - 7PM',
   google_maps_url: 'https://maps.google.com/?q=21+Subhash+Chandra+Bose+Rd+Banashankari+2nd+Stage+Bengaluru',
   google_maps_embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.3245!2d77.5495!3d12.9279!',
+  facebook_url: 'https://www.facebook.com/share/14tTKpW4pF4/',
   emergency_banner_text: '⚡ 24/7 Emergency UPS Breakdown Support & Mobile Battery Delivery in Bengaluru: +91 8884988990',
   emergency_banner_active: true,
 };
@@ -208,8 +210,18 @@ export function DataProvider({ children }) {
         .order('display_order', { ascending: true });
 
       if (!sErr && dbServices && dbServices.length > 0) {
+        const dbMap = new Map();
+        dbServices.forEach(s => {
+          if (s.id) dbMap.set(s.id, s);
+          if (s.slug) dbMap.set(s.slug, s);
+        });
+
         const formatted = dbServices.map(s => ({
           ...s,
+          category: s.category || s.categoryId || 'APC UPS AMC SERVICE',
+          categoryId: s.category_id || s.categoryId || s.category,
+          rangeItems: s.range_items || s.rangeItems,
+          benefitsItems: s.benefits_items || s.benefitsItems,
           shortDesc: s.short_desc || s.shortDesc,
           priceStartsAt: s.price_starts_at || s.priceStartsAt,
           aboutContent: s.about_content || s.aboutContent,
@@ -220,8 +232,18 @@ export function DataProvider({ children }) {
           image: s.image_url || s.image || s.banner || s.imageUrl,
           banner: s.image_url || s.banner || s.image || s.imageUrl,
         }));
+
+        staticServices.forEach(ss => {
+          if (!dbMap.has(ss.id) && !dbMap.has(ss.slug)) {
+            formatted.push(ss);
+          }
+        });
+
         setServices(formatted);
         try { localStorage.setItem('livkam_cached_services', JSON.stringify(formatted)); } catch (_) {}
+      } else {
+        setServices(staticServices);
+        try { localStorage.setItem('livkam_cached_services', JSON.stringify(staticServices)); } catch (_) {}
       }
 
       // 5. Fetch Posts

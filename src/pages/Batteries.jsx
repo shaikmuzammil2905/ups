@@ -620,7 +620,17 @@ export default function Batteries() {
                 <div className="mt-6 space-y-3.5 text-xs text-slate-300">
                   <div className="flex items-start gap-3">
                     <MapPin className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-                    <span>21, Subhash Chandra Bose Rd, Banashankari 2nd Stage, Bendre Nagar, Bengaluru, Karnataka 560070</span>
+                    <div>
+                      <span className="font-bold text-white block">Head Office:</span>
+                      <span>21, Subhash Chandra Bose Rd, Banashankari 2nd Stage, Bendre Nagar, Bengaluru, Karnataka 560070</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">Warehouse:</span>
+                      <span>6 And 7 4th Cross Ganesh Nagar, Main Road, Vidyaranyapura Post, Telecom Colony, Kodigehalli, Bengaluru, Karnataka 560097</span>
+                    </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="w-4 h-4 text-blue-400 flex-shrink-0" />

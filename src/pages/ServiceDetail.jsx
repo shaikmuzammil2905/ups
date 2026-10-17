@@ -8,7 +8,11 @@ import {
   MapPin,
   Mail,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  ShieldCheck,
+  Clock,
+  Sparkles,
+  ExternalLink
 } from 'lucide-react';
 import { useServices } from '../context/DataContext';
 import { supabase } from '../lib/supabase';
@@ -26,369 +30,401 @@ export default function ServiceDetail() {
     const cleanId = (s.id || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     return cleanParam.includes(cleanSlug) || cleanSlug.includes(cleanParam) || cleanParam.includes(cleanId);
   }) || (services && services[0]) || {
-    id: 'ups-service',
-    title: 'UPS Installation & Engineering Service',
-    description: 'Professional UPS installation, preventive maintenance, and battery support.',
-    priceStartsAt: 'Contact for Quote',
-    turnaround: 'Same Day'
+    id: 'apc-ups-service',
+    title: 'APC UPS Service',
+    category: 'APC UPS AMC SERVICE',
+    shortDesc: 'Livkam Power Technologies is your go-to source for comprehensive APC UPS services.',
+    introduction: 'Livkam Power Technologies is your go-to source for comprehensive APC UPS services. Our team of experienced professionals is dedicated to providing reliable and efficient solutions for your APC UPS systems, ensuring optimal performance and minimal downtime.',
+    image: '/images/services/apc-service-cabinets.jpg'
   };
+
+  const defaultRangeItems = [
+    `${service.title} installation and setup, ensuring your systems are correctly configured for optimal performance.`,
+    `Regular preventive maintenance to keep your ${service.title} systems running smoothly and efficiently.`,
+    `Troubleshooting and repair services to address any issues or breakdowns promptly.`,
+    `System upgrades and replacements to enhance the efficiency and reliability of your infrastructure.`,
+    `Expert consultation and advice on power management solutions tailored to your business needs.`
+  ];
+
+  const defaultBenefitsItems = [
+    `Access to a team of experienced professionals with in-depth knowledge of ${service.title} systems.`,
+    `Reliable and efficient solutions to minimize downtime and disruptions for your business.`,
+    `Competitive pricing for top-quality UPS services.`,
+    `Responsive customer support, ensuring your concerns are promptly addressed.`,
+    `A commitment to maintaining the highest standards of service and satisfaction.`
+  ];
+
+  const rangeList = service.rangeItems || (Array.isArray(service.features) && service.features.length > 0 ? service.features : defaultRangeItems);
+  const benefitsList = service.benefitsItems || defaultBenefitsItems;
 
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
-    company: '',
-    service: service?.title || 'General Engineering Service',
     message: ''
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg('');
     try {
-      await supabase.from('enquiries').insert({
+      const { error } = await supabase.from('enquiries').insert({
         name: formData.name,
         phone: formData.phone,
-        email: formData.email,
-        subject: `Service Request: ${service.title}`,
+        email: formData.email || null,
+        subject: `Service Quotation: ${service.title}`,
         service_name: service.title,
-        message: `${formData.company ? `[Company: ${formData.company}] ` : ''}${formData.message}`,
-        source: 'service_detail_page',
-        status: 'new',
+        message: formData.message || `Quotation Request for ${service.title}`,
+        source: 'service_catalogue_page',
+        status: 'pending',
         created_at: new Date().toISOString()
       });
+      if (error) throw error;
+      setSubmitted(true);
+      setFormData({ name: '', phone: '', email: '', message: '' });
     } catch (err) {
       console.warn('Service inquiry fallback:', err);
+      // Fallback: still show submitted success
+      setSubmitted(true);
     } finally {
       setLoading(false);
-      setSubmitted(true);
     }
   };
 
   const whatsappMessage = encodeURIComponent(
-    `Hello Livkam Power Technologies,\nI am interested in ${service.title}.\nPlease provide more information.`
+    `Hello Livkam Power Technologies,\nI am interested in ${service.title}.\nPlease provide quotation and technical service details.`
   );
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
-        <Link to="/" className="hover:text-[#16a34a]">Home</Link>
-        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-        <Link to="/services" className="hover:text-[#16a34a]">Services</Link>
-        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-        <span className="text-[#0f2b48] font-bold">{service.title}</span>
-      </div>
-
-      {/* 1 & 2. Service Title & Introduction */}
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0f2b48]">
-          {service.title}
-        </h1>
-        <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
-          {service.introduction || service.shortDesc}
-        </p>
-      </div>
-
-      {/* 4. Service-Related Image */}
-      {(service.banner || service.image) && (
-        <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-white">
-          <img 
-            src={service.banner || service.image} 
-            alt={service.title} 
-            className="w-full h-auto object-contain sm:object-cover sm:max-h-[500px]"
-            loading="lazy"
-          />
-        </div>
-      )}
-
-      {/* 7. About This Service */}
-      <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-        <h2 className="text-2xl font-black text-[#0f2b48] mb-6">ABOUT THIS SERVICE</h2>
-        <div className="space-y-6">
-          {service.aboutContent?.map((content, idx) => (
-            <div key={idx}>
-              <h3 className="text-lg font-bold text-[#16a34a] mb-2">{content.title}</h3>
-              <p className="text-slate-600 leading-relaxed text-sm">{content.desc}</p>
-            </div>
-          ))}
-          {!service.aboutContent && (
-             <p className="text-slate-600 leading-relaxed text-sm">{service.fullDesc}</p>
+    <div className="w-full bg-[#f8fafc] py-6 sm:py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-14">
+        
+        {/* Breadcrumb Navigation */}
+        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 font-medium">
+          <Link to="/" className="hover:text-[#16a34a] transition-colors">Home</Link>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+          <Link to="/services" className="hover:text-[#16a34a] transition-colors">Services</Link>
+          {service.category && (
+            <>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+              <span className="text-slate-600">{service.category}</span>
+            </>
           )}
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+          <span className="text-[#0f2b48] font-bold">{service.title}</span>
         </div>
-      </div>
 
-      {/* 9. Four-Column Section */}
-      {service.fourColumns && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {service.fourColumns.map((col, idx) => (
-            <div key={idx} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <h3 className="text-sm font-black text-[#0f2b48] mb-4 uppercase tracking-wide border-b pb-2">{col.heading}</h3>
-              <ul className="space-y-3">
-                {col.items.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
-                    <CheckCircle2 className="w-4 h-4 text-[#16a34a] flex-shrink-0 mt-0.5" />
-                    <span>{item}</span>
+        {/* 1. Header & Introduction Section (Image Copy 78) */}
+        <div className="text-center max-w-4xl mx-auto space-y-4">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#0f2b48] tracking-tight leading-tight">
+            Expert <span className="text-[#16a34a]">{service.title}</span> by Livkam Power Technologies
+          </h1>
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal max-w-3xl mx-auto">
+            Livkam Power Technologies is your go-to source for comprehensive{' '}
+            <span className="text-red-600 font-bold">{service.title}</span>. Our team of experienced professionals is dedicated to providing reliable and efficient solutions for your {service.title} systems, ensuring optimal performance and minimal downtime.
+          </p>
+        </div>
+
+        {/* 2. Comprehensive Range of Services & Pictorial Representation (Image Copy 78) */}
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            {/* Left Column: Comprehensive Range List */}
+            <div className="lg:col-span-7 space-y-6">
+              <div>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#0f2b48] tracking-tight">
+                  Our Comprehensive Range of {service.title}
+                </h2>
+                <p className="text-sm font-bold text-slate-800 mt-2">
+                  Our extensive {service.title} include:
+                </p>
+              </div>
+
+              <ul className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                {rangeList.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="w-2 h-2 rounded-full bg-[#16a34a] flex-shrink-0 mt-2"></span>
+                    <span className="font-medium text-slate-700">{typeof item === 'string' ? item : item.title || item.text}</span>
                   </li>
                 ))}
               </ul>
-            </div>
-          ))}
-        </div>
-      )}
 
-      {/* 11 & 12. Why Choose Us & Technical Info */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-[#0f2b48] text-white rounded-3xl p-8 shadow-sm">
-          <h2 className="text-2xl font-black mb-6">WHY CHOOSE LIVKAM POWER TECHNOLOGIES?</h2>
-          <ul className="space-y-4">
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[#16a34a] flex-shrink-0" />
-              <span className="text-sm text-slate-300">Professional power solutions with experienced technical support.</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[#16a34a] flex-shrink-0" />
-              <span className="text-sm text-slate-300">Quality products from leading brands like APC, Delta, Exide, Amaron.</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[#16a34a] flex-shrink-0" />
-              <span className="text-sm text-slate-300">Retail and wholesale support with reliable after-sales service.</span>
-            </li>
-          </ul>
-        </div>
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <a
+                  href={`https://wa.me/918884988990?text=${whatsappMessage}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white px-6 py-3 rounded-full text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Book Technician on WhatsApp</span>
+                </a>
 
-        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-          <h2 className="text-2xl font-black text-[#0f2b48] mb-6">HOW IT WORKS</h2>
-          <div className="space-y-6">
-            <div className="flex gap-4 group">
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-[#0f2b48] text-white flex items-center justify-center font-bold shadow-md group-hover:bg-[#16a34a] transition-colors z-10">1</div>
-                <div className="w-0.5 h-full bg-slate-200 mt-2"></div>
-              </div>
-              <div className="pb-6">
-                <h3 className="text-sm font-bold text-[#0f2b48] uppercase mb-1">STEP 1 — CONTACT US</h3>
-                <p className="text-sm text-slate-600">Tell us about your UPS or power-backup requirement.</p>
+                <a
+                  href="tel:+918884988990"
+                  className="inline-flex items-center gap-2 text-[#0f2b48] hover:text-[#16a34a] font-bold text-xs sm:text-sm border border-slate-300 hover:border-[#16a34a] px-5 py-3 rounded-full transition-all"
+                >
+                  <Phone className="w-4 h-4 text-[#16a34a]" />
+                  <span>Call 24/7: +91 8884988990</span>
+                </a>
               </div>
             </div>
 
-            <div className="flex gap-4 group">
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-[#0f2b48] text-white flex items-center justify-center font-bold shadow-md group-hover:bg-[#16a34a] transition-colors z-10">2</div>
-                <div className="w-0.5 h-full bg-slate-200 mt-2"></div>
-              </div>
-              <div className="pb-6">
-                <h3 className="text-sm font-bold text-[#0f2b48] uppercase mb-1">STEP 2 — REQUIREMENT ASSESSMENT</h3>
-                <p className="text-sm text-slate-600">Understand the equipment, load and backup requirements.</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 group">
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-[#0f2b48] text-white flex items-center justify-center font-bold shadow-md group-hover:bg-[#16a34a] transition-colors z-10">3</div>
-                <div className="w-0.5 h-full bg-slate-200 mt-2"></div>
-              </div>
-              <div className="pb-6">
-                <h3 className="text-sm font-bold text-[#0f2b48] uppercase mb-1">STEP 3 — INSPECTION / CONSULTATION</h3>
-                <p className="text-sm text-slate-600">Inspect the system or provide technical guidance based on the requirement.</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 group">
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-[#0f2b48] text-white flex items-center justify-center font-bold shadow-md group-hover:bg-[#16a34a] transition-colors z-10">4</div>
-                <div className="w-0.5 h-full bg-slate-200 mt-2"></div>
-              </div>
-              <div className="pb-6">
-                <h3 className="text-sm font-bold text-[#0f2b48] uppercase mb-1">STEP 4 — SERVICE EXECUTION</h3>
-                <p className="text-sm text-slate-600">Perform installation, maintenance, repair, replacement or other required service.</p>
+            {/* Right Column: Pictorial Representation (Studio Equipment Photo) */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="w-full bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80 shadow-md group hover:shadow-xl transition-all">
+                <div className="w-full aspect-4/3 flex items-center justify-center overflow-hidden rounded-xl bg-slate-50/50">
+                  <img
+                    src={service.image || service.banner || '/images/services/apc-service-cabinets.jpg'}
+                    alt={`Livkam Power Technologies - ${service.title} Pictorial Representation`}
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold">
+                  <span className="flex items-center gap-1.5 text-[#16a34a]">
+                    <ShieldCheck className="w-4 h-4" />
+                    <span>OEM Certified Genuine Spares</span>
+                  </span>
+                  <span className="bg-emerald-50 text-[#16a34a] px-2.5 py-0.5 rounded-full font-bold">
+                    Fast SLA
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div className="flex gap-4 group">
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-[#0f2b48] text-white flex items-center justify-center font-bold shadow-md group-hover:bg-[#16a34a] transition-colors z-10">5</div>
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-[#0f2b48] uppercase mb-1">STEP 5 — TESTING & HANDOVER</h3>
-                <p className="text-sm text-slate-600">Test the system and provide the required customer guidance.</p>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
 
-      {/* 13. Related Products */}
-      {service.relatedProducts && service.relatedProducts.length > 0 && (
-        <div className="space-y-6">
-          <h2 className="text-2xl font-black text-[#0f2b48]">RELATED PRODUCTS</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {service.relatedProducts.map((prod, idx) => (
-              <Link to={`/products/${prod.slug}`} key={idx} className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-[#16a34a] transition-colors flex items-center justify-between group">
-                <span className="text-sm font-bold text-[#0f2b48] group-hover:text-[#16a34a]">{prod.name}</span>
-                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#16a34a]" />
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 14. Contact Section */}
-      <div className="bg-slate-100 rounded-3xl p-8 border border-slate-200 space-y-8">
-        <div className="text-center max-w-2xl mx-auto">
-          <h2 className="text-2xl font-black text-[#0f2b48] mb-4">CONTACT LIVKAM POWER TECHNOLOGIES</h2>
-          <p className="text-sm text-slate-600">Reach out to us directly for immediate assistance or queries regarding our services.</p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <a href="tel:+918884988990" className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow gap-3 text-center border border-slate-200">
-            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
-              <Phone className="w-5 h-5" />
-            </div>
-            <span className="text-sm font-bold text-[#0f2b48]">Call Us</span>
-            <span className="text-xs text-slate-500 font-medium">+91 8884988990<br/>+91 9945535819</span>
-          </a>
-          
-          <a href={`https://wa.me/918884988990?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow gap-3 text-center border border-slate-200">
-            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center">
-              <MessageCircle className="w-5 h-5" />
-            </div>
-            <span className="text-sm font-bold text-[#0f2b48]">WhatsApp Us</span>
-            <span className="text-xs text-slate-500 font-medium">+91 8884988990</span>
-          </a>
-
-          <a href="mailto:info@livkampower.in" className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow gap-3 text-center border border-slate-200">
-            <div className="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center">
-              <Mail className="w-5 h-5" />
-            </div>
-            <span className="text-sm font-bold text-[#0f2b48]">Email Us</span>
-            <span className="text-xs text-slate-500 font-medium">info@livkampower.in</span>
-          </a>
-
-          <a href="https://maps.google.com/?q=21,+Subhash+Chandra+Bose+Rd,+Banashankari+2nd+Stage,+Bendre+Nagar,+Bengaluru,+Karnataka+560070" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow gap-3 text-center border border-slate-200">
-            <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center">
-              <MapPin className="w-5 h-5" />
-            </div>
-            <span className="text-sm font-bold text-[#0f2b48]">Address</span>
-            <span className="text-xs text-slate-500 font-medium line-clamp-2">Banashankari 2nd Stage,<br/>Bengaluru</span>
-          </a>
-        </div>
-      </div>
-
-      {/* 16. Map Section */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-black text-[#0f2b48]">FIND US</h2>
-        <div className="w-full h-[400px] rounded-3xl overflow-hidden border border-slate-200 shadow-sm relative">
-          <iframe 
-            src="https://maps.google.com/maps?q=Livkam%20Power%20Technologies,%20Banashankari%202nd%20Stage,%20Bengaluru&t=&z=14&ie=UTF8&iwloc=&output=embed" 
-            className="w-full h-full border-0" 
-            allowFullScreen="" 
-            loading="lazy" 
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Livkam Power Technologies Map"
-          ></iframe>
-        </div>
-      </div>
-
-      {/* 17. Customer Form Section */}
-      <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-md max-w-4xl mx-auto">
-        <div className="text-center mb-8 space-y-2">
-          <h2 className="text-2xl font-black text-[#0f2b48]">SEND US A MESSAGE</h2>
-          <p className="text-sm text-slate-500">Have a specific requirement? Fill out the form and our team will get back to you.</p>
-        </div>
-
-        {submitted ? (
-          <div className="p-8 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-3">
-            <CheckCircle2 className="w-12 h-12 text-[#16a34a] mx-auto" />
-            <h4 className="text-lg font-black text-[#0f2b48]">Thank You!</h4>
-            <p className="text-sm text-slate-600">
-              Your enquiry has been submitted successfully.<br/>Our team will contact you shortly.
+        {/* 3. Benefits Section at Grand Level (Image Copy 79) */}
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 space-y-6">
+          <div className="text-center max-w-3xl mx-auto space-y-2">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0f2b48] tracking-tight">
+              Benefits of Choosing Livkam Power Technologies for {service.title}
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 font-medium">
+              Choosing Livkam Power Technologies for your <span className="text-red-600 font-bold">{service.title}</span> offers several benefits, such as:
             </p>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+          <div className="max-w-4xl mx-auto pt-2">
+            <ul className="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              {benefitsList.map((item, idx) => (
+                <li key={idx} className="flex items-start gap-3 bg-slate-50/80 p-3.5 sm:p-4 rounded-2xl border border-slate-200/60 hover:border-emerald-300 transition-colors">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#16a34a] flex-shrink-0 mt-1.5 shadow-2xs"></span>
+                  <span className="font-medium text-slate-800">{typeof item === 'string' ? item : item.title || item.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* 4. Grand Level Contact & Quotation Form with Map (Image Copy 79 & 80) */}
+        <div className="rounded-3xl overflow-hidden bg-black text-white p-6 sm:p-10 lg:p-14 border border-slate-800 shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            
+            {/* Left Column: Official Addresses & Interactive Map */}
+            <div className="lg:col-span-6 space-y-6">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">FULL NAME *</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full text-sm p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:border-[#16a34a] focus:ring-1 focus:ring-[#16a34a]"
-                />
+                <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                  Contact
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                  Livkam Power Technologies customer support & engineering hubs across South India.
+                </p>
               </div>
-              <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">MOBILE NUMBER *</label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full text-sm p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:border-[#16a34a] focus:ring-1 focus:ring-[#16a34a]"
-                />
+
+              <div className="space-y-4 text-xs sm:text-sm text-slate-300">
+                {/* Head Office */}
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-white block font-bold mb-0.5">Head Office :</strong>
+                    <span className="text-slate-300 leading-relaxed">
+                      21, Subhash Chandra Bose Rd, Banashankari 2nd Stage, Bendre Nagar, Bengaluru, Karnataka 560070
+                    </span>
+                  </div>
+                </div>
+
+                {/* Warehouse (Updated address from Image Copy 80) */}
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-white block font-bold mb-0.5">Warehouse :</strong>
+                    <span className="text-slate-300 leading-relaxed">
+                      6 And 7 4th Cross Ganesh Nagar, Main Road, Vidyaranyapura Post, Telecom Colony, Kodigehalli, Bengaluru, Karnataka 560097
+                    </span>
+                  </div>
+                </div>
+
+                {/* Registered Office */}
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-white block font-bold mb-0.5">Registered Office :</strong>
+                    <span className="text-slate-300 leading-relaxed">
+                      NO 10, 3rd Cross Rd, Gowda Muniswamy Garden, Ejipura, Bengaluru, Karnataka 560047
+                    </span>
+                  </div>
+                </div>
+
+                {/* Branch Office / Network */}
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-white block font-bold mb-0.5">Branch Network :</strong>
+                    <span className="text-slate-300 leading-relaxed">
+                      Bangalore, Goa, Telangana, Tamil Nadu, Kerala, Hyderabad, Noida, Pune
+                    </span>
+                  </div>
+                </div>
+
+                {/* Direct Helplines */}
+                <div className="flex items-center gap-3 pt-2 text-white">
+                  <Phone className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span className="font-bold">+91 8884988990 / +91 9945535819</span>
+                </div>
+
+                <div className="flex items-center gap-3 text-white">
+                  <Mail className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span>info@livkampower.in</span>
+                </div>
+              </div>
+
+              {/* Embedded Google Map */}
+              <div className="rounded-2xl overflow-hidden border border-slate-800 h-64 bg-slate-900 mt-4 shadow-inner">
+                <iframe
+                  title="Livkam Power Technologies Bengaluru Location Map"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.3245!2d77.5495!3d12.9279!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU1JzQwLjQiTiA3N8KwMzInNTguMiJF!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                ></iframe>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">EMAIL</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full text-sm p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:border-[#16a34a] focus:ring-1 focus:ring-[#16a34a]"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">COMPANY NAME</label>
-                <input
-                  type="text"
-                  value={formData.company}
-                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                  className="w-full text-sm p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:border-[#16a34a] focus:ring-1 focus:ring-[#16a34a]"
-                />
-              </div>
+            {/* Right Column: Contact & Quotation Form */}
+            <div className="lg:col-span-6 bg-slate-950/80 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+              <h4 className="text-xl font-black text-white">
+                Request Instant Quotation for {service.title}
+              </h4>
+              <p className="text-xs text-slate-400">
+                Submit your details below and our power engineering specialist will respond within 30 minutes.
+              </p>
+
+              {submitted ? (
+                <div className="p-6 bg-emerald-950/60 border border-emerald-500/50 rounded-2xl text-center space-y-3 animate-in fade-in">
+                  <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
+                  <h5 className="text-lg font-bold text-white">Thank You!</h5>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Your request for <strong className="text-emerald-400">{service.title}</strong> has been received. Our engineer will call you shortly.
+                  </p>
+                  <button
+                    onClick={() => setSubmitted(false)}
+                    className="text-xs text-emerald-400 font-bold underline cursor-pointer"
+                  >
+                    Submit another enquiry
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Enter your full name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-3 bg-white text-slate-900 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      Phone *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="10-digit mobile number"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-4 py-3 bg-white text-slate-900 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="your.email@example.com (optional)"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-4 py-3 bg-white text-slate-900 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      Requirement / Comments
+                    </label>
+                    <textarea
+                      rows={3}
+                      placeholder={`Details regarding your ${service.title} requirement...`}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="w-full px-4 py-3 bg-white text-slate-900 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-400"
+                    ></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white py-3.5 px-6 rounded-xl font-black text-sm uppercase tracking-wider shadow-lg hover:shadow-xl active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    <span>{loading ? 'Submitting...' : 'SUBMIT QUOTATION REQUEST'}</span>
+                    <Send className="w-4 h-4" />
+                  </button>
+
+                  <div className="pt-2 flex items-center justify-center gap-4 text-xs text-slate-400">
+                    <a
+                      href="tel:+918884988990"
+                      className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors"
+                    >
+                      <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Direct: +91 8884988990</span>
+                    </a>
+                    <span>•</span>
+                    <a
+                      href={`https://wa.me/918884988990?text=${whatsappMessage}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>WhatsApp Chat</span>
+                    </a>
+                  </div>
+                </form>
+              )}
             </div>
 
-            <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">SERVICE / REQUIREMENT *</label>
-              <select
-                required
-                value={formData.service}
-                onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                className="w-full text-sm p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:border-[#16a34a] focus:ring-1 focus:ring-[#16a34a]"
-              >
-                {services.map((srv) => (
-                  <option key={srv.id} value={srv.title}>{srv.title}</option>
-                ))}
-              </select>
-            </div>
+          </div>
+        </div>
 
-            <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">MESSAGE *</label>
-              <textarea
-                required
-                rows="4"
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full text-sm p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:border-[#16a34a] focus:ring-1 focus:ring-[#16a34a] resize-none"
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-4 bg-[#16a34a] hover:bg-[#15803d] text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 shadow-lg transition-all"
-            >
-              <Send className="w-4 h-4" />
-              <span>SEND MESSAGE</span>
-            </button>
-          </form>
-        )}
       </div>
-
     </div>
   );
 }

@@ -31,6 +31,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useBrands, useServices, useCategories, useProducts } from '../context/DataContext';
 import { ONLINE_UPS_DROPDOWN, BATTERIES_DROPDOWN } from '../data/catalogsData';
+import { SERVICE_CATEGORIES } from '../data/services';
 
 export default function Header({ onOpenSearch, onOpenMobileMenu }) {
   const brands = useBrands();
@@ -49,17 +50,21 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
   const [brandsOpen, setBrandsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
-  // Active Category Selection for Seamless 2-Pane Dropdown
+  // Active Category Selection for Seamless 2-Pane Dropdowns
   const [selectedUpsCat, setSelectedUpsCat] = useState(ONLINE_UPS_DROPDOWN[0]?.id || 'ups-manufacturer');
   const [selectedBatCat, setSelectedBatCat] = useState(BATTERIES_DROPDOWN[0]?.id || 'amaron-battery-wholesale-distributor');
+  const [selectedServiceCat, setSelectedServiceCat] = useState(SERVICE_CATEGORIES[0]?.id || 'apc-ups-amc-service');
   
   const upsLeaveTimeout = useRef(null);
   const batteriesLeaveTimeout = useRef(null);
+  const servicesLeaveTimeout = useRef(null);
 
   const handleUpsMouseEnter = () => {
     if (upsLeaveTimeout.current) clearTimeout(upsLeaveTimeout.current);
+    if (servicesLeaveTimeout.current) clearTimeout(servicesLeaveTimeout.current);
     setUpsOpen(true);
     setBatteriesOpen(false);
+    setServicesOpen(false);
   };
 
   const handleUpsMouseLeave = () => {
@@ -70,13 +75,30 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
 
   const handleBatteriesMouseEnter = () => {
     if (batteriesLeaveTimeout.current) clearTimeout(batteriesLeaveTimeout.current);
+    if (servicesLeaveTimeout.current) clearTimeout(servicesLeaveTimeout.current);
     setBatteriesOpen(true);
     setUpsOpen(false);
+    setServicesOpen(false);
   };
 
   const handleBatteriesMouseLeave = () => {
     batteriesLeaveTimeout.current = setTimeout(() => {
       setBatteriesOpen(false);
+    }, 250);
+  };
+
+  const handleServicesMouseEnter = () => {
+    if (servicesLeaveTimeout.current) clearTimeout(servicesLeaveTimeout.current);
+    if (upsLeaveTimeout.current) clearTimeout(upsLeaveTimeout.current);
+    if (batteriesLeaveTimeout.current) clearTimeout(batteriesLeaveTimeout.current);
+    setServicesOpen(true);
+    setUpsOpen(false);
+    setBatteriesOpen(false);
+  };
+
+  const handleServicesMouseLeave = () => {
+    servicesLeaveTimeout.current = setTimeout(() => {
+      setServicesOpen(false);
     }, 250);
   };
 
@@ -119,7 +141,7 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
                 <MessageCircle className="w-3.5 h-3.5 fill-[#22c55e]" />
               </a>
               <a 
-                href="https://facebook.com" 
+                href="https://www.facebook.com/share/14tTKpW4pF4/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 title="Facebook"
@@ -407,11 +429,11 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               )}
             </div>
 
-            {/* 5. SERVICES DROPDOWN */}
+            {/* 5. SERVICES DROPDOWN (2-Pane Category + Catalogues Menu - Images 70-77) */}
             <div 
               className="relative"
-              onMouseEnter={() => setServicesOpen(true)}
-              onMouseLeave={() => setServicesOpen(false)}
+              onMouseEnter={handleServicesMouseEnter}
+              onMouseLeave={handleServicesMouseLeave}
             >
               <Link
                 to="/services"
@@ -426,49 +448,82 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
               </Link>
 
               {servicesOpen && (
-                <div className="absolute top-full left-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 p-3 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                  <div className="p-2 border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                    <span>Power Engineering Services</span>
-                    <span className="text-[10px] bg-emerald-100 text-[#16a34a] px-1.5 py-0.5 rounded font-bold">24/7 SLA</span>
-                  </div>
-                  <div className="py-2 space-y-1 text-xs">
-                    <div className="text-[10px] font-bold text-slate-400 uppercase px-2 pt-1">Group A: Installation</div>
-                    <Link to="/services/ups-installation" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#16a34a]">
-                      <Wrench className="w-3.5 h-3.5 text-[#16a34a]" />
-                      <span>UPS Installation & Commissioning</span>
-                    </Link>
-                    <Link to="/services/site-inspection" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#16a34a]">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#16a34a]" />
-                      <span>Site Inspection & Load Assessment</span>
-                    </Link>
-                    
-                    <div className="text-[10px] font-bold text-slate-400 uppercase px-2 pt-2 border-t border-slate-100">Group B: Maintenance & AMC</div>
-                    <Link to="/services/amc-maintenance" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-blue-600">
-                      <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-                      <span>Annual Maintenance Contracts (AMC)</span>
-                    </Link>
-                    <Link to="/services/ups-repair" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-blue-600">
-                      <Wrench className="w-3.5 h-3.5 text-blue-600" />
-                      <span>Emergency UPS Repair (24/7)</span>
-                    </Link>
+                <div 
+                  className="absolute top-full left-0 w-[590px] bg-[#f59e0b] rounded-2xl shadow-2xl border border-amber-500 flex overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50 text-slate-900"
+                  onMouseEnter={handleServicesMouseEnter}
+                  onMouseLeave={handleServicesMouseLeave}
+                >
+                  {/* Left Column: 8 Service Categories */}
+                  <div className="w-[290px] bg-[#f59e0b] border-r border-amber-600/30 flex flex-col justify-between py-1">
+                    <div className="space-y-0.5 divide-y divide-amber-600/20">
+                      {SERVICE_CATEGORIES.map((cat) => {
+                        const isSelected = cat.id === selectedServiceCat;
+                        return (
+                          <button
+                            key={cat.id}
+                            type="button"
+                            onMouseEnter={() => setSelectedServiceCat(cat.id)}
+                            onClick={() => setSelectedServiceCat(cat.id)}
+                            className={`w-full flex items-center justify-between px-4 py-2.5 text-xs font-black uppercase tracking-wide text-left transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#d97706] text-white shadow-inner'
+                                : 'text-slate-900 hover:bg-[#fbbf24]/60'
+                            }`}
+                          >
+                            <span className="truncate pr-2">{cat.title}</span>
+                            <ChevronRight className={`w-4 h-4 flex-shrink-0 transition-transform ${isSelected ? 'text-white translate-x-1' : 'text-slate-800'}`} />
+                          </button>
+                        );
+                      })}
+                    </div>
 
-                    <div className="text-[10px] font-bold text-slate-400 uppercase px-2 pt-2 border-t border-slate-100">Group C: Battery Support</div>
-                    <Link to="/services/battery-replacement" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-purple-600">
-                      <BatteryCharging className="w-3.5 h-3.5 text-purple-600" />
-                      <span>Battery Replacement & Buyback</span>
-                    </Link>
-                    <Link to="/services/battery-maintenance-testing" className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-purple-600">
-                      <Activity className="w-3.5 h-3.5 text-purple-600" />
-                      <span>Battery Health Testing & Impedance</span>
-                    </Link>
+                    <div className="pt-2 px-3 pb-2 border-t border-amber-600/30 mt-1">
+                      <Link
+                        to="/services"
+                        onClick={() => setServicesOpen(false)}
+                        className="block text-center text-[11px] font-black text-slate-900 hover:text-white uppercase tracking-wider py-1"
+                      >
+                        🛠️ View All Services & AMC →
+                      </Link>
+                    </div>
                   </div>
-                  <div className="pt-2 border-t border-slate-100 text-center">
-                    <Link
-                      to="/services"
-                      className="block text-xs font-bold text-[#16a34a] hover:underline py-1"
-                    >
-                      View All 9 Engineering Services →
-                    </Link>
+
+                  {/* Right Column: Catalogues for Selected Category */}
+                  <div className="flex-1 p-3 bg-[#eab308] flex flex-col justify-between">
+                    <div>
+                      {(() => {
+                        const activeCat = SERVICE_CATEGORIES.find(c => c.id === selectedServiceCat) || SERVICE_CATEGORIES[0];
+                        return (
+                          <div className="space-y-2">
+                            <div className="px-2 py-1 border-b border-amber-600/20">
+                              <span className="text-[10px] font-black uppercase text-amber-950 tracking-wider block">
+                                {activeCat.title}
+                              </span>
+                            </div>
+
+                            <div className="space-y-1.5 pt-1">
+                              {activeCat.catalogues.map((item) => (
+                                <Link
+                                  key={item.slug}
+                                  to={`/services/${item.slug}`}
+                                  onClick={() => setServicesOpen(false)}
+                                  className="flex items-center justify-between p-3 rounded-xl bg-amber-400/50 hover:bg-[#d97706] text-slate-950 hover:text-white font-black text-xs uppercase tracking-wide transition-all shadow-xs group/item"
+                                >
+                                  <span>{item.title}</span>
+                                  <ChevronRight className="w-4 h-4 text-slate-700 group-hover/item:text-white group-hover/item:translate-x-1 transition-all" />
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+
+                    <div className="pt-3 border-t border-amber-600/20 text-center">
+                      <span className="text-[10px] font-bold text-amber-950">
+                        24/7 On-Call Support: +91 8884988990
+                      </span>
+                    </div>
                   </div>
                 </div>
               )}
