@@ -38,7 +38,8 @@ import {
   MapPin,
   Mail,
   Send,
-  Globe
+  Globe,
+  ExternalLink
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useCategories, useBrands, useProducts, useServices } from '../context/DataContext';
@@ -679,7 +680,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Prominent PAY NOW / GET QUOTE Button */}
+                  {/* Prominent GET QUOTE Button */}
                   <div className="pt-1">
                     <a
                       href="https://wa.me/918884988990?text=Hi%20Livkam%20Power,%20I%20am%20interested%20in%20your%20UPS%20Rental%20Services"
@@ -687,7 +688,7 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white py-3 px-6 rounded-2xl font-black text-sm uppercase tracking-wider shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all"
                     >
-                      <span>PAY NOW / GET RENTAL QUOTE</span>
+                      <span>GET RENTAL QUOTE</span>
                       <ArrowRight className="w-4 h-4" />
                     </a>
                   </div>
@@ -1545,20 +1546,31 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Google Map Embed (image copy 49 & 66) */}
-              <div className="bg-slate-800 rounded-3xl overflow-hidden border border-slate-700 shadow-xl h-64 sm:h-72">
+              {/* Google Map Embed & Clickable Location */}
+              <a
+                href="https://maps.app.goo.gl/etcm3B5bA6CFLLs18"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Click map picture to open Livkam Power Technologies location in Google Maps"
+                className="group relative block bg-slate-800 rounded-3xl overflow-hidden border border-slate-700 hover:border-[#16a34a] shadow-xl h-64 sm:h-72 cursor-pointer transition-all"
+              >
                 <iframe
                   title="Livkam Power Technologies Bengaluru Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.6661917631333!2d77.56121437507567!3d12.929114687382103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae158021a812df%3A0xa63a23cb9e9e160e!2sBanashankari%202nd%20Stage%2C%20Bengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                  src="https://maps.google.com/maps?q=12.9134503,77.5613394&hl=en&z=17&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="w-full h-full filter saturate-150 contrast-105"
+                  className="w-full h-full pointer-events-none filter saturate-150 contrast-105"
                 ></iframe>
-              </div>
+                {/* Floating badge for clear CTA */}
+                <div className="absolute bottom-3 right-3 bg-[#0f2b48]/90 backdrop-blur-md text-white text-xs font-bold py-1.5 px-3 rounded-xl border border-white/20 shadow-lg flex items-center gap-1.5 group-hover:bg-[#16a34a] transition-all">
+                  <span>Open in Google Maps</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </div>
+              </a>
             </div>
           </div>
         </div>

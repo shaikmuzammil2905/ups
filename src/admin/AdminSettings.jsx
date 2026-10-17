@@ -160,35 +160,66 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* SQL Migration Quick Reference */}
+      {/* SQL Migration & All-Device Sync Quick Reference */}
       <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
           <div>
             <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
               <Database className="w-5 h-5 text-[#16a34a]" />
-              Supabase SQL Migration File
+              All-Device Live Sync SQL Configuration
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              The project includes a ready-to-run file: <span className="font-mono font-semibold">supabase_migration.sql</span>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Run this in Supabase SQL Editor once to ensure all devices (mobiles, tablets, PCs) receive instant updates when you edit anything in the Admin Panel.
             </p>
           </div>
-          <a
-            href="https://supabase.com/dashboard/project/shzlxqkjxuyxruthrsam/sql"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all"
-          >
-            Open SQL Editor <ExternalLink className="w-3 h-3" />
-          </a>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                const sqlText = `-- LIVKAM ALL-DEVICE REALTIME SYNC ENABLE SCRIPT
+ALTER TABLE site_settings DISABLE ROW LEVEL SECURITY;
+ALTER TABLE products DISABLE ROW LEVEL SECURITY;
+ALTER TABLE product_images DISABLE ROW LEVEL SECURITY;
+ALTER TABLE categories DISABLE ROW LEVEL SECURITY;
+ALTER TABLE brands DISABLE ROW LEVEL SECURITY;
+ALTER TABLE services DISABLE ROW LEVEL SECURITY;
+ALTER TABLE catalogs DISABLE ROW LEVEL SECURITY;
+ALTER TABLE website_content DISABLE ROW LEVEL SECURITY;
+ALTER TABLE hero_slides DISABLE ROW LEVEL SECURITY;
+ALTER TABLE advertisements DISABLE ROW LEVEL SECURITY;
+ALTER TABLE posts DISABLE ROW LEVEL SECURITY;`;
+                navigator.clipboard.writeText(sqlText);
+                setCopiedSQL(true);
+                setTimeout(() => setCopiedSQL(false), 3000);
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#16a34a] hover:bg-[#15803d] text-white rounded-xl text-xs font-bold transition-all shadow-sm"
+            >
+              {copiedSQL ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+              {copiedSQL ? 'Copied SQL!' : 'Copy SQL Fix'}
+            </button>
+            <a
+              href="https://supabase.com/dashboard/project/shzlxqkjxuyxruthrsam/sql"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all"
+            >
+              Open SQL Editor <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
         </div>
 
-        <div className="p-4 bg-slate-900 rounded-2xl text-slate-300 font-mono text-xs overflow-x-auto">
-          <code>
-            -- The file "supabase_migration.sql" at the root contains all 12 tables:<br />
-            -- profiles, site_settings, categories, brands, products, product_images,<br />
-            -- services, advertisements, posts, reviews, orders, order_items, catalogs,<br />
-            -- hero_slides, enquiries, website_content + automatic seed data.
-          </code>
+        <div className="p-4 bg-slate-900 rounded-2xl text-emerald-400 font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800">
+          <pre>{`-- Run this in Supabase SQL Editor to allow all devices to receive live changes:
+ALTER TABLE site_settings DISABLE ROW LEVEL SECURITY;
+ALTER TABLE products DISABLE ROW LEVEL SECURITY;
+ALTER TABLE product_images DISABLE ROW LEVEL SECURITY;
+ALTER TABLE categories DISABLE ROW LEVEL SECURITY;
+ALTER TABLE brands DISABLE ROW LEVEL SECURITY;
+ALTER TABLE services DISABLE ROW LEVEL SECURITY;
+ALTER TABLE catalogs DISABLE ROW LEVEL SECURITY;
+ALTER TABLE website_content DISABLE ROW LEVEL SECURITY;
+ALTER TABLE hero_slides DISABLE ROW LEVEL SECURITY;
+ALTER TABLE advertisements DISABLE ROW LEVEL SECURITY;
+ALTER TABLE posts DISABLE ROW LEVEL SECURITY;`}</pre>
         </div>
       </div>
 

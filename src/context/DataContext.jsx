@@ -19,8 +19,8 @@ const DEFAULT_SETTINGS = {
   warehouse_address: '6 And 7 4th Cross Ganesh Nagar, Main Road, Vidyaranyapura Post, Telecom Colony, Kodigehalli, Bengaluru, Karnataka 560097',
   gst: '29CYMPN3694M1ZC',
   business_hours: 'Mon-Sat: 9AM - 7PM',
-  google_maps_url: 'https://maps.google.com/?q=21+Subhash+Chandra+Bose+Rd+Banashankari+2nd+Stage+Bengaluru',
-  google_maps_embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.3245!2d77.5495!3d12.9279!',
+  google_maps_url: 'https://maps.app.goo.gl/etcm3B5bA6CFLLs18',
+  google_maps_embed: 'https://maps.google.com/maps?q=12.9134503,77.5613394&hl=en&z=17&output=embed',
   facebook_url: 'https://www.facebook.com/share/14tTKpW4pF4/',
   emergency_banner_text: '⚡ 24/7 Emergency UPS Breakdown Support & Mobile Battery Delivery in Bengaluru: +91 8884988990',
   emergency_banner_active: true,
@@ -67,6 +67,16 @@ export function DataProvider({ children }) {
     } catch (_) {}
     return DEFAULT_SETTINGS;
   });
+
+  // Custom Catalogs (e.g. Amaron Quanta, Online UPS, etc.) synced across all devices
+  const [customCatalogs, setCustomCatalogs] = useState(() => {
+    try {
+      const cached = localStorage.getItem('livkam_custom_catalogs');
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    return {};
+  });
+
   const [advertisements, setAdvertisements] = useState([]);
   const [heroSlides, setHeroSlides] = useState([]);
   const [isLiveConnected, setIsLiveConnected] = useState(false);
@@ -289,10 +299,101 @@ export function DataProvider({ children }) {
         .order('display_order', { ascending: true });
       if (dbSlides && dbSlides.length > 0) setHeroSlides(dbSlides);
 
+      // 9. Fetch Custom Catalogs (Cross-Device Sync)
+      let remoteCatalogs = {};
+      try {
+        const { data: catRows } = await supabase
+          .from('website_content')
+          .select('key, value')
+          .eq('section', 'catalog_override');
+        if (catRows && catRows.length > 0) {
+          catRows.forEach(r => {
+            try {
+              remoteCatalogs[r.key] = JSON.parse(r.value);
+            } catch (_) {}
+          });
+        }
+      } catch (_) {}
+
+      try {
+        const { data: sCat } = await supabase
+          .from('site_settings')
+          .select('value')
+          .eq('key', 'custom_catalogs')
+          .single();
+        if (sCat && sCat.value) {
+          try {
+            const parsed = JSON.parse(sCat.value);
+            remoteCatalogs = { ...remoteCatalogs, ...parsed };
+          } catch (_) {}
+        }
+      } catch (_) {}
+
+      try {
+        const localCached = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
+        const mergedCatalogs = { ...localCached, ...remoteCatalogs };
+        setCustomCatalogs(mergedCatalogs);
+        localStorage.setItem('livkam_custom_catalogs', JSON.stringify(mergedCatalogs));
+
+        // If local had catalogs not yet stored in Supabase, auto-sync them to remote
+        const unSyncedKeys = Object.keys(localCached).filter(k => !remoteCatalogs[k]);
+        if (unSyncedKeys.length > 0) {
+          for (const k of unSyncedKeys) {
+            supabase.from('website_content').upsert({
+              section: 'catalog_override',
+              key: k,
+              value: JSON.stringify(localCached[k])
+            }, { onConflict: 'section,key' }).then(() => {}).catch(() => {});
+          }
+        }
+      } catch (_) {
+        if (Object.keys(remoteCatalogs).length > 0) {
+          setCustomCatalogs(remoteCatalogs);
+          try { localStorage.setItem('livkam_custom_catalogs', JSON.stringify(remoteCatalogs)); } catch (_) {}
+        }
+      }
+
       setIsLiveConnected(true);
     } catch (err) {
       console.warn('Realtime sync fallback active:', err);
     }
+  }, []);
+
+  // Save a custom catalog both locally and to Supabase so ALL devices see the changes
+  const saveCustomCatalog = useCallback(async (slug, catalogData) => {
+    const updated = {
+      ...catalogData,
+      slug,
+      lastUpdated: new Date().toISOString()
+    };
+
+    setCustomCatalogs(prev => {
+      const next = { ...prev, [slug]: updated };
+      try { localStorage.setItem('livkam_custom_catalogs', JSON.stringify(next)); } catch (_) {}
+      return next;
+    });
+
+    try {
+      // 1. Persist to website_content
+      await supabase.from('website_content').upsert({
+        section: 'catalog_override',
+        key: slug,
+        value: JSON.stringify(updated)
+      }, { onConflict: 'section,key' });
+
+      // 2. Also persist to site_settings as backup
+      const currentAll = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
+      currentAll[slug] = updated;
+      await supabase.from('site_settings').update({
+        value: JSON.stringify(currentAll),
+        updated_at: new Date().toISOString()
+      }).eq('key', 'custom_catalogs');
+    } catch (err) {
+      console.warn('Remote catalog save warning:', err);
+    }
+
+    // Trigger instantaneous multi-device / multi-tab update event
+    notifyDataUpdated({ type: 'CATALOG_SAVED', slug });
   }, []);
 
   useEffect(() => {
@@ -305,7 +406,24 @@ export function DataProvider({ children }) {
     };
     window.addEventListener('livkam_data_updated', handleLocalSync);
 
-    // 2. Cross-tab synchronization via BroadcastChannel
+    // 2. Cross-device multi-tab visibility & focus listeners (essential for mobile & other devices)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        refreshAllData();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleLocalSync);
+    window.addEventListener('storage', handleLocalSync);
+
+    // 3. Heartbeat polling: every 20 seconds refresh when page is active
+    const heartbeatTimer = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        refreshAllData();
+      }
+    }, 20000);
+
+    // 4. Cross-tab synchronization via BroadcastChannel
     let broadcastChannel = null;
     if (typeof BroadcastChannel !== 'undefined') {
       try {
@@ -320,7 +438,7 @@ export function DataProvider({ children }) {
       }
     }
 
-    // 3. Setup Supabase Realtime broadcast listener
+    // 5. Setup Supabase Realtime broadcast listener
     const channel = supabase
       .channel('public:realtime_website_sync')
       .on('postgres_changes', { event: '*', schema: 'public' }, () => {
@@ -330,6 +448,10 @@ export function DataProvider({ children }) {
 
     return () => {
       window.removeEventListener('livkam_data_updated', handleLocalSync);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleLocalSync);
+      window.removeEventListener('storage', handleLocalSync);
+      clearInterval(heartbeatTimer);
       if (broadcastChannel) {
         try { broadcastChannel.close(); } catch (_) {}
       }
@@ -344,6 +466,8 @@ export function DataProvider({ children }) {
     services,
     posts,
     settings,
+    customCatalogs,
+    saveCustomCatalog,
     advertisements,
     heroSlides,
     isLiveConnected,
@@ -367,6 +491,8 @@ export function useData() {
       services: staticServices,
       posts: staticPosts,
       settings: DEFAULT_SETTINGS,
+      customCatalogs: {},
+      saveCustomCatalog: async () => {},
       advertisements: [],
       heroSlides: [],
       isLiveConnected: false,
@@ -398,4 +524,8 @@ export function usePosts() {
 
 export function useSiteSettings() {
   return useData().settings;
+}
+
+export function useCustomCatalogs() {
+  return useData().customCatalogs;
 }

@@ -10,7 +10,8 @@ import {
   ChevronRight, 
   Clock, 
   Building2, 
-  ShieldCheck 
+  ShieldCheck,
+  ExternalLink
 } from 'lucide-react';
 
 import { supabase } from '../lib/supabase';
@@ -279,7 +280,7 @@ export default function Contact() {
             <span>Store Location Map — Banashankari 2nd Stage, Bengaluru</span>
           </div>
           <a
-            href="https://maps.google.com/?q=21,+Subhash+Chandra+Bose+Rd,+Banashankari+2nd+Stage,+Bendre+Nagar,+Bengaluru,+Karnataka+560070"
+            href="https://maps.app.goo.gl/etcm3B5bA6CFLLs18"
             target="_blank"
             rel="noreferrer"
             className="text-xs font-bold text-[#16a34a] hover:underline"
@@ -287,14 +288,24 @@ export default function Contact() {
             Open in Google Maps →
           </a>
         </div>
-        <div className="h-64 w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 relative flex items-center justify-center">
+        <a
+          href="https://maps.app.goo.gl/etcm3B5bA6CFLLs18"
+          target="_blank"
+          rel="noreferrer"
+          title="Click to open exact location in Google Maps"
+          className="group block h-64 w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 hover:border-[#16a34a] relative transition-all cursor-pointer"
+        >
           <iframe
             title="Livkam Bengaluru Location"
-            src="https://maps.google.com/maps?q=Banashankari%202nd%20Stage%20Bengaluru%20560070&t=&z=14&ie=UTF8&iwloc=&output=embed"
-            className="w-full h-full border-0"
+            src="https://maps.google.com/maps?q=12.9134503,77.5613394&hl=en&z=17&output=embed"
+            className="w-full h-full border-0 pointer-events-none"
             loading="lazy"
           ></iframe>
-        </div>
+          <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-[#0f2b48] text-xs font-bold py-1.5 px-3 rounded-xl border border-slate-200 shadow-lg flex items-center gap-1.5 group-hover:bg-[#16a34a] group-hover:text-white transition-all">
+            <span>Open in Google Maps</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </div>
+        </a>
       </div>
     </div>
   );

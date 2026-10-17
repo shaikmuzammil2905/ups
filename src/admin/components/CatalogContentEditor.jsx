@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { getCatalogEntry } from '../../data/catalogsData';
 import { notifyDataUpdated } from '../../lib/syncEvents';
+import { useData } from '../../context/DataContext';
 import ImageUpload from './ImageUpload';
 
 export default function CatalogContentEditor({ type = 'online-ups', categoriesList = [] }) {
@@ -31,6 +32,8 @@ export default function CatalogContentEditor({ type = 'online-ups', categoriesLi
     return flatItems[0]?.slug || (type === 'batteries' ? 'amaron-quanta-battery' : 'ups-manufacturers-in-bangalore-peenya');
   });
 
+  const { customCatalogs, saveCustomCatalog } = useData();
+
   // Current working form state
   const [form, setForm] = useState(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -39,6 +42,14 @@ export default function CatalogContentEditor({ type = 'online-ups', categoriesLi
   // Load catalog entry when selectedSlug changes
   useEffect(() => {
     if (!selectedSlug) return;
+    
+    // 1. Check DataContext customCatalogs (synced from Supabase)
+    if (customCatalogs && customCatalogs[selectedSlug]) {
+      setForm(JSON.parse(JSON.stringify(customCatalogs[selectedSlug])));
+      return;
+    }
+
+    // 2. Check local browser storage
     try {
       const customOverrides = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
       if (customOverrides[selectedSlug]) {
@@ -47,9 +58,10 @@ export default function CatalogContentEditor({ type = 'online-ups', categoriesLi
       }
     } catch (_) {}
 
+    // 3. Fallback to factory defaults
     const initial = getCatalogEntry(selectedSlug, type);
     setForm(JSON.parse(JSON.stringify(initial)));
-  }, [selectedSlug, type]);
+  }, [selectedSlug, type, customCatalogs]);
 
   if (!form) {
     return (
@@ -60,43 +72,52 @@ export default function CatalogContentEditor({ type = 'online-ups', categoriesLi
     );
   }
 
-  // Handle saving to localStorage & firing live update event
-  const handleSave = () => {
+  // Handle saving across Supabase, localStorage & all devices
+  const handleSave = async () => {
     setSaving(true);
     try {
-      const customOverrides = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
-      customOverrides[selectedSlug] = {
+      const payload = {
         ...form,
         slug: selectedSlug,
         type: type,
         lastUpdated: new Date().toISOString()
       };
-      localStorage.setItem('livkam_custom_catalogs', JSON.stringify(customOverrides));
-      
-      // Dispatch sync event so the live site updates immediately without page refresh
-      notifyDataUpdated();
+
+      if (saveCustomCatalog) {
+        await saveCustomCatalog(selectedSlug, payload);
+      } else {
+        const customOverrides = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
+        customOverrides[selectedSlug] = payload;
+        localStorage.setItem('livkam_custom_catalogs', JSON.stringify(customOverrides));
+        notifyDataUpdated({ type: 'CATALOG_SAVED', slug: selectedSlug });
+      }
 
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 4000);
     } catch (err) {
       console.error('Error saving custom catalog:', err);
-      alert('Failed to save changes. Please check browser storage permissions.');
+      alert('Failed to save changes: ' + (err.message || 'Please check connection.'));
     } finally {
       setSaving(false);
     }
   };
 
   // Reset to static code defaults
-  const handleReset = () => {
+  const handleReset = async () => {
     if (window.confirm('Are you sure you want to revert all changes for this catalog back to factory defaults?')) {
       try {
-        const customOverrides = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
-        delete customOverrides[selectedSlug];
-        localStorage.setItem('livkam_custom_catalogs', JSON.stringify(customOverrides));
-        notifyDataUpdated();
-
         const defaultEntry = getCatalogEntry(selectedSlug, type);
         setForm(JSON.parse(JSON.stringify(defaultEntry)));
+        
+        if (saveCustomCatalog) {
+          await saveCustomCatalog(selectedSlug, defaultEntry);
+        } else {
+          const customOverrides = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
+          delete customOverrides[selectedSlug];
+          localStorage.setItem('livkam_custom_catalogs', JSON.stringify(customOverrides));
+          notifyDataUpdated({ type: 'CATALOG_SAVED', slug: selectedSlug });
+        }
+
         setSaveSuccess(true);
         setTimeout(() => setSaveSuccess(false), 3000);
       } catch (err) {

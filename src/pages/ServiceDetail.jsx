@@ -285,18 +285,30 @@ export default function ServiceDetail() {
                 </div>
               </div>
 
-              {/* Embedded Google Map */}
-              <div className="rounded-2xl overflow-hidden border border-slate-800 h-64 bg-slate-900 mt-4 shadow-inner">
+              {/* Embedded Google Map & Clickable Picture */}
+              <a
+                href="https://maps.app.goo.gl/etcm3B5bA6CFLLs18"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Click to open location in Google Maps"
+                className="group relative block rounded-2xl overflow-hidden border border-slate-800 hover:border-[#16a34a] h-64 bg-slate-900 mt-4 shadow-inner transition-all cursor-pointer"
+              >
                 <iframe
                   title="Livkam Power Technologies Bengaluru Location Map"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.3245!2d77.5495!3d12.9279!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU1JzQwLjQiTiA3N8KwMzInNTguMiJF!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin"
+                  src="https://maps.google.com/maps?q=12.9134503,77.5613394&hl=en&z=17&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen=""
                   loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full pointer-events-none"
                 ></iframe>
-              </div>
+                <div className="absolute bottom-2.5 right-2.5 bg-slate-900/90 text-white text-[11px] font-bold py-1 px-2.5 rounded-lg border border-slate-700 shadow-md flex items-center gap-1 group-hover:bg-[#16a34a] transition-all">
+                  <span>Open in Maps</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </div>
+              </a>
             </div>
 
             {/* Right Column: Contact & Quotation Form */}
