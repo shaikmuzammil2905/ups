@@ -1,7 +1,3 @@
-/**
- * Broadcast synchronization event across components, windows, and browser tabs
- * when Admin changes Products, Categories, or other data.
- */
 export function notifyDataUpdated(detail = {}) {
   const payload = {
     timestamp: Date.now(),
@@ -10,7 +6,9 @@ export function notifyDataUpdated(detail = {}) {
 
   try {
     // 1. Dispatch custom event for current window
-    window.dispatchEvent(new CustomEvent('livkam_data_updated', { detail: payload }));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('livkam_data_updated', { detail: payload }));
+    }
   } catch (e) {
     console.warn('Local event dispatch failed:', e);
   }
@@ -29,3 +27,9 @@ export function notifyDataUpdated(detail = {}) {
     console.warn('BroadcastChannel sync failed:', e);
   }
 }
+
+// Provide global fallback on window so notifyDataUpdated is never undefined anywhere in the browser
+if (typeof window !== 'undefined') {
+  window.notifyDataUpdated = notifyDataUpdated;
+}
+

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { notifyDataUpdated } from '../lib/syncEvents';
 import { products as staticProducts } from '../data/products';
 import { categories as staticCategories } from '../data/categories';
 import { brands as staticBrands } from '../data/brands';
@@ -331,7 +332,19 @@ export function DataProvider({ children }) {
 
       try {
         const localCached = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
-        const mergedCatalogs = { ...localCached, ...remoteCatalogs };
+        const mergedCatalogs = { ...localCached };
+        Object.entries(remoteCatalogs).forEach(([key, remoteVal]) => {
+          const localVal = mergedCatalogs[key];
+          if (!localVal) {
+            mergedCatalogs[key] = remoteVal;
+          } else {
+            const remoteTime = new Date(remoteVal?.lastUpdated || 0).getTime();
+            const localTime = new Date(localVal?.lastUpdated || 0).getTime();
+            if (remoteTime >= localTime) {
+              mergedCatalogs[key] = remoteVal;
+            }
+          }
+        });
         setCustomCatalogs(mergedCatalogs);
         localStorage.setItem('livkam_custom_catalogs', JSON.stringify(mergedCatalogs));
 
@@ -342,7 +355,8 @@ export function DataProvider({ children }) {
             supabase.from('website_content').upsert({
               section: 'catalog_override',
               key: k,
-              value: JSON.stringify(localCached[k])
+              value: JSON.stringify(localCached[k]),
+              updated_at: new Date().toISOString()
             }, { onConflict: 'section,key' }).then(() => {}).catch(() => {});
           }
         }
@@ -367,6 +381,7 @@ export function DataProvider({ children }) {
       lastUpdated: new Date().toISOString()
     };
 
+    // 1. Update React state & localStorage immediately
     setCustomCatalogs(prev => {
       const next = { ...prev, [slug]: updated };
       try { localStorage.setItem('livkam_custom_catalogs', JSON.stringify(next)); } catch (_) {}
@@ -374,26 +389,42 @@ export function DataProvider({ children }) {
     });
 
     try {
-      // 1. Persist to website_content
-      await supabase.from('website_content').upsert({
+      // 2. Persist to website_content in Supabase
+      const { error: upsertErr } = await supabase.from('website_content').upsert({
         section: 'catalog_override',
         key: slug,
-        value: JSON.stringify(updated)
+        value: JSON.stringify(updated),
+        updated_at: new Date().toISOString()
       }, { onConflict: 'section,key' });
 
-      // 2. Also persist to site_settings as backup
+      if (upsertErr) {
+        console.warn('Supabase website_content upsert error:', upsertErr);
+      }
+
+      // 3. Also persist to site_settings as backup
       const currentAll = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
       currentAll[slug] = updated;
-      await supabase.from('site_settings').update({
+      const { error: setErr } = await supabase.from('site_settings').upsert({
+        key: 'custom_catalogs',
         value: JSON.stringify(currentAll),
         updated_at: new Date().toISOString()
-      }).eq('key', 'custom_catalogs');
+      }, { onConflict: 'key' });
+
+      if (setErr) {
+        console.warn('Supabase site_settings upsert error:', setErr);
+      }
     } catch (err) {
       console.warn('Remote catalog save warning:', err);
     }
 
-    // Trigger instantaneous multi-device / multi-tab update event
-    notifyDataUpdated({ type: 'CATALOG_SAVED', slug });
+    // 4. Trigger instantaneous multi-device / multi-tab update event
+    try {
+      notifyDataUpdated({ type: 'CATALOG_SAVED', slug });
+    } catch (notifyErr) {
+      console.warn('Sync notification warning:', notifyErr);
+    }
+
+    return { success: true, slug, data: updated };
   }, []);
 
   useEffect(() => {

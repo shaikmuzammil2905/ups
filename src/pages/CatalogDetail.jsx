@@ -140,16 +140,19 @@ export default function CatalogDetail({ type = 'online-ups' }) {
   
   // Fetch from Supabase synced customCatalogs, with fallback to localStorage or static catalog
   const catalog = useMemo(() => {
+    const defaultEntry = getCatalogEntry(targetSlug, type);
+    let entry = defaultEntry;
     if (customCatalogs && customCatalogs[targetSlug]) {
-      return customCatalogs[targetSlug];
+      entry = { ...defaultEntry, ...customCatalogs[targetSlug] };
+    } else {
+      try {
+        const customOverrides = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
+        if (customOverrides[targetSlug]) {
+          entry = { ...defaultEntry, ...customOverrides[targetSlug] };
+        }
+      } catch (_) {}
     }
-    try {
-      const customOverrides = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
-      if (customOverrides[targetSlug]) {
-        return customOverrides[targetSlug];
-      }
-    } catch (_) {}
-    return getCatalogEntry(targetSlug, type);
+    return entry;
   }, [targetSlug, customCatalogs, type, refreshKey]);
 
   const isBattery = catalog.type === 'batteries' || type === 'batteries';
@@ -308,7 +311,7 @@ export default function CatalogDetail({ type = 'online-ups' }) {
               {catalog.title} - Livkam Power Technologies
             </h2>
             <div className="text-slate-600 text-sm sm:text-base leading-relaxed text-justify sm:text-left space-y-4 font-normal">
-              {catalog.editorialContent.split('\n\n').map((para, i) => (
+              {(catalog.editorialContent || '').split('\n\n').map((para, i) => (
                 <p key={i}>{para}</p>
               ))}
             </div>
@@ -365,7 +368,7 @@ export default function CatalogDetail({ type = 'online-ups' }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {catalog.models.map((mod, idx) => (
+            {(catalog.models || []).map((mod, idx) => (
               <div key={idx} className="bg-white rounded-3xl overflow-hidden shadow-md border border-slate-200 flex flex-col justify-between group hover:shadow-xl transition-all">
                 {/* Yellow / Golden Showcase Background (Image Copy 42) */}
                 <div className="bg-[#f59e0b] p-8 flex items-center justify-center min-h-[260px] relative overflow-hidden">
@@ -654,7 +657,7 @@ export default function CatalogDetail({ type = 'online-ups' }) {
             </div>
             <table className="w-full text-left border-collapse text-xs sm:text-sm">
               <tbody className="divide-y divide-slate-100">
-                {catalog.specsData.map((row, i) => (
+                {(catalog.specsData || []).map((row, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="p-3.5 sm:p-4 font-bold text-slate-800 bg-slate-50/50 w-1/3">
                       {row.param}
@@ -790,7 +793,7 @@ export default function CatalogDetail({ type = 'online-ups' }) {
           </div>
 
           <div className="space-y-4">
-            {catalog.faqs.map((faq, i) => (
+            {(catalog.faqs || []).map((faq, i) => (
               <div key={i} className="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-2">
                 <h4 className="text-sm sm:text-base font-bold text-slate-800 flex items-start gap-2.5">
                   <span className="text-[#16a34a] font-bold">{i + 1}.</span>

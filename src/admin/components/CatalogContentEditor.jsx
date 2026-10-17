@@ -38,11 +38,19 @@ export default function CatalogContentEditor({ type = 'online-ups', categoriesLi
   const [form, setForm] = useState(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saving, setSaving] = useState(false);
+  const loadedSlugRef = React.useRef(null);
 
-  // Load catalog entry when selectedSlug changes
+  // Load catalog entry when selectedSlug changes or when form is uninitialized
   useEffect(() => {
     if (!selectedSlug) return;
     
+    // Don't overwrite form if user is already editing this slug
+    if (loadedSlugRef.current === selectedSlug && form !== null) {
+      return;
+    }
+
+    loadedSlugRef.current = selectedSlug;
+
     // 1. Check DataContext customCatalogs (synced from Supabase)
     if (customCatalogs && customCatalogs[selectedSlug]) {
       setForm(JSON.parse(JSON.stringify(customCatalogs[selectedSlug])));
@@ -89,9 +97,12 @@ export default function CatalogContentEditor({ type = 'online-ups', categoriesLi
         const customOverrides = JSON.parse(localStorage.getItem('livkam_custom_catalogs') || '{}');
         customOverrides[selectedSlug] = payload;
         localStorage.setItem('livkam_custom_catalogs', JSON.stringify(customOverrides));
-        notifyDataUpdated({ type: 'CATALOG_SAVED', slug: selectedSlug });
+        if (typeof notifyDataUpdated === 'function') {
+          notifyDataUpdated({ type: 'CATALOG_SAVED', slug: selectedSlug });
+        }
       }
 
+      setForm(payload);
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 4000);
     } catch (err) {
@@ -205,7 +216,10 @@ export default function CatalogContentEditor({ type = 'online-ups', categoriesLi
           <div className="relative">
             <select
               value={selectedSlug}
-              onChange={(e) => setSelectedSlug(e.target.value)}
+              onChange={(e) => {
+                loadedSlugRef.current = null;
+                setSelectedSlug(e.target.value);
+              }}
               className="w-full md:max-w-md bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#16a34a] shadow-xs"
             >
               {categoriesList.map((catGroup) => (
