@@ -676,7 +676,7 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Globe className="w-3.5 h-3.5 text-sky-400" />
-                      <span>www.livkampower.in</span>
+                      <span>www.livkampower.com</span>
                     </div>
                   </div>
 
