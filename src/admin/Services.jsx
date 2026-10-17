@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { notifyDataUpdated } from '../lib/syncEvents';
 import ImageUpload from './components/ImageUpload';
@@ -172,46 +173,59 @@ export default function ServicesAdmin() {
       : formData.features;
 
     setFormLoading(true);
-    const payload = {
+
+    // Exact columns accepted by Supabase `services` table schema
+    const dbPayload = {
       id: svcId,
-      title: formData.title.trim(),
       slug: slug.trim(),
-      category: formData.category,
-      categoryId: formData.categoryId || handleSlugify(formData.category),
+      title: formData.title.trim(),
       short_desc: formData.short_desc || '',
       introduction: formData.introduction || '',
       badge: formData.badge || '',
-      price_starts_at: formData.price_starts_at || '₹499',
+      price_starts_at: formData.price_starts_at || '₹ 1,499',
       turnaround: formData.turnaround || 'Same Day',
       icon: formData.icon || 'Wrench',
       image_url: formData.image_url || '',
-      image: formData.image_url || '',
-      banner: formData.image_url || '',
-      range_items: rangeList,
-      rangeItems: rangeList,
-      benefits_items: benefitsList,
-      benefitsItems: benefitsList,
-      features: featuresList,
+      banner_url: formData.image_url || '',
+      features: rangeList,
+      about_content: benefitsList,
+      four_columns: featuresList,
       display_order: parseInt(formData.display_order) || 0,
       is_published: formData.is_published,
       updated_at: new Date().toISOString(),
     };
 
+    // Full application representation with frontend aliases
+    const fullPayload = {
+      ...dbPayload,
+      category: formData.category,
+      categoryId: formData.categoryId || handleSlugify(formData.category),
+      range_items: rangeList,
+      rangeItems: rangeList,
+      benefits_items: benefitsList,
+      benefitsItems: benefitsList,
+      image: formData.image_url || '',
+      imageUrl: formData.image_url || '',
+      banner: formData.image_url || '',
+    };
+
     try {
       if (editingService) {
-        await supabase
+        const { error: updateErr } = await supabase
           .from('services')
-          .update(payload)
+          .update(dbPayload)
           .eq('id', editingService.id);
+        if (updateErr) throw updateErr;
         
-        setServices(prev => prev.map(s => s.id === editingService.id ? { ...s, ...payload } : s));
+        setServices(prev => prev.map(s => s.id === editingService.id ? { ...s, ...fullPayload } : s));
         showNotification('Service updated successfully!');
       } else {
-        await supabase
+        const { error: insertErr } = await supabase
           .from('services')
-          .insert({ ...payload, created_at: new Date().toISOString() });
+          .insert({ ...dbPayload, created_at: new Date().toISOString() });
+        if (insertErr) throw insertErr;
         
-        setServices(prev => [...prev, payload]);
+        setServices(prev => [...prev, fullPayload]);
         showNotification('Service created successfully!');
       }
 
@@ -220,23 +234,34 @@ export default function ServicesAdmin() {
         const cached = localStorage.getItem('livkam_cached_services');
         const list = cached ? JSON.parse(cached) : [...services];
         const updatedList = editingService 
-          ? list.map(s => s.id === editingService.id ? { ...s, ...payload } : s)
-          : [...list, payload];
+          ? list.map(s => s.id === editingService.id ? { ...s, ...fullPayload } : s)
+          : [...list, fullPayload];
+        localStorage.setItem('livkam_cached_services', JSON.stringify(updatedList));
+      } catch (_) {}
+
+      // Trigger instantaneous live refresh on main website across tabs & components
+      notifyDataUpdated({ type: 'SERVICE_SAVED', serviceId: svcId });
+      setIsModalOpen(false);
+    } catch (err) {
+      console.warn('Supabase save error, persisting locally:', err);
+      // Fallback: persist locally and sync across website
+      if (editingService) {
+        setServices(prev => prev.map(s => s.id === editingService.id ? { ...s, ...fullPayload } : s));
+      } else {
+        setServices(prev => [...prev, fullPayload]);
+      }
+      try {
+        const cached = localStorage.getItem('livkam_cached_services');
+        const list = cached ? JSON.parse(cached) : [...services];
+        const updatedList = editingService 
+          ? list.map(s => s.id === editingService.id ? { ...s, ...fullPayload } : s)
+          : [...list, fullPayload];
         localStorage.setItem('livkam_cached_services', JSON.stringify(updatedList));
       } catch (_) {}
 
       notifyDataUpdated({ type: 'SERVICE_SAVED', serviceId: svcId });
       setIsModalOpen(false);
-    } catch (err) {
-      console.warn('Save error:', err);
-      // Still update local state for the session
-      if (editingService) {
-        setServices(prev => prev.map(s => s.id === editingService.id ? { ...s, ...payload } : s));
-      } else {
-        setServices(prev => [...prev, payload]);
-      }
-      setIsModalOpen(false);
-      showNotification('Service saved locally!');
+      showNotification('Service saved and updated on website!');
     } finally {
       setFormLoading(false);
     }

@@ -437,51 +437,57 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
             >
               <Link
                 to="/services"
-                className={`flex items-center gap-1 px-3 py-2 text-sm font-semibold transition-colors ${
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black tracking-wide transition-all ${
                   location.pathname.startsWith('/service')
-                    ? 'text-[#16a34a]'
-                    : 'text-[#0f2b48] hover:text-[#16a34a]'
+                    ? 'bg-[#16a34a] text-white shadow-sm'
+                    : 'bg-emerald-50 text-[#16a34a] hover:bg-[#16a34a] hover:text-white border border-emerald-200'
                 }`}
               >
-                <span>Services</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? 'rotate-180 text-[#16a34a]' : ''}`} />
+                <Wrench className="w-3.5 h-3.5" />
+                <span>SERVICES</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`} />
               </Link>
 
               {servicesOpen && (
                 <div 
-                  className="absolute top-full left-0 w-[590px] bg-[#f59e0b] rounded-2xl shadow-2xl border border-amber-500 flex overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50 text-slate-900"
+                  className="absolute top-full left-0 w-[640px] bg-white rounded-2xl shadow-2xl border border-slate-100 flex overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50"
                   onMouseEnter={handleServicesMouseEnter}
                   onMouseLeave={handleServicesMouseLeave}
                 >
                   {/* Left Column: 8 Service Categories */}
-                  <div className="w-[290px] bg-[#f59e0b] border-r border-amber-600/30 flex flex-col justify-between py-1">
-                    <div className="space-y-0.5 divide-y divide-amber-600/20">
-                      {SERVICE_CATEGORIES.map((cat) => {
-                        const isSelected = cat.id === selectedServiceCat;
-                        return (
-                          <button
-                            key={cat.id}
-                            type="button"
-                            onMouseEnter={() => setSelectedServiceCat(cat.id)}
-                            onClick={() => setSelectedServiceCat(cat.id)}
-                            className={`w-full flex items-center justify-between px-4 py-2.5 text-xs font-black uppercase tracking-wide text-left transition-all cursor-pointer ${
-                              isSelected
-                                ? 'bg-[#d97706] text-white shadow-inner'
-                                : 'text-slate-900 hover:bg-[#fbbf24]/60'
-                            }`}
-                          >
-                            <span className="truncate pr-2">{cat.title}</span>
-                            <ChevronRight className={`w-4 h-4 flex-shrink-0 transition-transform ${isSelected ? 'text-white translate-x-1' : 'text-slate-800'}`} />
-                          </button>
-                        );
-                      })}
+                  <div className="w-[270px] bg-slate-50/90 p-2.5 border-r border-slate-100 flex flex-col justify-between">
+                    <div>
+                      <div className="px-3 py-1.5 text-[10px] font-black text-slate-400 uppercase tracking-wider border-b border-slate-200/80 mb-1">
+                        Service Categories ({SERVICE_CATEGORIES.length})
+                      </div>
+                      <div className="space-y-0.5">
+                        {SERVICE_CATEGORIES.map((cat) => {
+                          const isSelected = cat.id === selectedServiceCat;
+                          return (
+                            <button
+                              key={cat.id}
+                              type="button"
+                              onMouseEnter={() => setSelectedServiceCat(cat.id)}
+                              onClick={() => setSelectedServiceCat(cat.id)}
+                              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-left transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-emerald-100/80 text-[#16a34a] shadow-xs'
+                                  : 'text-slate-700 hover:bg-white hover:text-slate-900'
+                              }`}
+                            >
+                              <span className="truncate pr-2">{cat.title}</span>
+                              <ChevronRight className={`w-3.5 h-3.5 flex-shrink-0 transition-transform ${isSelected ? 'text-[#16a34a] translate-x-0.5' : 'text-slate-400'}`} />
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
 
-                    <div className="pt-2 px-3 pb-2 border-t border-amber-600/30 mt-1">
+                    <div className="pt-2 mt-2 border-t border-slate-200/80">
                       <Link
                         to="/services"
                         onClick={() => setServicesOpen(false)}
-                        className="block text-center text-[11px] font-black text-slate-900 hover:text-white uppercase tracking-wider py-1"
+                        className="block text-center text-[11px] font-black text-[#16a34a] hover:underline py-1"
                       >
                         🛠️ View All Services & AMC →
                       </Link>
@@ -489,28 +495,39 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
                   </div>
 
                   {/* Right Column: Catalogues for Selected Category */}
-                  <div className="flex-1 p-3 bg-[#eab308] flex flex-col justify-between">
+                  <div className="flex-1 p-4 bg-white flex flex-col justify-between">
                     <div>
                       {(() => {
                         const activeCat = SERVICE_CATEGORIES.find(c => c.id === selectedServiceCat) || SERVICE_CATEGORIES[0];
                         return (
-                          <div className="space-y-2">
-                            <div className="px-2 py-1 border-b border-amber-600/20">
-                              <span className="text-[10px] font-black uppercase text-amber-950 tracking-wider block">
-                                {activeCat.title}
+                          <div>
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-3">
+                              <div>
+                                <span className="text-[10px] font-black uppercase text-[#16a34a] tracking-wider block">
+                                  Service Scope & AMC
+                                </span>
+                                <h4 className="text-sm font-black text-slate-900">
+                                  {activeCat.title}
+                                </h4>
+                              </div>
+                              <span className="text-[10px] bg-emerald-50 text-[#16a34a] font-bold px-2 py-0.5 rounded-full border border-emerald-200">
+                                {activeCat.catalogues.length} {activeCat.catalogues.length === 1 ? 'Solution' : 'Solutions'}
                               </span>
                             </div>
 
-                            <div className="space-y-1.5 pt-1">
+                            <div className="space-y-1.5 max-h-[340px] overflow-y-auto pr-1">
                               {activeCat.catalogues.map((item) => (
                                 <Link
                                   key={item.slug}
                                   to={`/services/${item.slug}`}
                                   onClick={() => setServicesOpen(false)}
-                                  className="flex items-center justify-between p-3 rounded-xl bg-amber-400/50 hover:bg-[#d97706] text-slate-950 hover:text-white font-black text-xs uppercase tracking-wide transition-all shadow-xs group/item"
+                                  className="flex items-center justify-between p-2.5 rounded-xl hover:bg-emerald-50/80 text-slate-700 hover:text-[#16a34a] transition-all group/item border border-transparent hover:border-emerald-100"
                                 >
-                                  <span>{item.title}</span>
-                                  <ChevronRight className="w-4 h-4 text-slate-700 group-hover/item:text-white group-hover/item:translate-x-1 transition-all" />
+                                  <div className="flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] group-hover/item:scale-125 transition-transform flex-shrink-0"></span>
+                                    <span className="text-xs font-semibold leading-snug">{item.title}</span>
+                                  </div>
+                                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/item:text-[#16a34a] group-hover/item:translate-x-1 transition-all flex-shrink-0 ml-2" />
                                 </Link>
                               ))}
                             </div>
@@ -519,10 +536,13 @@ export default function Header({ onOpenSearch, onOpenMobileMenu }) {
                       })()}
                     </div>
 
-                    <div className="pt-3 border-t border-amber-600/20 text-center">
-                      <span className="text-[10px] font-bold text-amber-950">
-                        24/7 On-Call Support: +91 8884988990
-                      </span>
+                    <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <Phone className="w-3.5 h-3.5 text-[#16a34a]" />
+                        <span className="text-slate-600 font-medium">24/7 On-Call Support:</span>
+                        <a href="tel:8884988990" className="text-[#16a34a] font-bold hover:underline">+91 8884988990</a>
+                      </div>
+                      <span className="text-xs text-slate-400 hidden sm:inline">Certified Service Engineers</span>
                     </div>
                   </div>
                 </div>

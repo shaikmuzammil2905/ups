@@ -262,24 +262,13 @@ export default function ServiceDetail() {
                   </div>
                 </div>
 
-                {/* Registered Office */}
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-white block font-bold mb-0.5">Registered Office :</strong>
-                    <span className="text-slate-300 leading-relaxed">
-                      NO 10, 3rd Cross Rd, Gowda Muniswamy Garden, Ejipura, Bengaluru, Karnataka 560047
-                    </span>
-                  </div>
-                </div>
-
                 {/* Branch Office / Network */}
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="text-white block font-bold mb-0.5">Branch Network :</strong>
                     <span className="text-slate-300 leading-relaxed">
-                      Bangalore, Goa, Telangana, Tamil Nadu, Kerala, Hyderabad, Noida, Pune
+                      Bangalore, Mysore, Chennai, Hyderabad, Mumbai
                     </span>
                   </div>
                 </div>

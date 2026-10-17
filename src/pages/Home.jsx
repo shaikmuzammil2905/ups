@@ -585,7 +585,7 @@ export default function Home() {
             <div className="lg:col-span-6 xl:col-span-7 space-y-5">
               <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-[#16a34a] px-3.5 py-1 rounded-full text-xs font-bold tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-[#16a34a] animate-pulse"></span>
-                <span>Established in 2016 • Trusted Partner</span>
+                <span>Authorized Multi-Brand Partner • Trusted Excellence</span>
               </div>
 
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0f2b48] tracking-tight leading-tight">
@@ -594,10 +594,10 @@ export default function Home() {
 
               <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
                 <p>
-                  Established in 2016, <strong className="text-[#0f2b48] font-bold">Livkam Power Technologies</strong> is a premier trader and supplier specializing in Online UPS Systems and SMF Batteries. Our extensive product lineup includes Online UPS and offline UPS, as well as versatile UPS systems compatible with various brands. By consistently sourcing the most advanced and reliable UPS systems and batteries from trusted vendors, we ensure that our clients receive the best in the market.
+                  <strong className="text-[#0f2b48] font-bold">Livkam Power Technologies</strong> is a premier trader and supplier specializing in Online UPS Systems and SMF Batteries. Our extensive product lineup includes Online UPS and offline UPS, as well as versatile UPS systems compatible with various brands. By consistently sourcing the most advanced and reliable UPS systems and batteries from trusted vendors, we ensure that our clients receive the best in the market.
                 </p>
                 <p>
-                  Our UPS systems are known for their exceptional efficiency, cutting-edge smart charge technology, and safe no-load shutdown features. Furthermore, our batteries are lauded for their rapid charging capabilities and long operational lifespan. We take pride in our role as Manufacturers, Suppliers, Distributors, Wholesalers, and Dealers of esteemed brands such as APC UPS, Emerson UPS, and Eaton UPS. Our network spans across regions like Bangalore, Goa, Telangana, Tamil Nadu, Kerala, and Hyderabad, Noida, Pune.
+                  Our UPS systems are known for their exceptional efficiency, cutting-edge smart charge technology, and safe no-load shutdown features. Furthermore, our batteries are lauded for their rapid charging capabilities and long operational lifespan. We take pride in our role as Manufacturers, Suppliers, Distributors, Wholesalers, and Dealers of esteemed brands such as APC UPS, Emerson UPS, and Eaton UPS. Our network spans across regions like Bangalore, Mysore, Chennai, Hyderabad, and Mumbai.
                 </p>
               </div>
 
@@ -780,16 +780,16 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* 10 Brand Logo Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
+          {/* 10 Brand Logo Grid - Increased Size & Prominence */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-5">
             {brands.map((brand) => (
               <Link
                 key={brand.id}
                 to={`/brands/${brand.slug}`}
-                className="group bg-white rounded-xl border border-slate-200/90 hover:border-[#16a34a] hover:shadow-lg p-5 flex items-center justify-center min-h-[110px] transition-all duration-200"
+                className="group bg-white rounded-2xl border border-slate-200/90 hover:border-[#16a34a] hover:shadow-xl p-3 sm:p-4 flex items-center justify-center min-h-[125px] sm:min-h-[140px] transition-all duration-200 hover:-translate-y-1"
                 title={`View ${brand.name} Products`}
               >
-                <BrandLogo brand={brand} brandId={brand.id} className="h-12 md:h-16 w-full group-hover:scale-105 transition-transform" />
+                <BrandLogo brand={brand} brandId={brand.id} className="h-16 sm:h-20 md:h-22 w-full group-hover:scale-105 transition-transform" />
               </Link>
             ))}
           </div>

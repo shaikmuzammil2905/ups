@@ -37,56 +37,61 @@ export default function BrandLogo({
     (b.id || '').toLowerCase() === bSlug
   );
 
+  // Helper to test if image is an unsplash background photo (not a logo)
+  const isUnsplash = (url) => typeof url === 'string' && url.includes('images.unsplash.com');
+
   // Dynamic image uploaded in Admin CMS / Supabase
-  const dynamicImg = !imgError ? (
-    logoUrl ||
-    bannerUrl ||
-    foundBrand?.banner_url ||
-    foundBrand?.bannerUrl ||
-    foundBrand?.logo_url ||
-    foundBrand?.logoUrl ||
-    foundBrand?.logo ||
-    foundBrand?.image
+  const uploadedLogo = !imgError ? (
+    (logoUrl && !isUnsplash(logoUrl) ? logoUrl : null) ||
+    (foundBrand?.logo_url && !isUnsplash(foundBrand.logo_url) ? foundBrand.logo_url : null) ||
+    (foundBrand?.logoUrl && !isUnsplash(foundBrand.logoUrl) ? foundBrand.logoUrl : null) ||
+    (foundBrand?.logo && !isUnsplash(foundBrand.logo) ? foundBrand.logo : null) ||
+    (foundBrand?.banner_url && !isUnsplash(foundBrand.banner_url) ? foundBrand.banner_url : null) ||
+    (foundBrand?.bannerUrl && !isUnsplash(foundBrand.bannerUrl) ? foundBrand.bannerUrl : null) ||
+    (foundBrand?.image && !isUnsplash(foundBrand.image) ? foundBrand.image : null) ||
+    (bannerUrl && !isUnsplash(bannerUrl) ? bannerUrl : null)
   ) : null;
 
-  // 1. If dynamic uploaded logo/banner exists from Admin, render it
-  if (dynamicImg) {
-    return (
-      <div className={`flex items-center justify-center p-1.5 ${className}`}>
-        <img
-          src={dynamicImg}
-          alt={alt || foundBrand?.name || brandId || 'Brand Logo'}
-          onError={() => setImgError(true)}
-          className="max-h-full max-w-full object-contain filter drop-shadow-xs"
-          loading="lazy"
-        />
-      </div>
-    );
-  }
-
-  // 2. If static transparent/dark logo asset matches
+  // 1. If static transparent/dark high-res logo asset matches and no uploaded logo overrides it
   const staticAsset = STATIC_LOGOS[bId];
-  if (staticAsset) {
+  if (staticAsset && (!uploadedLogo || isUnsplash(uploadedLogo))) {
     if (staticAsset.isLight) {
       return (
-        <div className={`flex items-center justify-center ${className}`}>
+        <div className={`flex items-center justify-center w-full h-full p-1 ${className}`}>
           <img
             src={staticAsset.src}
             alt={alt || staticAsset.alt}
-            className="max-h-full max-w-full object-contain"
+            className="max-h-full max-w-full object-contain filter drop-shadow-xs transition-transform duration-200"
+            loading="lazy"
           />
         </div>
       );
     }
     return (
-      <div className={`flex items-center justify-center ${className}`}>
+      <div className={`flex items-center justify-center w-full h-full p-1 ${className}`}>
         <div className="bg-slate-900 rounded-xl w-full h-full flex items-center justify-center px-3 py-2">
           <img
             src={staticAsset.src}
             alt={alt || staticAsset.alt}
             className="max-h-full max-w-full object-contain"
+            loading="lazy"
           />
         </div>
+      </div>
+    );
+  }
+
+  // 2. If dynamic uploaded logo/banner exists from Admin / Supabase, render it
+  if (uploadedLogo) {
+    return (
+      <div className={`flex items-center justify-center w-full h-full p-1 ${className}`}>
+        <img
+          src={uploadedLogo}
+          alt={alt || foundBrand?.name || brandId || 'Brand Logo'}
+          onError={() => setImgError(true)}
+          className="max-h-full max-w-full object-contain filter drop-shadow-xs transition-transform duration-200"
+          loading="lazy"
+        />
       </div>
     );
   }

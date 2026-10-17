@@ -200,11 +200,11 @@ export default function MobileDrawer({ isOpen, onClose }) {
               </button>
 
               {servicesOpen && (
-                <div className="pl-3 pr-2 py-1 space-y-1.5 bg-amber-500/10 rounded-xl my-1 max-h-96 overflow-y-auto border border-amber-500/30">
+                <div className="pl-3 pr-2 py-1 space-y-1.5 bg-slate-50 rounded-xl my-1 max-h-96 overflow-y-auto border border-slate-200">
                   <Link
                     to="/services"
                     onClick={onClose}
-                    className="block py-2 px-2 text-xs font-black text-amber-700 hover:text-amber-900 border-b border-amber-500/20"
+                    className="block py-2 px-2 text-xs font-black text-[#16a34a] hover:text-[#15803d] border-b border-slate-200"
                   >
                     🛠️ View All Services & AMC Hub →
                   </Link>
@@ -212,24 +212,24 @@ export default function MobileDrawer({ isOpen, onClose }) {
                   {SERVICE_CATEGORIES.map((cat) => {
                     const isCatOpen = openServiceCategory === cat.id;
                     return (
-                      <div key={cat.id} className="border-b border-amber-500/10 last:border-b-0 pb-1">
+                      <div key={cat.id} className="border-b border-slate-200/60 last:border-b-0 pb-1">
                         <button
                           type="button"
                           onClick={() => setOpenServiceCategory(isCatOpen ? null : cat.id)}
-                          className="w-full flex items-center justify-between py-1.5 px-2 text-xs font-black text-slate-800 hover:text-amber-700 text-left"
+                          className="w-full flex items-center justify-between py-1.5 px-2 text-xs font-bold text-slate-800 hover:text-[#16a34a] text-left"
                         >
                           <span className="truncate pr-1">{cat.title}</span>
-                          <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform ${isCatOpen ? 'rotate-180 text-amber-700' : ''}`} />
+                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isCatOpen ? 'rotate-180 text-[#16a34a]' : ''}`} />
                         </button>
 
                         {isCatOpen && (
-                          <div className="pl-3 py-1 space-y-1 bg-amber-500/10 rounded-lg mt-0.5">
+                          <div className="pl-3 py-1 space-y-1 bg-white rounded-lg mt-0.5 border border-slate-100">
                             {cat.catalogues.map((item) => (
                               <Link
                                 key={item.slug}
                                 to={`/services/${item.slug}`}
                                 onClick={onClose}
-                                className="block py-1 px-2 text-[11px] font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-500/20 rounded"
+                                className="block py-1.5 px-2 text-[11px] font-medium text-slate-600 hover:text-[#16a34a] hover:bg-emerald-50 rounded"
                               >
                                 • {item.title}
                               </Link>
